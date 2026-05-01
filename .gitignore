@@ -34,3 +34,26 @@ Thumbs.db
 
 # Misc
 coverage/
+
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Database
+DATABASE_URL="postgresql://postgres:yourpassword@localhost:5432/nudgely_db"
+
+# JWT
+JWT_ACCESS_SECRET=your_access_secret_here_make_it_long
+JWT_REFRESH_SECRET=your_refresh_secret_here_make_it_long
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=7d
+
+# Email (use Mailtrap for dev, SendGrid for prod)
+SMTP_HOST=sandbox.smtp.mailtrap.io
+SMTP_PORT=2525
+SMTP_USER=your_mailtrap_user
+SMTP_PASS=your_mailtrap_pass
+SMTP_FROM=noreply@nudgely.app
+
+# Client
+CLIENT_URL=http://localhost:5173

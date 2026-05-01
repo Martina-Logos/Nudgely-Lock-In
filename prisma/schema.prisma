@@ -1,13 +1,194 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//////////////////////////////////////////////////////
+// ENUMS
+//////////////////////////////////////////////////////
+
+enum TaskStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  DONE
+  STUCK
+  PUSHED_BACK
+}
+
+enum TaskPriority {
+  NON_NEGOTIABLE
+  GOOD_TO_DO
+  IF_I_GET_THERE
+}
+
+enum OTPType {
+  VERIFY_EMAIL
+  RESET_PASSWORD
+}
+
+//////////////////////////////////////////////////////
+// USER
+//////////////////////////////////////////////////////
+
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  passwordHash   String
+
+  displayName    String?
+  timezone       String?
+  role           String?
+
+  temperament    String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  tasks          Task[]
+  focusSessions  FocusSession[]
+  refreshTokens  RefreshToken[]
+
+  @@index([email])
+}
+
+//////////////////////////////////////////////////////
+// REFRESH TOKENS (multi-device sessions)
+//////////////////////////////////////////////////////
+
+model RefreshToken {
+  id         String   @id @default(uuid())
+  token      String   @unique
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+}
+
+//////////////////////////////////////////////////////
+// OTP CODES (email verification + password reset)
+//////////////////////////////////////////////////////
+
+model OTPCode {
+  id         String   @id @default(uuid())
+  email      String
+  code       String
+
+  type       OTPType
+
+  expiresAt  DateTime
+  usedAt     DateTime?
+
+  createdAt  DateTime @default(now())
+
+  @@index([email])
+  @@index([type])
+}
+
+//////////////////////////////////////////////////////
+// TASK
+//////////////////////////////////////////////////////
+
+model Task {
+  id               String        @id @default(uuid())
+  title            String
+  description      String?
+
+  naturalInput     String?       // original user input for AI context
+
+  drive            Int           // 1–4
+  priority         TaskPriority
+  status           TaskStatus    @default(NOT_STARTED)
+
+  dueDate          DateTime?
+  estimatedMinutes Int?
+
+  userId           String
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  // Relations
+  subtasks         Subtask[]
+  reminders        Reminder[]
+  focusSessions    FocusSession[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([drive])
+  @@index([dueDate])
+}
+
+//////////////////////////////////////////////////////
+// SUBTASK
+//////////////////////////////////////////////////////
+
+model Subtask {
+  id               String   @id @default(uuid())
+  title            String
+  completed        Boolean  @default(false)
+
+  order            Int      @default(0) // future drag-and-drop ready
+  estimatedMinutes Int?
+
+  taskId           String
+  task             Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  createdAt        DateTime @default(now())
+
+  @@index([taskId])
+}
+
+//////////////////////////////////////////////////////
+// REMINDER
+//////////////////////////////////////////////////////
+
+model Reminder {
+  id               String   @id @default(uuid())
+
+  scheduledAt      DateTime
+  delivered        Boolean  @default(false)
+  dismissed        Boolean  @default(false)
+
+  escalationCount  Int      @default(0)
+
+  taskId           String
+  task             Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  createdAt        DateTime @default(now())
+
+  @@index([taskId])
+  @@index([scheduledAt])
+  @@index([delivered])
+}
+
+//////////////////////////////////////////////////////
+// FOCUS SESSION
+//////////////////////////////////////////////////////
+
+model FocusSession {
+  id               String   @id @default(uuid())
+
+  durationMinutes  Int
+  completed        Boolean  @default(true)
+
+  taskId           String?
+  task             Task?    @relation(fields: [taskId], references: [id])
+
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt        DateTime @default(now())
+
+  @@index([userId])
+  @@index([taskId])
 }
