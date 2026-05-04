@@ -2,7 +2,6 @@
   "name": "nudgely-lock-in",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "npx ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",

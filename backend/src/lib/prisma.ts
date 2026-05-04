@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-import { PrismaPg } from '@prisma/adapter-pg'
-import { Pool } from 'pg'
+import { PrismaClient } from '../../prisma/generated'
 import { env } from '../config/env'
 
 declare global {
@@ -8,9 +6,6 @@ declare global {
 }
 
 export const prisma = global.__prisma || new PrismaClient({
-  adapter: new PrismaPg(new Pool({
-    connectionString: env.DATABASE_URL,
-  })),
   log: env.isProduction ? ['error'] : ['warn', 'error'],
 })
 
