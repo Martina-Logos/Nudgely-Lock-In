@@ -2,5 +2,9 @@
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.93.0",
+    "date-fns": "^4.1.0"
   }
 }
