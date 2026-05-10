@@ -60,22 +60,31 @@ export default function VerifyCodePage() {
   }
 
   const handleVerify = async (code?: string) => {
-    const otp = code || digits.join('')
-    if (otp.length < 6) return
-    setLoading(true); setError('')
-    try {
-      const { data } = await authApi.verifyOtp(email, otp)
-      setToken(data.accessToken)
-      setUser(data.user)
-      navigate('/onboarding/profile')
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid or expired code.')
-      setDigits(['', '', '', '', '', ''])
-      inputRefs.current[0]?.focus()
-    } finally {
-      setLoading(false)
+  const otp = code || digits.join('')
+  if (otp.length < 6) return
+  setLoading(true); setError('')
+  try {
+    const { data } = await authApi.verifyOtp(email, otp)
+    setToken(data.accessToken)
+    setUser(data.user)
+    // Set onboarded flag based on user data from backend
+    if (data.user.isOnboarded) {
+      setOnboarded(true)
     }
+    // Navigate based on onboarding status
+    if (data.user.isOnboarded) {
+      navigate('/dashboard')
+    } else {
+      navigate('/onboarding/profile')
+    }
+  } catch (err: any) {
+    setError(err.response?.data?.message || 'Invalid or expired code.')
+    setDigits(['', '', '', '', '', ''])
+    inputRefs.current[0]?.focus()
+  } finally {
+    setLoading(false)
   }
+}
 
   const handleResend = async () => {
     if (countdown > 0) return

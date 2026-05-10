@@ -31,7 +31,7 @@ export const env = {
   SMTP_PORT: parseInt(optionalEnv('SMTP_PORT', '2525'), 10),
   SMTP_USER: optionalEnv('SMTP_USER', ''),
   SMTP_PASS: optionalEnv('SMTP_PASS', ''),
-  SMTP_FROM: optionalEnv('SMTP_FROM', 'noreply@nudgely.app'),
+  SMTP_FROM: optionalEnv('SMTP_FROM', 'noreply@Nudgely.app'),
 
   // Client
   CLIENT_URL: optionalEnv('CLIENT_URL', 'http://localhost:5173'),

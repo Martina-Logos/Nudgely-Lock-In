@@ -22,9 +22,9 @@ app.use(helmet())
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 app.use(cors({
-  origin:      env.CLIENT_URL,
-  credentials: true,             // allows cookies to be sent
-  methods:     ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }))
 

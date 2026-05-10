@@ -8,6 +8,7 @@ import ProfileBasicsPage from './features/onboarding/ProfileBasicsPage'
 import ProfileWizard     from './features/onboarding/ProfileWizard'
 import TemperamentQuiz   from './features/onboarding/TemperamentQuiz'
 import CognitiveQuiz     from './features/onboarding/CognitiveQuiz'
+import Dashboard from './features/dashboard/Dashboard'
 
 // ─── Guards ──────────────────────────────────────────────────────────────────
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -52,7 +53,7 @@ export default function App() {
         <Route path="/onboarding/cognitive"  element={<RequireAuth><CognitiveQuiz /></RequireAuth>} />
 
         {/* Main app — placeholders until Phase 2+ */}
-        <Route path="/dashboard"      element={<RequireAuth><ComingSoon name="Dashboard" /></RequireAuth>} />
+        <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="/tasks"          element={<RequireAuth><ComingSoon name="Tasks" /></RequireAuth>} />
         <Route path="/habits"         element={<RequireAuth><ComingSoon name="Habits" /></RequireAuth>} />
         <Route path="/self-awareness" element={<RequireAuth><ComingSoon name="Self Awareness" /></RequireAuth>} />

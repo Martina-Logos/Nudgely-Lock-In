@@ -36,7 +36,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'nudgely-auth',
+      name: 'Nudgely-auth',
       partialize: (s) => ({
         user:            s.user,
         accessToken:     s.accessToken,
