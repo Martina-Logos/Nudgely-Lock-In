@@ -112,10 +112,12 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
+            <p className="text-xs mt-0.5" style={{ color: theme.textSecondary }}>
+              {today}
+            </p>
             <h1 className="text-xl font-bold" style={{ color: isBold ? '#FFFFFF' : theme.textPrimary, fontFamily: '"DM Serif Display", serif' }}>
-              Nudgely
+            Welcome, {user?.displayName?.split(' ')[0] || user?.displayName || 'there'} 👋
             </h1>
-            <p className="text-xs mt-0.5" style={{ color: theme.textSecondary }}>{today}</p>
           </div>
           <div className="flex items-center gap-3">
             <button onClick={() => navigate('/reports/weekly')}
