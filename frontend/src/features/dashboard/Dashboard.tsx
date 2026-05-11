@@ -6,70 +6,72 @@ import { useAuthStore } from '../../stores/authStore'
 import { tasksApi, habitsApi, sessionsApi, journalApi } from '../../lib/api'
 import type { Task, Habit } from '../../types'
 
-// ─── Progress Ring ────────────────────────────────────────────────────────────
+// ─── Progress Ring ─────────────────────────────────────────────────────────────
 function ProgressRing({ percent, color, size = 64 }: { percent: number; color: string; size?: number }) {
-  const r = (size / 2) - 5
+  const r    = (size / 2) - 6
   const circ = 2 * Math.PI * r
   const offset = circ - (percent / 100) * circ
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ flexShrink: 0 }}>
       <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#E3DBE6" strokeWidth="5" />
       <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth="5"
         strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={offset}
         transform={`rotate(-90 ${size/2} ${size/2})`}
         style={{ transition: 'stroke-dashoffset 0.6s ease' }} />
-      <text x={size/2} y={size/2 + 5} textAnchor="middle" fontSize="13" fontWeight="700" fill={color}>
+      <text x={size/2} y={size/2 + 5} textAnchor="middle" fontSize="12" fontWeight="700" fill={color}>
         {percent}%
       </text>
     </svg>
   )
 }
 
-// ─── Mood Slider ──────────────────────────────────────────────────────────────
-const MOODS = ['😞', '😕', '😐', '🙂', '😄']
+// ─── Drive badge ───────────────────────────────────────────────────────────────
+const DRIVE_LABELS: Record<string, { label: string; icon: string; color: string }> = {
+  OnFire:    { label: 'On Fire',    icon: 'ti-flame',      color: '#FF6B35' },
+  DueSoon:   { label: 'Due Soon',   icon: 'ti-clock',      color: '#F59E0B' },
+  LowLift:   { label: 'Low Lift',   icon: 'ti-leaf',       color: '#23BBB7' },
+  OpenSpace: { label: 'Open Space', icon: 'ti-sparkles',   color: '#744D83' },
+}
 
-function MoodSlider({ onSelect, selected, theme }: { onSelect: (v: number) => void; selected: number | null; theme: any }) {
+// ─── Mini bar chart ────────────────────────────────────────────────────────────
+function MiniFocusChart({ theme }: { theme: any }) {
+  const bars = [60, 90, 40, 75, 55, 20, 15]
+  const days = ['M','T','W','T','F','S','S']
+  const max  = Math.max(...bars)
+
   return (
-    <div className="flex justify-between items-center px-2">
-      {MOODS.map((emoji, i) => (
-        <button key={i}
-          onClick={() => onSelect(i + 1)}
-          className="text-2xl transition-all duration-200 active:scale-110"
-          style={{
-            opacity: selected === null || selected === i + 1 ? 1 : 0.4,
-            transform: selected === i + 1 ? 'scale(1.3)' : 'scale(1)',
-            filter: selected === i + 1 ? 'drop-shadow(0 2px 8px rgba(35,187,183,0.4))' : 'none',
-            background: 'none', border: 'none', cursor: 'pointer',
-          }}>
-          {emoji}
-        </button>
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 56 }}>
+      {bars.map((h, i) => (
+        <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, flex: 1 }}>
+          <div style={{
+            width: '100%', borderRadius: '3px 3px 0 0',
+            height: `${(h / max) * 44}px`,
+            backgroundColor: i < 5 ? theme.accent : theme.navBorder,
+            minHeight: 3,
+            transition: 'height 0.4s ease',
+          }} />
+          <span style={{ fontSize: 9, color: theme.textSecondary }}>{days[i]}</span>
+        </div>
       ))}
     </div>
   )
 }
 
-// ─── Drive badge ──────────────────────────────────────────────────────────────
-const DRIVE_LABELS: Record<string, { label: string; emoji: string; color: string }> = {
-  OnFire:    { label: 'On Fire',    emoji: '🔥', color: '#FF6B35' },
-  DueSoon:   { label: 'Due Soon',   emoji: '⏰', color: '#F59E0B' },
-  LowLift:   { label: 'Low Lift',   emoji: '🌿', color: '#23BBB7' },
-  OpenSpace: { label: 'Open Space', emoji: '✨', color: '#744D83' },
-}
-
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 export default function Dashboard() {
-  const navigate      = useNavigate()
-  const { theme, isBold } = useTheme()
-  const user          = useAuthStore((s) => s.user)
+  const navigate           = useNavigate()
+  const { theme, isBold }  = useTheme()
+  const user               = useAuthStore((s) => s.user)
 
-  const [topTask, setTopTask]         = useState<Task | null>(null)
-  const [habits, setHabits]           = useState<Habit[]>([])
-  const [focusMin, setFocusMin]       = useState(0)
-  const [mood, setMood]               = useState<number | null>(null)
-  const [aiNudge, setAiNudge]         = useState("Let's make today count. What's your first move?")
-  const [loading, setLoading]         = useState(true)
+  const [topTask, setTopTask]   = useState<Task | null>(null)
+  const [habits, setHabits]     = useState<Habit[]>([])
+  const [focusMin, setFocusMin] = useState(0)
+  const [mood, setMood]         = useState<number | null>(null)
+  const [aiNudge, setAiNudge]   = useState("Let's make today count. What's your first move?")
+  const [loading, setLoading]   = useState(true)
 
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+  const firstName = user?.displayName?.split(' ')[0] || 'there'
 
   useEffect(() => {
     async function load() {
@@ -80,7 +82,6 @@ export default function Dashboard() {
           sessionsApi.getTodayFocus(),
           journalApi.getToday(),
         ])
-
         if (tasksRes.status === 'fulfilled') {
           const tasks: Task[] = tasksRes.value.data
           const onFire = tasks.find(t => t.drive === 'OnFire' && t.status !== 'Done')
@@ -88,134 +89,196 @@ export default function Dashboard() {
           const nudge = tasks.find(t => t.aiNudge)?.aiNudge
           if (nudge) setAiNudge(nudge)
         }
-
         if (habitsRes.status === 'fulfilled') setHabits(habitsRes.value.data.slice(0, 3))
         if (focusRes.status === 'fulfilled')  setFocusMin(focusRes.value.data.minutes)
-        if (journalRes.status === 'fulfilled' && journalRes.value.data) {
-          setMood(journalRes.value.data.moodScore)
-        }
+        if (journalRes.status === 'fulfilled' && journalRes.value.data) setMood(journalRes.value.data.moodScore)
       } catch {}
       finally { setLoading(false) }
     }
     load()
   }, [])
 
-  const driveInfo = topTask ? DRIVE_LABELS[topTask.drive] : DRIVE_LABELS.OnFire
+  const driveInfo  = topTask ? DRIVE_LABELS[topTask.drive] : DRIVE_LABELS.OnFire
   const taskPercent = topTask?.subtasks?.length
     ? Math.round((topTask.subtasks.filter(s => s.completed).length / topTask.subtasks.length) * 100)
     : 0
 
+  const todayDate = new Date().toISOString().split('T')[0]
+
+  const cardStyle = {
+    backgroundColor: theme.cardBg,
+    borderRadius: 16,
+    border: `1px solid ${theme.navBorder}`,
+    padding: '18px 20px',
+    boxShadow: '0 2px 12px rgba(116,77,131,0.07)',
+  }
+
+  const MOODS = ['😞','😕','😐','🙂','😄']
+
   return (
     <AppShell>
-      <div className="px-5 pt-6 pb-4" style={{ backgroundColor: theme.bgPrimary }}>
+      {/* Page header — mobile only (desktop uses topbar) */}
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 20 }}
+        className="mobile-header">
+        <div>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: isBold ? '#FFFFFF' : theme.textPrimary, fontFamily: '"DM Serif Display", serif', margin: 0 }}>
+            Welcome, {firstName} 👋
+          </h1>
+          <p style={{ fontSize: 12, color: theme.textSecondary, margin: '2px 0 0' }}>{today}</p>
+        </div>
+      </div>
 
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <p className="text-xs mt-0.5" style={{ color: theme.textSecondary }}>
-              {today}
-            </p>
-            <h1 className="text-xl font-bold" style={{ color: isBold ? '#FFFFFF' : theme.textPrimary, fontFamily: '"DM Serif Display", serif' }}>
-            Welcome, {user?.displayName?.split(' ')[0] || user?.displayName || 'there'} 👋
-            </h1>
+      {/* Desktop: bento grid | Mobile: single column */}
+      <style>{`
+        .dash-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        @media (min-width: 768px) {
+          .mobile-header { display: none !important; }
+          .dash-greeting { display: block !important; }
+          .dash-grid {
+            grid-template-columns: 1.5fr 1fr;
+          }
+          .dash-grid-3 {
+            grid-template-columns: 1fr 1fr 1fr !important;
+          }
+          .dash-full {
+            grid-column: 1 / -1;
+          }
+        }
+      `}</style>
+
+      {/* Desktop greeting — hidden on mobile */}
+      <div className="dash-greeting" style={{ display: 'none', marginBottom: 20 }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: isBold ? '#FFFFFF' : theme.textPrimary, fontFamily: '"DM Serif Display", serif', margin: 0 }}>
+          Welcome back, {firstName} 👋
+        </h1>
+        <p style={{ fontSize: 13, color: theme.textSecondary, margin: '3px 0 0' }}>{today}</p>
+      </div>
+
+      {/* Stats row */}
+      <div className="dash-grid dash-grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
+        <div style={{ ...cardStyle, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: theme.textSecondary, textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0 }}>Today's Focus</p>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+            <span style={{ fontSize: 30, fontWeight: 800, color: theme.textPrimary, fontFamily: '"DM Serif Display", serif' }}>{focusMin}</span>
+            <span style={{ fontSize: 13, color: theme.textSecondary }}>min</span>
           </div>
-          <div className="flex items-center gap-3">
-            <button onClick={() => navigate('/reports/weekly')}
-              className="w-9 h-9 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: theme.cardAlt }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M3 3V21M7 18V9M11 18V5M15 18V12M19 18V8" stroke={theme.textPrimary} strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </button>
-            <button onClick={() => navigate('/brain-beats')}
-              className="w-9 h-9 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: theme.cardAlt }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2C8.5 2 6 4.5 6 7.5C6 9 6.5 10.3 7.5 11.3C6.6 12 6 13.1 6 14.5C6 17 7.8 19 10 19.5V22H14V19.5C16.2 19 18 17 18 14.5C18 13.1 17.4 12 16.5 11.3C17.5 10.3 18 9 18 7.5C18 4.5 15.5 2 12 2Z"
-                  stroke={theme.accent} strokeWidth="2" fill="none" />
-              </svg>
-            </button>
-          </div>
+          <p style={{ fontSize: 11, color: theme.accent, margin: 0, fontWeight: 600 }}>
+            <i className="ti ti-trending-up" style={{ marginRight: 3 }} aria-hidden="true" />
+            Keep going
+          </p>
         </div>
 
-        {/* Drive Card */}
-        <div className="rounded-2xl p-5 mb-4 relative overflow-hidden"
-          style={{ backgroundColor: theme.cardBg, boxShadow: '0 4px 20px rgba(116,77,131,0.12)' }}>
-          <div className="flex items-start justify-between">
-            <div className="flex-1 pr-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-lg">{driveInfo.emoji}</span>
-                <span className="text-sm font-bold" style={{ color: driveInfo.color }}>{driveInfo.label}</span>
+        <div style={{ ...cardStyle, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: theme.textSecondary, textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0 }}>Mood Today</p>
+          <div style={{ fontSize: 28 }}>{mood ? MOODS[mood - 1] : '—'}</div>
+          <p style={{ fontSize: 11, color: theme.textSecondary, margin: 0 }}>{mood ? ['Rough','Low','Okay','Good','Great'][mood-1] : 'Not logged'}</p>
+        </div>
+
+        {/* Third stat — hidden on mobile 2-col, shown on desktop 3-col */}
+        <div style={{ ...cardStyle, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: theme.textSecondary, textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0 }}>Weekly Focus</p>
+          <MiniFocusChart theme={theme} />
+        </div>
+      </div>
+
+      {/* Drive card + AI nudge */}
+      <div className="dash-grid" style={{ display: 'grid', gap: 14, marginBottom: 14 }}>
+        {/* Drive card */}
+        <div style={{
+          borderRadius: 16, padding: '20px',
+          background: isBold ? 'linear-gradient(135deg, #23627C, #1B4E63)' : 'linear-gradient(135deg, #744D83, #5a3868)',
+          position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ flex: 1, paddingRight: 16 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, backgroundColor: 'rgba(255,255,255,0.18)', borderRadius: 20, padding: '3px 10px', marginBottom: 10 }}>
+                <i className={`ti ${driveInfo.icon}`} style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)' }} aria-hidden="true" />
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.9)' }}>{driveInfo.label}</span>
               </div>
-              <h2 className="text-base font-bold mb-1 leading-snug" style={{ color: theme.textPrimary }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700, color: '#FFFFFF', margin: '0 0 6px', lineHeight: 1.3 }}>
                 {topTask?.title || 'No tasks yet — add your first one'}
               </h2>
-              <p className="text-xs" style={{ color: theme.textSecondary }}>
-                {topTask
-                  ? `Est. ${topTask.estimatedMinutes || 30} min focus time today`
-                  : 'Tap Tasks to get started'}
+              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', margin: 0 }}>
+                Est. {topTask?.estimatedMinutes || 30} min focus time today
               </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14 }}>
+                <div style={{ flex: 1, height: 4, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 10, overflow: 'hidden' }}>
+                  <div style={{ width: `${taskPercent}%`, height: '100%', backgroundColor: '#23BBB7', borderRadius: 10, transition: 'width 0.6s ease' }} />
+                </div>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>{taskPercent}%</span>
+              </div>
             </div>
-            <ProgressRing percent={taskPercent} color={theme.progress} size={64} />
+            <ProgressRing percent={taskPercent} color="#23BBB7" size={72} />
           </div>
         </div>
 
-        {/* AI Nudge */}
-        <div className="rounded-2xl p-4 mb-4 flex items-start gap-3"
-          style={{ backgroundColor: isBold ? theme.cardAlt : '#EDE8F5', boxShadow: '0 2px 12px rgba(116,77,131,0.08)' }}>
-          <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
-            style={{ backgroundColor: theme.accent }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                fill="white" />
-            </svg>
+        {/* AI nudge */}
+        <div style={{
+          ...cardStyle,
+          backgroundColor: isBold ? 'rgba(35,187,183,0.12)' : '#EDE8F5',
+          border: `1px solid ${isBold ? 'rgba(35,187,183,0.25)' : '#D4C8E0'}`,
+          display: 'flex', alignItems: 'flex-start', gap: 12,
+        }}>
+          <div style={{
+            width: 36, height: 36, borderRadius: '50%',
+            backgroundColor: theme.accent, display: 'flex',
+            alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>
+            <i className="ti ti-sparkles" style={{ fontSize: 16, color: 'white' }} aria-hidden="true" />
           </div>
-          <div className="flex-1">
-            <p className="text-xs font-semibold mb-1" style={{ color: theme.accent }}>AI Nudge</p>
-            <p className="text-sm leading-relaxed" style={{ color: theme.textPrimary }}>"{aiNudge}"</p>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: theme.accent, margin: '0 0 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>AI Nudge</p>
+            <p style={{ fontSize: 13, color: theme.textPrimary, lineHeight: 1.55, margin: 0 }}>"{aiNudge}"</p>
           </div>
-          <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: theme.textSecondary }}>›</button>
         </div>
+      </div>
 
-        {/* Mood Check-in */}
-        <div className="rounded-2xl p-4 mb-4"
-          style={{ backgroundColor: theme.cardBg, boxShadow: '0 2px 12px rgba(116,77,131,0.08)' }}>
-          <p className="text-sm font-semibold mb-3" style={{ color: theme.textPrimary }}>How are you feeling?</p>
-          <MoodSlider onSelect={setMood} selected={mood} theme={theme} />
-        </div>
-
-        {/* Today's Habits */}
-        <div className="rounded-2xl p-4 mb-4"
-          style={{ backgroundColor: theme.cardBg, boxShadow: '0 2px 12px rgba(116,77,131,0.08)' }}>
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold" style={{ color: theme.textPrimary }}>Today's Habits</p>
+      {/* Habits + Mood */}
+      <div className="dash-grid" style={{ display: 'grid', gap: 14, marginBottom: 14 }}>
+        {/* Habits */}
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>Today's Habits</p>
             <button onClick={() => navigate('/habits')}
-              className="text-xs font-semibold" style={{ color: theme.accent, background: 'none', border: 'none', cursor: 'pointer' }}>
-              View all →
+              style={{ fontSize: 12, fontWeight: 600, color: theme.accent, background: 'none', border: 'none', cursor: 'pointer' }}>
+              View all <i className="ti ti-arrow-right" style={{ fontSize: 11 }} aria-hidden="true" />
             </button>
           </div>
-
           {loading ? (
-            <div className="flex justify-center py-4">
-              <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: theme.accent }} />
+            <div style={{ display: 'flex', justifyContent: 'center', padding: 16 }}>
+              <div style={{ width: 20, height: 20, borderRadius: '50%', border: `2px solid ${theme.accent}`, borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
             </div>
           ) : habits.length === 0 ? (
-            <p className="text-xs text-center py-3" style={{ color: theme.textSecondary }}>No habits yet — add some in Habits</p>
+            <p style={{ fontSize: 12, color: theme.textSecondary, textAlign: 'center', padding: '12px 0' }}>
+              No habits yet
+            </p>
           ) : (
-            <div className="flex justify-around">
-              {habits.map((habit) => {
-                const today = new Date().toISOString().split('T')[0]
-                const doneToday = habit.completions?.some(c => c.date === today)
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+              {habits.map(habit => {
+                const done = habit.completions?.some(c => c.date === todayDate)
                 return (
-                  <div key={habit.id} className="flex flex-col items-center gap-1.5">
-                    <div className="w-11 h-11 rounded-full flex items-center justify-center text-lg border-2 transition-all"
-                      style={{ borderColor: doneToday ? theme.accent : '#E3DBE6', backgroundColor: doneToday ? `${theme.accent}20` : 'transparent' }}>
-                      {doneToday ? '✓' : habit.emoji}
+                  <div key={habit.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <div style={{
+                      width: 44, height: 44, borderRadius: '50%',
+                      backgroundColor: done ? `${theme.accent}20` : 'transparent',
+                      border: `2px solid ${done ? theme.accent : theme.navBorder}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
+                    }}>
+                      {done
+                        ? <i className="ti ti-check" style={{ fontSize: 18, color: theme.accent }} aria-hidden="true" />
+                        : <span>{habit.emoji}</span>
+                      }
                     </div>
-                    <p className="text-[10px] font-medium text-center max-w-[60px] leading-tight" style={{ color: theme.textSecondary }}>
+                    <p style={{ fontSize: 10, fontWeight: 600, color: theme.textSecondary, textAlign: 'center', maxWidth: 60, margin: 0, lineHeight: 1.3 }}>
                       {habit.name}
                     </p>
-                    <p className="text-[10px]" style={{ color: theme.accent }}>{habit.streak}d streak</p>
+                    <p style={{ fontSize: 10, color: theme.accent, margin: 0, fontWeight: 600 }}>
+                      {habit.streak}d
+                    </p>
                   </div>
                 )
               })}
@@ -223,30 +286,42 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Today's Focus */}
-        <div className="rounded-2xl p-4 mb-6 flex items-center justify-between"
-          style={{ backgroundColor: theme.cardBg, boxShadow: '0 2px 12px rgba(116,77,131,0.08)' }}>
-          <div>
-            <p className="text-xs font-semibold mb-1" style={{ color: theme.textSecondary }}>Today's Focus</p>
-            <p className="text-3xl font-bold" style={{ color: theme.textPrimary, fontFamily: '"DM Serif Display", serif' }}>
-              {focusMin} <span className="text-base font-semibold">min</span>
-            </p>
+        {/* Mood + Focus CTA */}
+        <div style={cardStyle}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, margin: '0 0 14px' }}>How are you feeling?</p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+            {MOODS.map((emoji, i) => (
+              <button key={i} onClick={() => setMood(i + 1)}
+                style={{
+                  width: 40, height: 40, borderRadius: '50%',
+                  border: `2px solid ${mood === i + 1 ? theme.accent : 'transparent'}`,
+                  backgroundColor: mood === i + 1 ? `${theme.accent}15` : 'transparent',
+                  fontSize: 22, cursor: 'pointer',
+                  transform: mood === i + 1 ? 'scale(1.2)' : 'scale(1)',
+                  transition: 'all 0.15s',
+                  opacity: mood !== null && mood !== i + 1 ? 0.4 : 1,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                {emoji}
+              </button>
+            ))}
           </div>
-          <div className="w-14 h-14 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: `${theme.accent}20` }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C8.5 2 6 4.5 6 7.5C6 9 6.5 10.3 7.5 11.3C6.6 12 6 13.1 6 14.5C6 17 7.8 19 10 19.5V22H14V19.5C16.2 19 18 17 18 14.5C18 13.1 17.4 12 16.5 11.3C17.5 10.3 18 9 18 7.5C18 4.5 15.5 2 12 2Z"
-                stroke={theme.accent} strokeWidth="2" fill="none" />
-            </svg>
-          </div>
+          <button
+            onClick={() => navigate('/focus')}
+            style={{
+              width: '100%', backgroundColor: theme.ctaBg, color: '#FFFFFF',
+              border: 'none', borderRadius: 12, padding: '13px',
+              fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              boxShadow: `0 4px 14px ${theme.accent}40`,
+            }}>
+            <i className="ti ti-player-play" style={{ fontSize: 16 }} aria-hidden="true" />
+            Start Focus
+          </button>
         </div>
-
-        {/* Start Focus CTA */}
-        <button className="btn-primary" onClick={() => navigate('/tasks')}
-          style={{ backgroundColor: theme.ctaBg, color: theme.ctaText }}>
-          Start Focus
-        </button>
       </div>
+
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </AppShell>
   )
 }
