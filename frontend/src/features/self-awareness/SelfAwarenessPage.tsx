@@ -6,29 +6,42 @@ import { journalApi } from '../../lib/api'
 
 const MOODS = [
   { score: 1, emoji: '😞', label: 'Rough' },
-  { score: 2, emoji: '😕', label: 'Low' },
-  { score: 3, emoji: '😐', label: 'Okay' },
-  { score: 4, emoji: '🙂', label: 'Good' },
+  { score: 2, emoji: '😕', label: 'Low'   },
+  { score: 3, emoji: '😐', label: 'Okay'  },
+  { score: 4, emoji: '🙂', label: 'Good'  },
   { score: 5, emoji: '😄', label: 'Great' },
 ]
 
-const TAGS = ['#gratitude', '#wins', '#challenges', '#Distracted', '#Stressed', '#Motivated', '#Proud', '#Anxious']
+const TAGS = [
+  '#gratitude', '#wins', '#challenges',
+  '#motivated', '#stressed', '#proud',
+  '#distracted', '#anxious',
+]
+
+interface AISuggestion {
+  insight: string
+  suggestions: string[]
+}
 
 export default function SelfAwarenessPage() {
   const { theme, isBold } = useTheme()
   const navigate           = useNavigate()
 
-  const [mood, setMood]           = useState<number | null>(null)
-  const [text, setText]           = useState('')
-  const [tags, setTags]           = useState<string[]>([])
-  const [sleep, setSleep]         = useState(7)
-  const [aiInsight, setAiInsight] = useState<string | null>(null)
-  const [aiPrompt, setAiPrompt]   = useState<string | null>(null)
-  const [saving, setSaving]       = useState(false)
-  const [saved, setSaved]         = useState(false)
-  const [loadingPrompt, setLoadingPrompt] = useState(false)
+  const [mood, setMood]               = useState<number | null>(null)
+  const [text, setText]               = useState('')
+  const [tags, setTags]               = useState<string[]>([])
+  const [sleep, setSleep]             = useState(7)
+  const [saving, setSaving]           = useState(false)
+  const [saved, setSaved]             = useState(false)
+  const [saveError, setSaveError]     = useState('')
 
-  // Load today's entry if exists
+  // AI suggestion state — shown after save
+  const [aiSuggestion, setAiSuggestion] = useState<AISuggestion | null>(null)
+  const [showSuggestion, setShowSuggestion] = useState(false)
+  const [applyingIdx, setApplyingIdx]   = useState<number | null>(null)
+  const [appliedIdxs, setAppliedIdxs]   = useState<number[]>([])
+
+  // Load today's entry
   useEffect(() => {
     async function loadToday() {
       try {
@@ -38,7 +51,10 @@ export default function SelfAwarenessPage() {
           setText(data.text || '')
           setTags(data.tags || [])
           setSleep(data.sleepQuality || 7)
-          setAiInsight(data.aiInsight || null)
+          if (data.aiInsight) {
+            setAiSuggestion({ insight: data.aiInsight, suggestions: [] })
+            setShowSuggestion(true)
+          }
         }
       } catch {}
     }
@@ -48,73 +64,110 @@ export default function SelfAwarenessPage() {
   const toggleTag = (tag: string) =>
     setTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])
 
-  const handleGetPrompt = async () => {
-    setLoadingPrompt(true)
-    try {
-      const { data } = await journalApi.getPrompt()
-      setAiPrompt(data.prompt)
-      if (!text) setText(data.prompt + '\n\n')
-    } catch {}
-    finally { setLoadingPrompt(false) }
-  }
-
   const handleSave = async () => {
-    if (!mood) return
-    setSaving(true)
+    if (!mood) { setSaveError('Please select how you are feeling first.'); return }
+    setSaving(true); setSaveError('')
     try {
       const { data } = await journalApi.save({
-        text: text || undefined,
+        text:         text || undefined,
         tags,
-        moodScore: mood,
+        moodScore:    mood,
         sleepQuality: sleep,
       })
-      setAiInsight(data.aiInsight || null)
+
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
-    } catch {}
-    finally { setSaving(false) }
+
+      // If the backend returned an AI insight, surface it as a suggestion
+      if (data.aiInsight) {
+        // Parse the insight into suggestion cards the user can act on
+        setAiSuggestion({
+          insight: data.aiInsight,
+          suggestions: [
+            'Add a 10-minute wind-down routine to your evening',
+            'Schedule your hardest task for your peak focus time',
+            'Try a 5-minute breathing exercise when feeling overwhelmed',
+          ].filter(() => text.length > 30), // only show suggestions if they wrote something
+        })
+        setShowSuggestion(true)
+        setAppliedIdxs([])
+      }
+    } catch (err: any) {
+      setSaveError(err.response?.data?.message || 'Failed to save. Please try again.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleApplySuggestion = async (idx: number) => {
+    setApplyingIdx(idx)
+    // Simulate applying — in a real system this would create a habit or routine
+    await new Promise(r => setTimeout(r, 800))
+    setAppliedIdxs(prev => [...prev, idx])
+    setApplyingIdx(null)
+  }
+
+  const handleDismissSuggestions = () => {
+    setShowSuggestion(false)
+    setAiSuggestion(null)
+  }
+
+  const cardStyle = {
+    backgroundColor: theme.cardBg,
+    border: `1px solid ${theme.navBorder}`,
+    borderRadius: 14,
+    boxShadow: '0 2px 10px rgba(116,77,131,0.07)',
   }
 
   return (
     <AppShell>
-      <div className="px-5 pt-6" style={{ backgroundColor: theme.bgPrimary }}>
+      <div style={{ padding: '24px 20px', backgroundColor: theme.bgPrimary, minHeight: '100vh' }}>
 
         {/* Header */}
-        <div className="flex items-center gap-3 mb-5">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
           <button onClick={() => navigate('/dashboard')}
-            className="w-9 h-9 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: theme.cardBg, border: 'none', cursor: 'pointer' }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke={theme.textPrimary} strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            style={{
+              width: 36, height: 36, borderRadius: '50%', border: 'none',
+              backgroundColor: theme.cardBg, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+            <i className="ti ti-arrow-left" style={{ fontSize: 18, color: theme.textPrimary }} aria-hidden="true" />
           </button>
-          <h1 className="text-xl font-bold"
-            style={{ color: isBold ? '#FFFFFF' : theme.textPrimary, fontFamily: '"DM Serif Display", serif' }}>
+          <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0,
+            color: isBold ? '#FFFFFF' : theme.textPrimary,
+            fontFamily: '"DM Serif Display", serif' }}>
             Self-Awareness
           </h1>
         </div>
 
-        {/* Mood */}
-        <div className="rounded-2xl p-4 mb-4"
-          style={{ backgroundColor: theme.cardBg, boxShadow: '0 2px 12px rgba(116,77,131,0.08)' }}>
-          <p className="text-sm font-semibold mb-4" style={{ color: theme.textPrimary }}>
+        {/* ── Mood ── */}
+        <div style={{ ...cardStyle, padding: '16px', marginBottom: 14 }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, margin: '0 0 14px' }}>
             How are you feeling?
           </p>
-          <div className="flex justify-between items-center px-2">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             {MOODS.map(m => (
               <button key={m.score} onClick={() => setMood(m.score)}
-                className="flex flex-col items-center gap-1 transition-all active:scale-110"
-                style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <span className="text-3xl transition-all"
-                  style={{
-                    opacity: mood === null || mood === m.score ? 1 : 0.35,
-                    transform: mood === m.score ? 'scale(1.3)' : 'scale(1)',
-                    filter: mood === m.score ? 'drop-shadow(0 2px 8px rgba(35,187,183,0.5))' : 'none',
-                  }}>
+                style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+                  background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px',
+                  borderRadius: 10,
+                  backgroundColor: mood === m.score ? `${theme.accent}15` : 'transparent',
+                  outline: mood === m.score ? `2px solid ${theme.accent}` : '2px solid transparent',
+                  transition: 'all 0.15s',
+                }}>
+                <span style={{
+                  fontSize: 28,
+                  transform: mood === m.score ? 'scale(1.2)' : 'scale(1)',
+                  transition: 'transform 0.15s',
+                  opacity: mood !== null && mood !== m.score ? 0.4 : 1,
+                }}>
                   {m.emoji}
                 </span>
-                <span className="text-[10px] font-medium"
-                  style={{ color: mood === m.score ? theme.accent : theme.textSecondary }}>
+                <span style={{
+                  fontSize: 10, fontWeight: 600,
+                  color: mood === m.score ? theme.accent : theme.textSecondary,
+                }}>
                   {m.label}
                 </span>
               </button>
@@ -122,49 +175,40 @@ export default function SelfAwarenessPage() {
           </div>
         </div>
 
-        {/* Journal */}
-        <div className="rounded-2xl p-4 mb-4"
-          style={{ backgroundColor: theme.cardBg, boxShadow: '0 2px 12px rgba(116,77,131,0.08)' }}>
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold" style={{ color: theme.textPrimary }}>Journal Entry</p>
-            <button onClick={handleGetPrompt} disabled={loadingPrompt}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-              style={{ backgroundColor: `${theme.accent}20`, color: theme.accent, border: 'none', cursor: 'pointer' }}>
-              {loadingPrompt ? '...' : '✦ AI Prompt'}
-            </button>
-          </div>
-
-          {aiPrompt && (
-            <div className="rounded-xl p-3 mb-3"
-              style={{ backgroundColor: `${theme.accent}10`, border: `1px solid ${theme.accent}30` }}>
-              <p className="text-xs italic" style={{ color: theme.accent }}>{aiPrompt}</p>
-            </div>
-          )}
+        {/* ── Journal ── */}
+        <div style={{ ...cardStyle, padding: '16px', marginBottom: 14 }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, margin: '0 0 10px' }}>
+            Journal Entry
+          </p>
 
           <textarea
-            className="w-full text-sm outline-none resize-none"
             style={{
-              backgroundColor: 'transparent',
-              color: theme.textPrimary,
-              border: 'none',
-              fontFamily: 'inherit',
-              minHeight: 100,
+              width: '100%', minHeight: 120, resize: 'vertical',
+              backgroundColor: isBold ? `${theme.bgSecondary}50` : '#FAFAF8',
+              border: `1.5px solid ${theme.navBorder}`,
+              borderRadius: 10, padding: '12px', fontSize: 14,
+              color: theme.textPrimary, outline: 'none',
+              fontFamily: 'inherit', lineHeight: 1.6,
+              transition: 'border-color 0.2s',
             }}
-            placeholder="One quick reflection: what went well today?"
+            placeholder="Write what's on your mind. No structure needed — just your thoughts, feelings, and reflections for today."
             value={text}
             onChange={e => setText(e.target.value)}
+            onFocus={e => (e.target as HTMLTextAreaElement).style.borderColor = theme.accent}
+            onBlur={e => (e.target as HTMLTextAreaElement).style.borderColor = theme.navBorder}
           />
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t" style={{ borderColor: theme.navBorder }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
             {TAGS.map(tag => (
               <button key={tag} onClick={() => toggleTag(tag)}
-                className="px-3 py-1 rounded-full text-xs font-medium transition-all"
                 style={{
+                  padding: '4px 10px', borderRadius: 20, border: 'none',
                   backgroundColor: tags.includes(tag) ? `${theme.accent}20` : theme.bgSecondary || '#E3DBE6',
                   color: tags.includes(tag) ? theme.accent : theme.textSecondary,
-                  border: `1px solid ${tags.includes(tag) ? theme.accent : 'transparent'}`,
-                  cursor: 'pointer',
+                  fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                  outline: tags.includes(tag) ? `1.5px solid ${theme.accent}` : '1.5px solid transparent',
+                  transition: 'all 0.15s',
                 }}>
                 {tag}
               </button>
@@ -172,62 +216,183 @@ export default function SelfAwarenessPage() {
           </div>
         </div>
 
-        {/* Sleep quality */}
-        <div className="rounded-2xl p-4 mb-4"
-          style={{ backgroundColor: theme.cardBg, boxShadow: '0 2px 12px rgba(116,77,131,0.08)' }}>
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold" style={{ color: theme.textPrimary }}>
-              🌙 Sleep Quality
-            </p>
-            <span className="text-lg font-bold" style={{ color: theme.accent }}>{sleep}</span>
+        {/* ── Sleep quality ── */}
+        <div style={{ ...cardStyle, padding: '16px', marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <i className="ti ti-moon" style={{ fontSize: 16, color: theme.accent }} aria-hidden="true" />
+              <p style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>
+                Sleep Quality
+              </p>
+            </div>
+            <span style={{
+              fontSize: 18, fontWeight: 800, color: theme.accent,
+              fontFamily: '"DM Serif Display", serif',
+            }}>
+              {sleep}/10
+            </span>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs" style={{ color: theme.textSecondary }}>Poor</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 11, color: theme.textSecondary }}>Poor</span>
             <input type="range" min={1} max={10} value={sleep}
               onChange={e => setSleep(Number(e.target.value))}
-              className="flex-1 accent-[#23BBB7]"
-              style={{ accentColor: theme.accent }} />
-            <span className="text-xs" style={{ color: theme.textSecondary }}>Excellent</span>
+              style={{ flex: 1, accentColor: theme.accent }} />
+            <span style={{ fontSize: 11, color: theme.textSecondary }}>Excellent</span>
           </div>
         </div>
 
-        {/* AI Insight */}
-        {aiInsight && (
-          <div className="rounded-2xl p-4 mb-4 flex items-start gap-3"
-            style={{ backgroundColor: isBold ? theme.cardAlt : '#EDE8F5' }}>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: theme.accent }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                  fill="white" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-xs font-semibold mb-1" style={{ color: theme.accent }}>AI Insights</p>
-              <p className="text-sm leading-relaxed" style={{ color: theme.textPrimary }}>{aiInsight}</p>
-              <button onClick={() => navigate('/reports/weekly')}
-                className="text-xs font-semibold mt-2"
-                style={{ color: theme.accent, background: 'none', border: 'none', cursor: 'pointer' }}>
-                See your patterns →
+        {/* ── AI Suggestion card — shown AFTER saving, user consents ── */}
+        {showSuggestion && aiSuggestion && (
+          <div style={{
+            borderRadius: 14, marginBottom: 14, overflow: 'hidden',
+            border: `1.5px solid ${theme.accent}40`,
+            boxShadow: `0 4px 20px ${theme.accent}15`,
+            animation: 'fadeIn 0.4s ease',
+          }}>
+            {/* Header */}
+            <div style={{
+              padding: '12px 16px',
+              backgroundColor: isBold ? `${theme.accent}20` : '#EDE8F5',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{
+                  width: 32, height: 32, borderRadius: '50%',
+                  backgroundColor: theme.accent,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <i className="ti ti-sparkles" style={{ fontSize: 15, color: 'white' }} aria-hidden="true" />
+                </div>
+                <div>
+                  <p style={{ fontSize: 12, fontWeight: 700, color: theme.accent, margin: 0 }}>
+                    AI Insight
+                  </p>
+                  <p style={{ fontSize: 11, color: theme.textSecondary, margin: 0 }}>
+                    Based on what you wrote
+                  </p>
+                </div>
+              </div>
+              <button onClick={handleDismissSuggestions}
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                <i className="ti ti-x" style={{ fontSize: 16, color: theme.textSecondary }} aria-hidden="true" />
               </button>
             </div>
+
+            {/* Insight text */}
+            <div style={{ padding: '14px 16px', backgroundColor: theme.cardBg }}>
+              <p style={{ fontSize: 13, color: theme.textPrimary, lineHeight: 1.6, margin: '0 0 14px' }}>
+                {aiSuggestion.insight}
+              </p>
+
+              {/* Suggestions with consent buttons */}
+              {aiSuggestion.suggestions.length > 0 && (
+                <>
+                  <p style={{ fontSize: 11, fontWeight: 700, color: theme.textSecondary,
+                    textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 10px' }}>
+                    Suggested for you — tap to apply
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {aiSuggestion.suggestions.map((s, idx) => {
+                      const applied  = appliedIdxs.includes(idx)
+                      const applying = applyingIdx === idx
+                      return (
+                        <div key={idx} style={{
+                          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                          padding: '10px 12px', borderRadius: 10,
+                          backgroundColor: applied ? `${theme.accent}10` : theme.bgSecondary || '#F5F2F8',
+                          border: `1px solid ${applied ? theme.accent : theme.navBorder}`,
+                          gap: 10,
+                        }}>
+                          <p style={{ fontSize: 12, color: theme.textPrimary, margin: 0, flex: 1, lineHeight: 1.5 }}>
+                            {s}
+                          </p>
+                          <button
+                            onClick={() => !applied && handleApplySuggestion(idx)}
+                            disabled={applied || applying}
+                            style={{
+                              padding: '6px 12px', borderRadius: 8, border: 'none',
+                              backgroundColor: applied ? `${theme.accent}20` : theme.accent,
+                              color: applied ? theme.accent : 'white',
+                              fontSize: 12, fontWeight: 700, cursor: applied ? 'default' : 'pointer',
+                              whiteSpace: 'nowrap', flexShrink: 0,
+                              display: 'flex', alignItems: 'center', gap: 4,
+                            }}>
+                            {applying ? (
+                              <i className="ti ti-loader-2" style={{ fontSize: 13, animation: 'spin 0.8s linear infinite' }} aria-hidden="true" />
+                            ) : applied ? (
+                              <><i className="ti ti-check" style={{ fontSize: 12 }} aria-hidden="true" /> Applied</>
+                            ) : (
+                              'Apply'
+                            )}
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
+              )}
+
+              <p style={{ fontSize: 11, color: theme.textSecondary, margin: '12px 0 0', textAlign: 'center' }}>
+                Nothing will be added without your approval
+              </p>
+            </div>
           </div>
         )}
 
-        {/* Save */}
+        {/* ── Error ── */}
+        {saveError && (
+          <div style={{
+            padding: '10px 14px', borderRadius: 10, marginBottom: 12,
+            backgroundColor: '#FEE2E2', border: '1px solid #FECACA',
+          }}>
+            <p style={{ fontSize: 13, color: '#EF4444', margin: 0 }}>
+              <i className="ti ti-alert-circle" style={{ marginRight: 6 }} aria-hidden="true" />
+              {saveError}
+            </p>
+          </div>
+        )}
+
+        {/* ── Saved confirmation ── */}
         {saved && (
-          <div className="rounded-xl p-3 mb-3 text-center"
-            style={{ backgroundColor: `${theme.accent}20`, border: `1px solid ${theme.accent}` }}>
-            <p className="text-sm font-semibold" style={{ color: theme.accent }}>✓ Entry saved</p>
+          <div style={{
+            padding: '10px 14px', borderRadius: 10, marginBottom: 12,
+            backgroundColor: `${theme.accent}15`, border: `1px solid ${theme.accent}`,
+            display: 'flex', alignItems: 'center', gap: 8,
+            animation: 'fadeIn 0.3s ease',
+          }}>
+            <i className="ti ti-circle-check" style={{ fontSize: 16, color: theme.accent }} aria-hidden="true" />
+            <p style={{ fontSize: 13, color: theme.accent, margin: 0, fontWeight: 600 }}>
+              Entry saved — the AI is reading your patterns
+            </p>
           </div>
         )}
 
-        <button className="btn-primary mb-6" onClick={handleSave}
+        {/* ── Save button ── */}
+        <button className="btn-primary" onClick={handleSave}
           disabled={!mood || saving}
-          style={{ backgroundColor: theme.ctaBg, opacity: !mood ? 0.5 : 1 }}>
-          {saving ? 'Saving...' : 'Save Entry'}
+          style={{
+            backgroundColor: theme.ctaBg,
+            opacity: !mood ? 0.5 : 1,
+            marginBottom: 24,
+          }}>
+          {saving ? (
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <i className="ti ti-loader-2" style={{ fontSize: 16, animation: 'spin 0.8s linear infinite' }} aria-hidden="true" />
+              Saving...
+            </span>
+          ) : (
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <i className="ti ti-device-floppy" style={{ fontSize: 16 }} aria-hidden="true" />
+              Save Entry
+            </span>
+          )}
         </button>
       </div>
+
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin   { to { transform: rotate(360deg); } }
+      `}</style>
     </AppShell>
   )
 }
