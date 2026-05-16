@@ -6,11 +6,11 @@ import type { UserRole, FocusTime, EmotionalState, Distraction, MainGoal, Person
 
 function ProgressBar({ step, total }: { step: number; total: number }) {
   return (
-    <div className="mb-1">
+    <div className="wizard-progress">
       <div className="progress-bar mb-2">
         <div className="progress-bar-fill" style={{ width: `${(step / total) * 100}%` }} />
       </div>
-      <p className="text-xs text-center text-[#9B8EA5]">Step {step} of {total}</p>
+      <p>Step {step} of {total}</p>
     </div>
   )
 }
@@ -20,13 +20,13 @@ function OptionCard({ title, subtitle, selected, onClick }: {
 }) {
   return (
     <button className={`select-card ${selected ? 'selected' : ''}`} onClick={onClick}>
-      <div className="flex items-center justify-between">
+      <div className="wizard-option-content">
         <div>
-          <p className={`text-sm font-semibold ${selected ? 'text-[#23627C]' : 'text-[#2D1F35]'}`}>{title}</p>
-          {subtitle && <p className="text-xs text-[#9B8EA5] mt-0.5">{subtitle}</p>}
+          <p className={`wizard-option-title ${selected ? 'selected' : ''}`}>{title}</p>
+          {subtitle && <p className="wizard-option-subtitle">{subtitle}</p>}
         </div>
         {selected && (
-          <span className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ml-2" style={{ backgroundColor: '#23BBB7' }}>
+          <span className="wizard-option-check">
             <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
             </svg>
@@ -37,7 +37,6 @@ function OptionCard({ title, subtitle, selected, onClick }: {
   )
 }
 
-// ─── Step 1 ───────────────────────────────────────────────────────────────────
 const ROLES: { value: UserRole; label: string; desc: string }[] = [
   { value: 'Student',      label: 'Student',      desc: 'Balancing work and study' },
   { value: 'Professional', label: 'Professional', desc: 'Career focused' },
@@ -53,40 +52,43 @@ function Step1({ onNext }: { onNext: (d: { displayName: string; timezone: string
   const canContinue = displayName.trim() && role
 
   return (
-    <div className="flex flex-col flex-1">
-      <h1 className="text-2xl font-bold mb-1" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>Let's get to know you</h1>
-      <p className="text-[#6B5878] text-sm mb-6">This helps us personalize your experience</p>
-      <div className="flex flex-col gap-4 flex-1">
+    <div className="wizard-step">
+      <div className="auth-copy wizard-copy">
+        <h1 className="auth-title" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>Let's get to know you</h1>
+        <p className="auth-subtitle">This helps us personalize your experience</p>
+      </div>
+
+      <div className="wizard-form">
         <div>
-          <label className="block text-sm font-medium text-[#6B5878] mb-1.5">Display Name</label>
+          <label className="auth-label">Display Name</label>
           <input className="input" placeholder="Kingsley" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#6B5878] mb-1.5">Timezone</label>
+          <label className="auth-label">Timezone</label>
           <input className="input" placeholder="e.g., America/New_York" value={timezone} onChange={(e) => setTimezone(e.target.value)} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#6B5878] mb-2">What describes you best?</label>
-          <div className="flex flex-col gap-2">
+          <label className="auth-label">What describes you best?</label>
+          <div className="wizard-options">
             {ROLES.map((r) => (
               <OptionCard key={r.value} title={r.label} subtitle={r.desc} selected={role === r.value} onClick={() => setRole(r.value)} />
             ))}
           </div>
         </div>
       </div>
-      <div className="mt-6">
-        <button className="btn-primary" disabled={!canContinue} onClick={() => onNext({ displayName, timezone, role: role! })}>Continue</button>
+
+      <div className="auth-actions wizard-actions">
+        <button className="btn-primary auth-primary-button" disabled={!canContinue} onClick={() => onNext({ displayName, timezone, role: role! })}>Continue</button>
       </div>
     </div>
   )
 }
 
-// ─── Step 2 ───────────────────────────────────────────────────────────────────
-const FOCUS_TIMES: { value: FocusTime; label: string; range: string; emoji: string }[] = [
-  { value: 'Morning', label: 'Morning', range: '5am - 12pm', emoji: '🌅' },
-  { value: 'Afternoon', label: 'Afternoon', range: '12pm - 5pm', emoji: '🌞' },
-  { value: 'Evening', label: 'Evening', range: '5pm - 11pm', emoji: '🌙' },
-  { value: 'Night', label: 'Night', range: '11pm - 5am', emoji: '🌃' },
+const FOCUS_TIMES: { value: FocusTime; label: string; range: string }[] = [
+  { value: 'Morning', label: 'Morning', range: '5am - 12pm' },
+  { value: 'Afternoon', label: 'Afternoon', range: '12pm - 5pm' },
+  { value: 'Evening', label: 'Evening', range: '5pm - 11pm' },
+  { value: 'Night', label: 'Night', range: '11pm - 5am' },
 ]
 const EMOTIONAL_STATES: { value: EmotionalState; label: string; desc: string }[] = [
   { value: 'Anxious', label: 'Anxious', desc: 'Worried and overthinking' },
@@ -116,41 +118,47 @@ function Step2({ onNext, onBack }: {
   const canContinue = focusTime && emotionalState && distractions.length > 0
 
   return (
-    <div className="flex flex-col flex-1">
-      <h1 className="text-2xl font-bold mb-1" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>How do you think?</h1>
-      <p className="text-[#6B5878] text-sm mb-6">Understanding your patterns helps us guide you better</p>
-      <div className="flex flex-col gap-5 flex-1 overflow-y-auto no-scrollbar pb-2">
-        <div>
-          <p className="text-sm font-semibold text-[#2D1F35] mb-2">When do you focus best?</p>
-          <div className="flex flex-col gap-2">
+    <div className="wizard-step">
+      <div className="auth-copy wizard-copy">
+        <h1 className="auth-title" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>How do you think?</h1>
+        <p className="auth-subtitle">Understanding your patterns helps us guide you better</p>
+      </div>
+
+      <div className="wizard-scroll">
+        <section className="wizard-section">
+          <p className="wizard-section-title">When do you focus best?</p>
+          <div className="wizard-options">
             {FOCUS_TIMES.map(ft => (
-              <OptionCard key={ft.value} title={`${ft.emoji} ${ft.label}`} subtitle={ft.range}
+              <OptionCard key={ft.value} title={ft.label} subtitle={ft.range}
                 selected={focusTime === ft.value} onClick={() => setFocusTime(ft.value)} />
             ))}
           </div>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-[#2D1F35] mb-2">Your emotional starting point?</p>
-          <div className="flex flex-col gap-2">
+        </section>
+
+        <section className="wizard-section">
+          <p className="wizard-section-title">Your emotional starting point?</p>
+          <div className="wizard-options">
             {EMOTIONAL_STATES.map(es => (
               <OptionCard key={es.value} title={es.label} subtitle={es.desc}
                 selected={emotionalState === es.value} onClick={() => setEmotional(es.value)} />
             ))}
           </div>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-[#2D1F35] mb-2">What distracts you most?</p>
-          <div className="flex flex-col gap-2">
+        </section>
+
+        <section className="wizard-section">
+          <p className="wizard-section-title">What distracts you most?</p>
+          <div className="wizard-options">
             {DISTRACTIONS_LIST.map(d => (
               <OptionCard key={d.value} title={d.label} subtitle={d.desc}
                 selected={distractions.includes(d.value)} onClick={() => toggle(d.value)} />
             ))}
           </div>
-        </div>
+        </section>
       </div>
-      <div className="mt-6 flex gap-3">
-        <button className="btn-secondary flex-1" onClick={onBack}>Back</button>
-        <button className="btn-primary flex-1" disabled={!canContinue}
+
+      <div className="wizard-actions wizard-actions-row">
+        <button className="btn-secondary" onClick={onBack}>Back</button>
+        <button className="btn-primary auth-primary-button" disabled={!canContinue}
           onClick={() => onNext({ focusTime: focusTime!, emotionalState: emotionalState!, distractions })}>
           Continue
         </button>
@@ -159,16 +167,15 @@ function Step2({ onNext, onBack }: {
   )
 }
 
-// ─── Step 3 ───────────────────────────────────────────────────────────────────
-const GOALS: { value: MainGoal; label: string; desc: string; emoji: string }[] = [
-  { value: 'StayingFocused',         label: 'Staying Focused',         desc: 'Build deep work habits',            emoji: '🎯' },
-  { value: 'BeatingProcrastination', label: 'Beating Procrastination', desc: 'Start, and finish, on time',        emoji: '⏱️' },
-  { value: 'BuildingHabits',         label: 'Building Habits',         desc: 'Create lasting routines',           emoji: '📋' },
-  { value: 'ManagingADHD',           label: 'Managing ADHD',           desc: 'Work with my brain, not against it', emoji: '🧠' },
+const GOALS: { value: MainGoal; label: string; desc: string }[] = [
+  { value: 'StayingFocused',         label: 'Staying Focused',         desc: 'Build deep work habits' },
+  { value: 'BeatingProcrastination', label: 'Beating Procrastination', desc: 'Start, and finish, on time' },
+  { value: 'BuildingHabits',         label: 'Building Habits',         desc: 'Create lasting routines' },
+  { value: 'ManagingADHD',           label: 'Managing ADHD',           desc: 'Work with my brain, not against it' },
 ]
-const VIBES: { value: PersonalityVibe; label: string; desc: string; emoji: string }[] = [
-  { value: 'Soft', label: 'Soft', desc: 'Calm, nurturing feel',     emoji: '🌸' },
-  { value: 'Bold', label: 'Bold', desc: 'Energetic, powerful vibe', emoji: '⚡' },
+const VIBES: { value: PersonalityVibe; label: string; desc: string }[] = [
+  { value: 'Soft', label: 'Soft', desc: 'Calm, nurturing feel' },
+  { value: 'Bold', label: 'Bold', desc: 'Energetic, powerful vibe' },
 ]
 
 function Step3({ onNext, onBack }: {
@@ -182,44 +189,49 @@ function Step3({ onNext, onBack }: {
   const canContinue = mainGoal && vibe
 
   return (
-    <div className="flex flex-col flex-1">
-      <h1 className="text-2xl font-bold mb-1" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>What do you need help with?</h1>
-      <p className="text-[#6B5878] text-sm mb-6">This guides how we support you</p>
-      <div className="flex flex-col gap-5 flex-1 overflow-y-auto no-scrollbar pb-2">
-        <div>
-          <p className="text-sm font-semibold text-[#2D1F35] mb-2">Your main goal</p>
-          <div className="flex flex-col gap-2">
+    <div className="wizard-step">
+      <div className="auth-copy wizard-copy">
+        <h1 className="auth-title" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>What do you need help with?</h1>
+        <p className="auth-subtitle">This guides how we support you</p>
+      </div>
+
+      <div className="wizard-scroll">
+        <section className="wizard-section">
+          <p className="wizard-section-title">Your main goal</p>
+          <div className="wizard-options">
             {GOALS.map(g => (
-              <OptionCard key={g.value} title={`${g.emoji} ${g.label}`} subtitle={g.desc}
+              <OptionCard key={g.value} title={g.label} subtitle={g.desc}
                 selected={mainGoal === g.value} onClick={() => setMainGoal(g.value)} />
             ))}
           </div>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-[#2D1F35] mb-2">Your goal this week</p>
+        </section>
+
+        <section className="wizard-section">
+          <p className="wizard-section-title">Your goal this week</p>
           <input className="input" placeholder="What's one thing you want to achieve?"
             value={weeklyGoal} onChange={(e) => setWeekly(e.target.value)} />
-          <p className="text-xs text-[#9B8EA5] mt-1">Be specific, even if it's small.</p>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-[#2D1F35] mb-2">How should Nudgely feel?</p>
-          <div className="flex flex-col gap-2">
+          <p className="wizard-helper">Be specific, even if it's small.</p>
+        </section>
+
+        <section className="wizard-section">
+          <p className="wizard-section-title">How should Nudgely feel?</p>
+          <div className="wizard-options">
             {VIBES.map(v => (
-              <OptionCard key={v.value} title={`${v.emoji} ${v.label}`} subtitle={v.desc}
+              <OptionCard key={v.value} title={v.label} subtitle={v.desc}
                 selected={vibe === v.value} onClick={() => setVibe(v.value)} />
             ))}
           </div>
-        </div>
-        <div className="flex items-start gap-2 p-3 rounded-xl" style={{ backgroundColor: '#E3DBE6' }}>
-          <span>🤖</span>
-          <p className="text-xs text-[#6B5878] leading-relaxed">
-            AI Personalization: I'll use this to guide and support you better throughout your day.
-          </p>
+        </section>
+
+        <div className="wizard-ai-note">
+          <span>AI</span>
+          <p>AI Personalization: I'll use this to guide and support you better throughout your day.</p>
         </div>
       </div>
-      <div className="mt-6 flex gap-3">
-        <button className="btn-secondary flex-1" onClick={onBack}>Back</button>
-        <button className="btn-primary flex-1" disabled={!canContinue}
+
+      <div className="wizard-actions wizard-actions-row">
+        <button className="btn-secondary" onClick={onBack}>Back</button>
+        <button className="btn-primary auth-primary-button" disabled={!canContinue}
           onClick={() => onNext({ mainGoal: mainGoal!, weeklyGoal, personalityVibe: vibe! })}>
           Continue
         </button>
@@ -228,7 +240,6 @@ function Step3({ onNext, onBack }: {
   )
 }
 
-// ─── Main wizard ──────────────────────────────────────────────────────────────
 export default function ProfileWizard() {
   const navigate   = useNavigate()
   const [step, setStep]       = useState(1)
@@ -269,16 +280,16 @@ export default function ProfileWizard() {
   }
 
   return (
-    <div className="page-auth">
-      <ProgressBar step={step} total={3} />
-      <div className="flex flex-col flex-1 mt-6">
+    <div className="page-auth auth-page">
+      <div className="auth-card wizard-card">
+        <ProgressBar step={step} total={3} />
         {step === 1 && <Step1 onNext={handleStep1} />}
         {step === 2 && <Step2 onNext={handleStep2} onBack={() => setStep(1)} />}
         {step === 3 && <Step3 onNext={handleStep3} onBack={() => setStep(2)} />}
         {saving && (
-          <div className="fixed inset-0 bg-black/20 flex items-center justify-center">
-            <div className="bg-white rounded-2xl p-6 text-center">
-              <p className="text-[#744D83] font-semibold">Saving your profile...</p>
+          <div className="wizard-saving-overlay">
+            <div className="wizard-saving-card">
+              <p>Saving your profile...</p>
             </div>
           </div>
         )}

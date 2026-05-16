@@ -16,10 +16,11 @@ function StepDots({ active }: { active: number }) {
 }
 
 export default function VerifyCodePage() {
-  const navigate   = useNavigate()
-  const email      = useOnboardingStore((s) => s.email)
-  const setToken   = useAuthStore((s) => s.setToken)
-  const setUser    = useAuthStore((s) => s.setUser)
+  const navigate     = useNavigate()
+  const email        = useOnboardingStore((s) => s.email)
+  const setToken     = useAuthStore((s) => s.setToken)
+  const setUser      = useAuthStore((s) => s.setUser)
+  const setOnboarded = useAuthStore((s) => s.setOnboarded)
 
   const [digits, setDigits]       = useState(['', '', '', '', '', ''])
   const [loading, setLoading]     = useState(false)
@@ -56,35 +57,30 @@ export default function VerifyCodePage() {
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault()
     const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6)
-    if (pasted.length === 6) { setDigits(pasted.split('')); handleVerify(pasted) }
+    if (pasted.length === 6) {
+      setDigits(pasted.split(''))
+      handleVerify(pasted)
+    }
   }
 
   const handleVerify = async (code?: string) => {
-  const otp = code || digits.join('')
-  if (otp.length < 6) return
-  setLoading(true); setError('')
-  try {
-    const { data } = await authApi.verifyOtp(email, otp)
-    setToken(data.accessToken)
-    setUser(data.user)
-    // Set onboarded flag based on user data from backend
-    if (data.user.isOnboarded) {
-      setOnboarded(true)
+    const otp = code || digits.join('')
+    if (otp.length < 6) return
+    setLoading(true); setError('')
+    try {
+      const { data } = await authApi.verifyOtp(email, otp)
+      setToken(data.accessToken)
+      setUser(data.user)
+      setOnboarded(data.user.isOnboarded)
+      navigate(data.user.isOnboarded ? '/dashboard' : '/onboarding/profile')
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Invalid or expired code.')
+      setDigits(['', '', '', '', '', ''])
+      inputRefs.current[0]?.focus()
+    } finally {
+      setLoading(false)
     }
-    // Navigate based on onboarding status
-    if (data.user.isOnboarded) {
-      navigate('/dashboard')
-    } else {
-      navigate('/onboarding/profile')
-    }
-  } catch (err: any) {
-    setError(err.response?.data?.message || 'Invalid or expired code.')
-    setDigits(['', '', '', '', '', ''])
-    inputRefs.current[0]?.focus()
-  } finally {
-    setLoading(false)
   }
-}
 
   const handleResend = async () => {
     if (countdown > 0) return
@@ -92,63 +88,66 @@ export default function VerifyCodePage() {
       await authApi.resendOtp(email)
       setResent(true); setCountdown(60)
       setTimeout(() => setResent(false), 3000)
-    } catch { setError('Failed to resend code.') }
+    } catch {
+      setError('Failed to resend code.')
+    }
   }
 
   const allFilled = digits.every(d => d !== '')
 
   return (
-    <div className="page-auth">
-      <div className="flex items-center justify-between mb-10">
-        <span className="text-xl font-bold" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>Nudgely</span>
-        <StepDots active={1} />
-      </div>
-
-      <div className="mb-10 animate-slide-up">
-        <h1 className="text-3xl font-bold mb-3" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>
-          Verify your code
-        </h1>
-        <p className="text-[#6B5878] text-sm leading-relaxed">
-          We've sent a code to your email
-          {email && <span className="text-[#744D83] font-medium"> {email}</span>}
-        </p>
-      </div>
-
-      <div className="bg-white rounded-2xl shadow-[0_2px_12px_rgba(116,77,131,0.08)] p-6 mb-8 animate-slide-up"
-        style={{ animationDelay: '0.1s' }}>
-        <div className="flex gap-2 justify-center mb-4" onPaste={handlePaste}>
-          {digits.map((digit, i) => (
-            <input key={i} ref={(el) => { inputRefs.current[i] = el }}
-              className="w-12 h-14 text-center text-xl font-bold rounded-xl border-2 bg-[#F0EADF] text-[#2D1F35] focus:outline-none transition-all duration-200"
-              style={{ borderColor: digit ? '#23BBB7' : error ? '#f87171' : '#E3DBE6' }}
-              type="text" inputMode="numeric" maxLength={1}
-              value={digit}
-              onChange={(e) => handleChange(i, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(i, e)}
-              disabled={loading} />
-          ))}
+    <div className="page-auth auth-page">
+      <div className="auth-card verify-card">
+        <div className="auth-card-header">
+          <span className="text-xl font-bold" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>Nudgely</span>
+          <StepDots active={1} />
         </div>
-        <p className="text-center text-xs text-[#9B8EA5]">We'll keep you signed in on this device.</p>
-      </div>
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4 animate-fade-in">
-          <p className="text-red-500 text-sm text-center">{error}</p>
+        <div className="auth-copy animate-slide-up">
+          <h1 className="auth-title" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>
+            Verify your code
+          </h1>
+          <p className="auth-subtitle">
+            We've sent a code to your email
+            {email && <span className="verify-email"> {email}</span>}
+          </p>
         </div>
-      )}
-      {resent && (
-        <div className="bg-[#D3EDEF] border border-[#23BBB7]/30 rounded-xl p-3 mb-4 animate-fade-in">
-          <p className="text-[#23BBB7] text-sm text-center">Code resent successfully!</p>
-        </div>
-      )}
 
-      <div className="mt-auto flex flex-col gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-        <button className="btn-primary" onClick={() => handleVerify()} disabled={!allFilled || loading}>
-          {loading ? 'Verifying...' : 'Continue → /profile-setup'}
-        </button>
-        <button className="btn-ghost text-center w-full py-2" onClick={handleResend} disabled={countdown > 0}>
-          {countdown > 0 ? `Resend code in ${countdown}s` : 'Resend code'}
-        </button>
+        <div className="verify-code-panel animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <div className="verify-code-inputs" onPaste={handlePaste}>
+            {digits.map((digit, i) => (
+              <input key={i} ref={(el) => { inputRefs.current[i] = el }}
+                className={`otp-box ${digit ? 'filled' : ''} ${error ? 'error' : ''}`}
+                type="text" inputMode="numeric" maxLength={1}
+                value={digit}
+                onChange={(e) => handleChange(i, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(i, e)}
+                disabled={loading} />
+            ))}
+          </div>
+          <p className="verify-helper">We'll keep you signed in on this device.</p>
+        </div>
+
+        {error && (
+          <div className="auth-error animate-fade-in">
+            <p>{error}</p>
+          </div>
+        )}
+
+        {resent && (
+          <div className="verify-success animate-fade-in">
+            <p>Code resent successfully!</p>
+          </div>
+        )}
+
+        <div className="auth-actions animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <button className="btn-primary auth-primary-button" onClick={() => handleVerify()} disabled={!allFilled || loading}>
+            {loading ? 'Verifying...' : 'Continue'}
+          </button>
+          <button className="verify-resend-button" onClick={handleResend} disabled={countdown > 0}>
+            {countdown > 0 ? `Resend code in ${countdown}s` : 'Resend code'}
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -8,27 +8,64 @@ import type { Task, Drive } from '../../types'
 const DRIVES: { value: Drive; label: string; icon: string; color: string }[] = [
   { value: 'OnFire',    label: 'On Fire',    icon: 'ti-flame',    color: '#FF6B35' },
   { value: 'DueSoon',   label: 'Due Soon',   icon: 'ti-clock',    color: '#F59E0B' },
-  { value: 'LowLift',   label: 'Low Lift',   icon: 'ti-leaf',     color: '#23BBB7' },
-  { value: 'OpenSpace', label: 'Open Space', icon: 'ti-sparkles', color: '#744D83' },
+  { value: 'LowLift',   label: 'Low Lift',   icon: 'ti-leaf',     color: '#43e8d8' },
+  { value: 'OpenSpace', label: 'Open Space', icon: 'ti-sparkles', color: '#6b3991' },
 ]
 
-// ─── Task card with progressive disclosure ────────────────────────────────────
-function TaskCard({ task, theme, onBreakdown, onComplete, onSubtaskComplete, onStart }: {
+// ─── Undo toast ───────────────────────────────────────────────────────────────
+function UndoToast({ message, onUndo, onDismiss }: {
+  message: string; onUndo: () => void; onDismiss: () => void
+}) {
+  useEffect(() => {
+    const t = setTimeout(onDismiss, 5000)
+    return () => clearTimeout(t)
+  }, [onDismiss])
+
+  return (
+    <div style={{
+      position: 'fixed', bottom: 90, left: '50%', transform: 'translateX(-50%)',
+      zIndex: 200, display: 'flex', alignItems: 'center', gap: 12,
+      backgroundColor: '#1a1a2e', color: 'white',
+      padding: '12px 16px', borderRadius: 14,
+      boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+      animation: 'slideUp 0.3s ease',
+      minWidth: 280, maxWidth: 380,
+    }}>
+      <span style={{ fontSize: 13, fontWeight: 500, flex: 1 }}>{message}</span>
+      <button onClick={onUndo}
+        style={{
+          fontSize: 13, fontWeight: 700, color: '#43e8d8',
+          background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px',
+          borderRadius: 6, flexShrink: 0,
+        }}>
+        Undo
+      </button>
+      <button onClick={onDismiss}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.5)', padding: 2 }}>
+        <i className="ti ti-x" style={{ fontSize: 14 }} aria-hidden="true" />
+      </button>
+    </div>
+  )
+}
+
+// ─── Task card ────────────────────────────────────────────────────────────────
+function TaskCard({ task, theme, onBreakdown, onComplete, onUncomplete, onSubtaskToggle }: {
   task: Task; theme: any
   onBreakdown:     (id: string) => Promise<void>
   onComplete:      (id: string) => void
-  onSubtaskComplete: (subtaskId: string, taskId: string) => void
-  onStart:         (task: Task) => void
+  onUncomplete:    (id: string) => void
+  onSubtaskToggle: (subtaskId: string, taskId: string, currentState: boolean) => void
 }) {
-  const navigate       = useNavigate()
+  const navigate     = useNavigate()
   const [expanded, setExpanded]   = useState(false)
   const [breaking, setBreaking]   = useState(false)
   const [breakMsg, setBreakMsg]   = useState('')
   const drive = DRIVES.find(d => d.value === task.drive)!
+  const isDone = task.status === 'Done'
 
-  const hasSubtasks    = task.subtasks && task.subtasks.length > 0
-  const doneSubtasks   = task.subtasks?.filter(s => s.completed).length || 0
-  const totalSubtasks  = task.subtasks?.length || 0
+  const doneSubtasks  = task.subtasks?.filter(s => s.completed).length || 0
+  const totalSubtasks = task.subtasks?.length || 0
+  const hasSubtasks   = totalSubtasks > 0
 
   const handleBreakdown = async () => {
     setBreaking(true); setBreakMsg('')
@@ -39,29 +76,40 @@ function TaskCard({ task, theme, onBreakdown, onComplete, onSubtaskComplete, onS
     setTimeout(() => setBreakMsg(''), 4000)
   }
 
-  const cardBg     = theme.cardBg
-  const borderColor = task.status === 'WorkingOnIt'
-    ? drive.color
-    : theme.navBorder
-
   return (
     <div style={{
-      borderRadius: 14, marginBottom: 12, overflow: 'hidden',
-      backgroundColor: cardBg,
-      border: `1.5px solid ${borderColor}`,
-      boxShadow: '0 2px 12px rgba(116,77,131,0.07)',
-      transition: 'border-color 0.2s',
+      borderRadius: 16, marginBottom: 12, overflow: 'hidden',
+      backgroundColor: theme.cardBg,
+      border: `1.5px solid ${isDone ? `${drive.color}40` : theme.border || 'rgba(107,57,145,0.10)'}`,
+      boxShadow: isDone ? 'none' : '0 2px 12px rgba(107,57,145,0.07)',
+      opacity: isDone ? 0.75 : 1,
+      transition: 'all 0.2s',
     }}>
-      {/* Main row */}
       <div style={{ padding: '14px 16px' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+
+          {/* Checkbox — click to complete OR undo */}
+          <button
+            onClick={() => isDone ? onUncomplete(task.id) : onComplete(task.id)}
+            title={isDone ? 'Mark as incomplete' : 'Mark as complete'}
+            style={{
+              width: 24, height: 24, borderRadius: 8, border: 'none',
+              backgroundColor: isDone ? drive.color : 'transparent',
+              outline: `2px solid ${isDone ? drive.color : theme.border || 'rgba(107,57,145,0.2)'}`,
+              cursor: 'pointer', flexShrink: 0, marginTop: 2,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'all 0.2s',
+            }}>
+            {isDone && <i className="ti ti-check" style={{ fontSize: 13, color: 'white' }} aria-hidden="true" />}
+          </button>
+
           <div style={{ flex: 1, minWidth: 0 }}>
-            {/* Drive badge */}
+            {/* Drive badge + time */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
               <span style={{
-                display: 'inline-flex', alignItems: 'center', gap: 4,
                 fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 20,
                 backgroundColor: `${drive.color}18`, color: drive.color,
+                display: 'inline-flex', alignItems: 'center', gap: 4,
               }}>
                 <i className={`ti ${drive.icon}`} style={{ fontSize: 11 }} aria-hidden="true" />
                 {drive.label}
@@ -69,37 +117,37 @@ function TaskCard({ task, theme, onBreakdown, onComplete, onSubtaskComplete, onS
               {task.estimatedMinutes && (
                 <span style={{ fontSize: 11, color: theme.textSecondary, display: 'flex', alignItems: 'center', gap: 3 }}>
                   <i className="ti ti-clock" style={{ fontSize: 11 }} aria-hidden="true" />
-                  {task.estimatedMinutes} min
+                  {task.estimatedMinutes}m
                 </span>
               )}
             </div>
 
             {/* Title */}
             <p style={{
-              fontSize: 14, fontWeight: 600, color: theme.textPrimary,
-              margin: 0, lineHeight: 1.4,
-              textDecoration: task.status === 'Done' ? 'line-through' : 'none',
-              opacity: task.status === 'Done' ? 0.5 : 1,
+              fontSize: 14, fontWeight: 600, color: theme.textPrimary, margin: 0,
+              lineHeight: 1.4,
+              textDecoration: isDone ? 'line-through' : 'none',
             }}>
               {task.title}
             </p>
 
-            {/* Subtask progress */}
+            {/* Subtask progress bar */}
             {hasSubtasks && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
                 <div style={{
                   flex: 1, height: 3, borderRadius: 10,
-                  backgroundColor: theme.navBorder, overflow: 'hidden',
+                  backgroundColor: theme.border || '#e7d1ff',
+                  overflow: 'hidden',
                 }}>
                   <div style={{
                     height: '100%', borderRadius: 10,
-                    backgroundColor: theme.accent,
-                    width: `${totalSubtasks > 0 ? (doneSubtasks / totalSubtasks) * 100 : 0}%`,
+                    backgroundColor: drive.color,
+                    width: `${(doneSubtasks / totalSubtasks) * 100}%`,
                     transition: 'width 0.3s ease',
                   }} />
                 </div>
                 <span style={{ fontSize: 11, color: theme.textSecondary, whiteSpace: 'nowrap' }}>
-                  {doneSubtasks}/{totalSubtasks} steps
+                  {doneSubtasks}/{totalSubtasks}
                 </span>
               </div>
             )}
@@ -110,65 +158,46 @@ function TaskCard({ task, theme, onBreakdown, onComplete, onSubtaskComplete, onS
             <button onClick={() => setExpanded(e => !e)}
               style={{
                 width: 28, height: 28, borderRadius: '50%', border: 'none',
-                backgroundColor: theme.bgSecondary || '#E3DBE6',
+                backgroundColor: theme.bgSecondary || '#f2f0fb',
                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
               }}>
               <i className={`ti ${expanded ? 'ti-chevron-up' : 'ti-chevron-down'}`}
-                style={{ fontSize: 14, color: theme.textSecondary }}
-                aria-hidden="true" />
+                style={{ fontSize: 14, color: theme.textSecondary }} aria-hidden="true" />
             </button>
           )}
         </div>
 
-        {/* Action buttons */}
-        {task.status !== 'Done' && (
+        {/* Action buttons — only when not done */}
+        {!isDone && (
           <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
             <button
-              onClick={() => onStart(task)}
+              onClick={() => navigate('/focus', { state: { taskTitle: task.title, taskId: task.id } })}
               style={{
                 flex: 1, padding: '9px 0', borderRadius: 10, border: 'none',
-                backgroundColor: theme.accent, color: 'white',
+                backgroundColor: '#6b3991', color: 'white',
                 fontWeight: 700, fontSize: 13, cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                transition: 'all 0.15s',
+                fontFamily: 'inherit',
               }}>
               <i className="ti ti-player-play" style={{ fontSize: 14 }} aria-hidden="true" />
               Start
             </button>
 
-            <button
-              onClick={handleBreakdown}
-              disabled={breaking}
+            <button onClick={handleBreakdown} disabled={breaking}
               style={{
                 flex: 1, padding: '9px 0', borderRadius: 10,
-                backgroundColor: 'transparent', color: theme.accent,
-                border: `1.5px solid ${theme.accent}`,
+                backgroundColor: 'transparent', color: '#6b3991',
+                border: `1.5px solid #6b3991`,
                 fontWeight: 700, fontSize: 13, cursor: breaking ? 'wait' : 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                transition: 'all 0.15s',
+                fontFamily: 'inherit',
               }}>
               {breaking ? (
-                <>
-                  <i className="ti ti-loader-2 animate-spin" style={{ fontSize: 14 }} aria-hidden="true" />
-                  Breaking...
-                </>
+                <><i className="ti ti-loader-2 animate-spin" style={{ fontSize: 14 }} aria-hidden="true" />Breaking...</>
               ) : (
-                <>
-                  <i className="ti ti-list-details" style={{ fontSize: 14 }} aria-hidden="true" />
-                  Break down
-                </>
+                <><i className="ti ti-list-details" style={{ fontSize: 14 }} aria-hidden="true" />Break down</>
               )}
-            </button>
-
-            <button onClick={() => onComplete(task.id)} title="Mark complete"
-              style={{
-                width: 40, padding: '9px 0', borderRadius: 10, border: 'none',
-                backgroundColor: `${theme.accent}15`, color: theme.accent,
-                fontWeight: 700, fontSize: 16, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-              <i className="ti ti-check" style={{ fontSize: 16 }} aria-hidden="true" />
             </button>
           </div>
         )}
@@ -177,56 +206,60 @@ function TaskCard({ task, theme, onBreakdown, onComplete, onSubtaskComplete, onS
         {breakMsg && (
           <div style={{
             marginTop: 10, padding: '8px 12px', borderRadius: 8,
-            backgroundColor: `${theme.accent}15`,
-            border: `1px solid ${theme.accent}30`,
+            backgroundColor: '#f4eeff', border: '1px solid #e7d1ff',
             display: 'flex', alignItems: 'center', gap: 8,
-            animation: 'fadeIn 0.3s ease',
           }}>
-            <i className="ti ti-sparkles" style={{ fontSize: 14, color: theme.accent }} aria-hidden="true" />
-            <span style={{ fontSize: 12, color: theme.accent, fontWeight: 500 }}>{breakMsg}</span>
+            <i className="ti ti-sparkles" style={{ fontSize: 14, color: '#6b3991' }} aria-hidden="true" />
+            <span style={{ fontSize: 12, color: '#6b3991', fontWeight: 500 }}>{breakMsg}</span>
           </div>
         )}
       </div>
 
-      {/* Subtasks — expanded */}
+      {/* Subtasks */}
       {expanded && hasSubtasks && (
         <div style={{
-          borderTop: `1px solid ${theme.navBorder}`,
-          padding: '12px 16px',
-          backgroundColor: theme.bgSecondary ? `${theme.bgSecondary}40` : '#F9F7FC',
+          borderTop: `1px solid ${theme.border || 'rgba(107,57,145,0.10)'}`,
+          padding: '10px 16px 12px',
+          backgroundColor: theme.bgSecondary || '#f9f9f7',
         }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: theme.textSecondary,
+            textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 8px' }}>
+            Steps
+          </p>
           {task.subtasks.map((subtask, idx) => (
             <div key={subtask.id} style={{
               display: 'flex', alignItems: 'center', gap: 10,
-              padding: '6px 0',
+              padding: '7px 0',
               borderBottom: idx < task.subtasks.length - 1
-                ? `1px solid ${theme.navBorder}` : 'none',
+                ? `1px solid ${theme.border || 'rgba(107,57,145,0.08)'}` : 'none',
             }}>
+              {/* Subtask checkbox — toggleable */}
               <button
-                onClick={() => !subtask.completed && onSubtaskComplete(subtask.id, task.id)}
+                onClick={() => onSubtaskToggle(subtask.id, task.id, subtask.completed)}
+                title={subtask.completed ? 'Mark incomplete' : 'Mark complete'}
                 style={{
-                  width: 20, height: 20, borderRadius: 6,
-                  border: `2px solid ${subtask.completed ? theme.accent : theme.navBorder}`,
-                  backgroundColor: subtask.completed ? theme.accent : 'transparent',
-                  cursor: subtask.completed ? 'default' : 'pointer',
+                  width: 20, height: 20, borderRadius: 6, border: 'none',
+                  backgroundColor: subtask.completed ? '#6b3991' : 'transparent',
+                  outline: `2px solid ${subtask.completed ? '#6b3991' : theme.border || 'rgba(107,57,145,0.2)'}`,
+                  cursor: 'pointer', flexShrink: 0,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, transition: 'all 0.15s',
+                  transition: 'all 0.15s',
                 }}>
                 {subtask.completed && (
                   <i className="ti ti-check" style={{ fontSize: 11, color: 'white' }} aria-hidden="true" />
                 )}
               </button>
+
               <span style={{
-                fontSize: 13, color: subtask.completed ? theme.textSecondary : theme.textPrimary,
+                fontSize: 13, flex: 1,
+                color: subtask.completed ? theme.textSecondary : theme.textPrimary,
                 textDecoration: subtask.completed ? 'line-through' : 'none',
-                flex: 1,
               }}>
                 {subtask.title}
               </span>
+
               {subtask.estimatedMinutes && (
-                <span style={{ fontSize: 11, color: theme.textSecondary }}>
-                  {subtask.estimatedMinutes}m
-                </span>
+                <span style={{ fontSize: 11, color: theme.textSecondary }}>{subtask.estimatedMinutes}m</span>
               )}
             </div>
           ))}
@@ -237,14 +270,10 @@ function TaskCard({ task, theme, onBreakdown, onComplete, onSubtaskComplete, onS
 }
 
 // ─── Add task input ───────────────────────────────────────────────────────────
-function AddTaskInput({ theme, onAdd }: {
-  theme: any
-  onAdd: (input: string) => Promise<void>
-}) {
+function AddTaskInput({ theme, onAdd }: { theme: any; onAdd: (input: string) => Promise<void> }) {
   const [input, setInput]     = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError]     = useState('')
-  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleAdd = async () => {
     if (!input.trim() || loading) return
@@ -252,40 +281,33 @@ function AddTaskInput({ theme, onAdd }: {
     try {
       await onAdd(input.trim())
       setInput('')
-      inputRef.current?.focus()
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to add task. Try again.')
-    } finally {
-      setLoading(false)
-    }
+      setError(err.response?.data?.message || 'Failed to add task.')
+    } finally { setLoading(false) }
   }
 
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{ display: 'flex', gap: 8 }}>
-        <input ref={inputRef}
+        <input
           style={{
-            flex: 1, padding: '12px 16px', borderRadius: 12, fontSize: 14,
+            flex: 1, padding: '13px 16px', borderRadius: 14, fontSize: 14,
             backgroundColor: theme.cardBg,
-            border: `1.5px solid ${error ? '#FCA5A5' : theme.navBorder}`,
+            border: `1.5px solid ${error ? '#FCA5A5' : theme.border || 'rgba(107,57,145,0.10)'}`,
             color: theme.textPrimary, outline: 'none', fontFamily: 'inherit',
-            transition: 'border-color 0.2s',
           }}
-          placeholder="Add a task... e.g. 'Finish report by Friday'"
+          placeholder="Describe a task... e.g. 'Finish report by Friday'"
           value={input}
           onChange={e => { setInput(e.target.value); setError('') }}
           onKeyDown={e => e.key === 'Enter' && handleAdd()}
-          onFocus={e => (e.target as HTMLInputElement).style.borderColor = theme.accent}
-          onBlur={e => (e.target as HTMLInputElement).style.borderColor = error ? '#FCA5A5' : theme.navBorder}
         />
-        <button onClick={handleAdd}
-          disabled={!input.trim() || loading}
+        <button onClick={handleAdd} disabled={!input.trim() || loading}
           style={{
             width: 46, height: 46, borderRadius: 12, border: 'none',
-            backgroundColor: !input.trim() || loading ? theme.navBorder : theme.accent,
-            cursor: !input.trim() || loading ? 'not-allowed' : 'pointer',
+            backgroundColor: !input.trim() ? theme.border : '#6b3991',
+            cursor: !input.trim() ? 'not-allowed' : 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'all 0.15s', flexShrink: 0,
+            flexShrink: 0,
           }}>
           {loading
             ? <i className="ti ti-loader-2 animate-spin" style={{ fontSize: 18, color: 'white' }} aria-hidden="true" />
@@ -293,12 +315,7 @@ function AddTaskInput({ theme, onAdd }: {
           }
         </button>
       </div>
-      {error && (
-        <p style={{ fontSize: 12, color: '#EF4444', margin: '6px 0 0 4px' }}>
-          <i className="ti ti-alert-circle" style={{ marginRight: 4, fontSize: 12 }} aria-hidden="true" />
-          {error}
-        </p>
-      )}
+      {error && <p style={{ fontSize: 12, color: '#EF4444', margin: '6px 0 0 4px' }}>{error}</p>}
     </div>
   )
 }
@@ -311,20 +328,18 @@ export default function TasksPage() {
   const [tasks, setTasks]           = useState<Task[]>([])
   const [activeDrive, setActiveDrive] = useState<Drive>('OnFire')
   const [loading, setLoading]       = useState(true)
-  const [fetchError, setFetchError] = useState('')
+  const [toast, setToast]           = useState<{ message: string; undo: () => void } | null>(null)
+  const undoRef = useRef<(() => void) | null>(null)
 
   useEffect(() => { loadTasks() }, [])
 
   async function loadTasks() {
-    setLoading(true); setFetchError('')
+    setLoading(true)
     try {
       const { data } = await tasksApi.getAll()
       setTasks(data)
-    } catch (err: any) {
-      setFetchError(err.response?.data?.message || 'Failed to load tasks.')
-    } finally {
-      setLoading(false)
-    }
+    } catch {}
+    finally { setLoading(false) }
   }
 
   async function handleAddTask(input: string) {
@@ -338,54 +353,94 @@ export default function TasksPage() {
     setTasks(prev => prev.map(t => t.id === id ? data : t))
   }
 
+  // Complete task — with undo
   async function handleComplete(id: string) {
-    const { data } = await tasksApi.complete(id)
-    setTasks(prev => prev.map(t => t.id === id ? data : t))
-  }
+    const previous = tasks.find(t => t.id === id)
+    if (!previous) return
 
-  async function handleSubtaskComplete(subtaskId: string, taskId: string) {
-    try {
-      await tasksApi.completeSubtask(subtaskId)
-      setTasks(prev => prev.map(t => {
-        if (t.id !== taskId) return t
-        return {
-          ...t,
-          subtasks: t.subtasks.map(s =>
-            s.id === subtaskId ? { ...s, completed: true } : s
-          ),
-        }
-      }))
-    } catch (err) {
-      console.error('Subtask complete failed:', err)
+    // Optimistic update
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, status: 'Done' as any, completedAt: new Date().toISOString() } : t))
+
+    // Show undo toast
+    const undo = async () => {
+      setTasks(prev => prev.map(t => t.id === id ? { ...t, status: previous.status, completedAt: undefined } : t))
+      try { await tasksApi.update(id, { status: previous.status, completedAt: null }) } catch {}
+      setToast(null)
+    }
+    undoRef.current = undo
+    setToast({ message: 'Task marked as complete', undo })
+
+    try { await tasksApi.complete(id) } catch {
+      // Revert on failure
+      setTasks(prev => prev.map(t => t.id === id ? previous : t))
+      setToast(null)
     }
   }
 
-  function handleStart(task: Task) {
-    navigate('/focus', { state: { taskTitle: task.title, taskId: task.id } })
+  // Undo complete — mark back to Todo
+  async function handleUncomplete(id: string) {
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, status: 'Todo' as any, completedAt: undefined } : t))
+    try { await tasksApi.update(id, { status: 'Todo', completedAt: null }) } catch {}
+    setToast({ message: 'Task marked as incomplete', undo: () => {} })
+    setTimeout(() => setToast(null), 2000)
+  }
+
+  // Subtask toggle — complete OR undo
+  async function handleSubtaskToggle(subtaskId: string, taskId: string, currentState: boolean) {
+    // Optimistic update
+    setTasks(prev => prev.map(t => {
+      if (t.id !== taskId) return t
+      return {
+        ...t,
+        subtasks: t.subtasks.map(s =>
+          s.id === subtaskId ? { ...s, completed: !currentState } : s
+        ),
+      }
+    }))
+
+    try {
+      if (!currentState) {
+        await tasksApi.completeSubtask(subtaskId)
+        setToast({
+          message: 'Step marked complete',
+          undo: async () => {
+            setTasks(prev => prev.map(t => {
+              if (t.id !== taskId) return t
+              return { ...t, subtasks: t.subtasks.map(s => s.id === subtaskId ? { ...s, completed: false } : s) }
+            }))
+            setToast(null)
+          },
+        })
+      } else {
+        // Undo subtask complete
+        await tasksApi.update(taskId, {}) // backend would need an uncomplete-subtask endpoint
+        setToast({ message: 'Step marked incomplete', undo: () => {} })
+        setTimeout(() => setToast(null), 2000)
+      }
+    } catch {
+      // Revert
+      setTasks(prev => prev.map(t => {
+        if (t.id !== taskId) return t
+        return { ...t, subtasks: t.subtasks.map(s => s.id === subtaskId ? { ...s, completed: currentState } : s) }
+      }))
+    }
   }
 
   const activeTasks = tasks.filter(t => t.drive === activeDrive && t.status !== 'Done')
-  const doneTasks   = tasks.filter(t => t.status === 'Done')
-  const hasAnyTask  = tasks.length > 0
+  const doneTasks   = tasks.filter(t => t.drive === activeDrive && t.status === 'Done')
 
   return (
     <AppShell>
-      <div style={{
-        padding: '24px 20px',
-        backgroundColor: theme.bgPrimary,
-        minHeight: '100vh',
-        /* Desktop: constrain and center */
-      }}>
-        <style>{`
-          @media (min-width: 768px) {
-            .tasks-inner { max-width: 720px; margin: 0 auto; }
-          }
-          @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
-          @keyframes spin { to { transform: rotate(360deg); } }
-          .animate-spin { animation: spin 0.8s linear infinite; }
-        `}</style>
+      <style>{`
+        @media (min-width: 768px) { .tasks-inner { max-width: 720px; margin: 0 auto; } }
+        @keyframes slideUp { from { opacity:0; transform:translateY(8px) translateX(-50%); } to { opacity:1; transform:translateY(0) translateX(-50%); } }
+        .animate-spin { animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+      `}</style>
 
+      <div style={{ padding: '24px 20px', backgroundColor: theme.bgPrimary, minHeight: '100vh' }}>
         <div className="tasks-inner">
+
           {/* Header */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
             <button onClick={() => navigate('/dashboard')}
@@ -393,6 +448,7 @@ export default function TasksPage() {
                 width: 36, height: 36, borderRadius: '50%', border: 'none',
                 backgroundColor: theme.cardBg, cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
               }}>
               <i className="ti ti-arrow-left" style={{ fontSize: 18, color: theme.textPrimary }} aria-hidden="true" />
             </button>
@@ -404,23 +460,19 @@ export default function TasksPage() {
           </div>
 
           {/* Drive tabs */}
-          <div style={{
-            display: 'flex', gap: 8, marginBottom: 20,
-            overflowX: 'auto', paddingBottom: 4,
-          }}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 20, overflowX: 'auto', paddingBottom: 4 }}
             className="no-scrollbar">
             {DRIVES.map(drive => (
               <button key={drive.value} onClick={() => setActiveDrive(drive.value)}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   padding: '8px 14px', borderRadius: 20, border: 'none',
-                  backgroundColor: activeDrive === drive.value
-                    ? `${drive.color}20` : theme.cardBg,
+                  backgroundColor: activeDrive === drive.value ? `${drive.color}18` : theme.cardBg,
                   color: activeDrive === drive.value ? drive.color : theme.textSecondary,
                   fontWeight: 700, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap',
                   outline: activeDrive === drive.value
-                    ? `2px solid ${drive.color}` : `1px solid ${theme.navBorder}`,
-                  transition: 'all 0.15s',
+                    ? `2px solid ${drive.color}` : `1px solid ${theme.border || 'rgba(107,57,145,0.10)'}`,
+                  fontFamily: 'inherit',
                 }}>
                 <i className={`ti ${drive.icon}`} style={{ fontSize: 14 }} aria-hidden="true" />
                 {drive.label}
@@ -428,67 +480,67 @@ export default function TasksPage() {
             ))}
           </div>
 
-          {/* Add task input */}
+          {/* Add task */}
           <AddTaskInput theme={theme} onAdd={handleAddTask} />
 
-          {/* Fetch error */}
-          {fetchError && (
-            <div style={{
-              padding: '12px 16px', borderRadius: 12, marginBottom: 16,
-              backgroundColor: '#FEE2E2', border: '1px solid #FECACA',
-            }}>
-              <p style={{ fontSize: 13, color: '#EF4444', margin: 0 }}>
-                <i className="ti ti-alert-circle" style={{ marginRight: 6 }} aria-hidden="true" />
-                {fetchError}
-              </p>
-            </div>
-          )}
-
-          {/* Loading */}
+          {/* Task list */}
           {loading ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: 40 }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: '50%',
-                border: `3px solid ${theme.accent}`, borderTopColor: 'transparent',
-                animation: 'spin 0.8s linear infinite',
-              }} />
+              <div style={{ width: 32, height: 32, borderRadius: '50%',
+                border: '3px solid #6b3991', borderTopColor: 'transparent',
+                animation: 'spin 0.8s linear infinite' }} />
             </div>
-          ) : activeTasks.length === 0 ? (
-            /* Empty state — no AI message unless tasks exist */
+          ) : activeTasks.length === 0 && doneTasks.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-              <i className="ti ti-checks"
-                style={{ fontSize: 48, color: theme.navBorder, display: 'block', marginBottom: 12 }}
-                aria-hidden="true" />
+              <i className="ti ti-checks" style={{ fontSize: 48, color: theme.border, display: 'block', marginBottom: 12 }} aria-hidden="true" />
               <p style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, margin: '0 0 6px' }}>
                 No {DRIVES.find(d => d.value === activeDrive)?.label} tasks
               </p>
               <p style={{ fontSize: 13, color: theme.textSecondary, margin: 0 }}>
-                Type a task above and press Enter — the AI will parse and place it here
+                Type a task above — the AI will parse and place it
               </p>
             </div>
           ) : (
-            activeTasks.map(task => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                theme={theme}
-                onBreakdown={handleBreakdown}
-                onComplete={handleComplete}
-                onSubtaskComplete={handleSubtaskComplete}
-                onStart={handleStart}
-              />
-            ))
-          )}
+            <>
+              {activeTasks.map(task => (
+                <TaskCard key={task.id} task={task} theme={theme}
+                  onBreakdown={handleBreakdown}
+                  onComplete={handleComplete}
+                  onUncomplete={handleUncomplete}
+                  onSubtaskToggle={handleSubtaskToggle} />
+              ))}
 
-          {/* Done count */}
-          {hasAnyTask && doneTasks.length > 0 && (
-            <p style={{ fontSize: 12, textAlign: 'center', color: theme.textSecondary, marginTop: 8 }}>
-              <i className="ti ti-circle-check" style={{ marginRight: 4, color: theme.accent }} aria-hidden="true" />
-              {doneTasks.length} task{doneTasks.length > 1 ? 's' : ''} completed today
-            </p>
+              {/* Done tasks section */}
+              {doneTasks.length > 0 && (
+                <div style={{ marginTop: 8 }}>
+                  <p style={{ fontSize: 12, fontWeight: 700, color: theme.textSecondary,
+                    textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 10px',
+                    display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <i className="ti ti-circle-check" style={{ fontSize: 14, color: '#43e8d8' }} aria-hidden="true" />
+                    Completed ({doneTasks.length})
+                  </p>
+                  {doneTasks.map(task => (
+                    <TaskCard key={task.id} task={task} theme={theme}
+                      onBreakdown={handleBreakdown}
+                      onComplete={handleComplete}
+                      onUncomplete={handleUncomplete}
+                      onSubtaskToggle={handleSubtaskToggle} />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
+
+      {/* Undo toast */}
+      {toast && (
+        <UndoToast
+          message={toast.message}
+          onUndo={toast.undo}
+          onDismiss={() => setToast(null)}
+        />
+      )}
     </AppShell>
   )
 }

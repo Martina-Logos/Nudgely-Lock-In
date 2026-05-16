@@ -62,7 +62,12 @@ export default function LandingPage() {
 
         {/* Pillars */}
         <div className="animate-slide-up delay-2" style={{
-          width: '100%', display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 48,
+          width: '100%',
+          maxWidth: 520,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 12,
+          margin: '0 auto 48px',
         }}>
           {PILLARS.map((p, i) => (
             <div key={i} style={{
@@ -89,13 +94,21 @@ export default function LandingPage() {
       </div>
 
       {/* CTA footer */}
-      <div className="animate-slide-up delay-3" style={{ padding: '0 28px 48px' }}>
+      <div className="animate-slide-up delay-3" style={{
+        width: '100%',
+        maxWidth: 520,
+        margin: '0 auto',
+        padding: '0 28px 48px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}>
         <button className="btn-cta" onClick={() => navigate('/signup')}
           style={{ marginBottom: 12 }}>
           Get Started — it's free
         </button>
         <button className="btn-ghost" onClick={() => navigate('/login')}
-          style={{ width: '100%', textAlign: 'center', padding: '10px' }}>
+          style={{ textAlign: 'center', padding: '10px' }}>
           Already have an account? <span style={{ color: '#6b3991', fontWeight: 600 }}>Sign in</span>
         </button>
         <p style={{ fontSize: 11, color: '#9999b8', textAlign: 'center', marginTop: 16 }}>

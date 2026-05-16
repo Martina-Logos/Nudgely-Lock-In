@@ -41,71 +41,71 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="page-auth">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <span className="text-xl font-bold"
-          style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>
-          Nudgely
-        </span>
-      </div>
-
-      {/* Title */}
-      <div className="mb-8 animate-slide-up">
-        <h1 className="text-3xl font-bold mb-2"
-          style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>
-          Welcome back
-        </h1>
-        <p className="text-sm" style={{ color: '#6B5878' }}>
-          Sign in to continue your focus journey
-        </p>
-      </div>
-
-      {/* Form */}
-      <div className="flex flex-col gap-4 mb-6 animate-slide-up"
-        style={{ animationDelay: '0.1s' }}>
-        <div>
-          <label className="block text-sm font-medium mb-1.5" style={{ color: '#6B5878' }}>
-            Email address
-          </label>
-          <input className="input" type="email" placeholder="you@example.com"
-            value={email} onChange={(e) => setEmail(e.target.value)}
-            onKeyDown={handleKeyDown} autoComplete="email" />
+    <div className="page-auth auth-page">
+      <div className="auth-card">
+        {/* Header */}
+        <div className="auth-card-header">
+          <span className="text-xl font-bold"
+            style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>
+            Nudgely
+          </span>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1.5" style={{ color: '#6B5878' }}>
-            Password
-          </label>
-          <input className="input" type="password" placeholder="Your password"
-            value={password} onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={handleKeyDown} autoComplete="current-password" />
+        {/* Title */}
+        <div className="auth-copy animate-slide-up">
+          <h1 className="auth-title"
+            style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>
+            Welcome back
+          </h1>
+          <p className="auth-subtitle">
+            Sign in to continue your focus journey
+          </p>
         </div>
-      </div>
 
-      {/* Error */}
-      {error && (
-        <div className="rounded-xl p-3 mb-4 animate-fade-in"
-          style={{ backgroundColor: '#FEE2E2', border: '1px solid #FECACA' }}>
-          <p className="text-sm" style={{ color: '#EF4444' }}>{error}</p>
+        {/* Form */}
+        <div className="auth-form animate-slide-up"
+          style={{ animationDelay: '0.1s' }}>
+          <div>
+            <label className="auth-label">
+              Email address
+            </label>
+            <input className="input" type="email" placeholder="you@example.com"
+              value={email} onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={handleKeyDown} autoComplete="email" />
+          </div>
+
+          <div>
+            <label className="auth-label">
+              Password
+            </label>
+            <input className="input" type="password" placeholder="Your password"
+              value={password} onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown} autoComplete="current-password" />
+          </div>
         </div>
-      )}
 
-      {/* CTA */}
-      <div className="mt-auto flex flex-col gap-3 animate-slide-up"
-        style={{ animationDelay: '0.2s' }}>
-        <button className="btn-primary" onClick={handleLogin}
-          disabled={!isValid || loading}>
-          {loading ? 'Signing in...' : 'Sign In'}
-        </button>
+        {/* Error */}
+        {error && (
+          <div className="auth-error animate-fade-in">
+            <p>{error}</p>
+          </div>
+        )}
 
-        <p className="text-center text-sm" style={{ color: '#9B8EA5' }}>
-          Don't have an account?{' '}
-          <Link to="/signup" className="font-semibold hover:underline"
-            style={{ color: '#744D83' }}>
-            Sign up
-          </Link>
-        </p>
+        {/* CTA */}
+        <div className="auth-actions animate-slide-up"
+          style={{ animationDelay: '0.2s' }}>
+          <button className="btn-primary auth-primary-button" onClick={handleLogin}
+            disabled={!isValid || loading}>
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+
+          <p className="auth-switch">
+            Don't have an account?{' '}
+            <Link to="/signup">
+              Sign up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )
