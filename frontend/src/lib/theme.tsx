@@ -5,57 +5,75 @@ import { useAuthStore } from '../stores/authStore'
 
 export const SOFT_THEME = {
   // Backgrounds
-  bgPrimary:   '#F0EADF',
-  bgSecondary: '#E3DBE6',
+  bgPrimary:   '#f9f9f7',
+  bgSecondary: '#f2f0fb',
   // Cards
-  cardBg:      '#FFFFFF',
-  cardAlt:     '#E3DBE6',
+  cardBg:      '#ffffff',
+  cardAlt:     '#f4eeff',
+  cardLilac:   '#e7d1ff',
   // Buttons
-  ctaBg:       '#23BBB7',
-  ctaText:     '#FFFFFF',
-  ctaSecondary:'#E3DBE6',
+  ctaBg:       '#43e8d8',
+  ctaText:     '#0d3d38',
+  ctaSecondary:'#e7d1ff',
   // Text
-  textPrimary:   '#744D83',
-  textSecondary: '#8E7A99',
-  textOnDark:    '#FFFFFF',
+  textPrimary:   '#1a1a2e',
+  textSecondary: '#5a5a7a',
+  textMuted:     '#9999b8',
+  textOnDark:    '#ffffff',
   // Accents
-  accent:      '#23BBB7',
-  progress:    '#744D83',
+  accent:        '#43e8d8',
+  accentPurple:  '#6b3991',
+  accentBlue:    '#1d6a82',
+  progress:      '#6b3991',
+  highlight:     '#e7d1ff',
   // Nav
-  navBg:       '#FFFFFF',
-  navBorder:   '#E3DBE6',
-  navActive:   '#744D83',
-  navInactive: '#9B8EA5',
+  navBg:         '#ffffff',
+  navBorder:     'rgba(107,57,145,0.10)',
+  navActive:     '#6b3991',
+  navInactive:   '#9999b8',
+  // Input
+  inputBg:       '#f0eef8',
+  // Borders
+  border:        'rgba(107,57,145,0.10)',
+  borderFocus:   '#43e8d8',
 }
 
 export const BOLD_THEME = {
   // Backgrounds
-  bgPrimary:   '#23627C',
-  bgSecondary: '#1B4E63',
+  bgPrimary:   '#1d2d44',
+  bgSecondary: '#162236',
   // Cards
-  cardBg:      '#F0EADF',
-  cardAlt:     '#D3EDEF',
+  cardBg:      '#243550',
+  cardAlt:     '#c4eff2',
+  cardLilac:   '#e7d1ff',
   // Buttons
-  ctaBg:       '#23BBB7',
-  ctaText:     '#FFFFFF',
-  ctaSecondary:'#D3EDEF',
+  ctaBg:       '#43e8d8',
+  ctaText:     '#0d3d38',
+  ctaSecondary:'#c4eff2',
   // Text
-  textPrimary:   '#0F2F3A',
-  textSecondary: '#A7C7D1',
-  textOnDark:    '#FFFFFF',
+  textPrimary:   '#f9f9f7',
+  textSecondary: '#a8c5d8',
+  textMuted:     '#6a8fa5',
+  textOnDark:    '#ffffff',
   // Accents
-  accent:      '#23BBB7',
-  progress:    '#744D83',
+  accent:        '#43e8d8',
+  accentPurple:  '#c4eff2',
+  accentBlue:    '#43e8d8',
+  progress:      '#43e8d8',
+  highlight:     '#c4eff2',
   // Nav
-  navBg:       '#1B4E63',
-  navBorder:   '#23627C',
-  navActive:   '#23BBB7',
-  navInactive: '#A7C7D1',
+  navBg:         '#162236',
+  navBorder:     'rgba(196,239,242,0.12)',
+  navActive:     '#43e8d8',
+  navInactive:   '#6a8fa5',
+  // Input
+  inputBg:       '#1a2840',
+  // Borders
+  border:        'rgba(196,239,242,0.12)',
+  borderFocus:   '#43e8d8',
 }
 
 export type Theme = typeof SOFT_THEME
-
-// ─── Context ──────────────────────────────────────────────────────────────────
 
 const ThemeContext = createContext<{ theme: Theme; isBold: boolean }>({
   theme: SOFT_THEME,
@@ -67,14 +85,27 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const isBold = user?.personalityVibe === 'Bold'
   const theme  = isBold ? BOLD_THEME : SOFT_THEME
 
-  // Apply CSS variables to :root so Tailwind arbitrary values pick them up
   useEffect(() => {
     const root = document.documentElement
-    Object.entries(theme).forEach(([key, value]) => {
-      root.style.setProperty(`--theme-${key}`, value)
-    })
-    // Also set body/root background
-    document.getElementById('root')!.style.backgroundColor = theme.bgPrimary
+    // Inject theme tokens as CSS variables
+    root.style.setProperty('--theme-bg',           theme.bgPrimary)
+    root.style.setProperty('--theme-bg2',          theme.bgSecondary)
+    root.style.setProperty('--theme-card',         theme.cardBg)
+    root.style.setProperty('--theme-card-alt',     theme.cardAlt)
+    root.style.setProperty('--theme-accent',       theme.accent)
+    root.style.setProperty('--theme-purple',       theme.accentPurple)
+    root.style.setProperty('--theme-text',         theme.textPrimary)
+    root.style.setProperty('--theme-text2',        theme.textSecondary)
+    root.style.setProperty('--theme-muted',        theme.textMuted)
+    root.style.setProperty('--theme-nav-bg',       theme.navBg)
+    root.style.setProperty('--theme-nav-border',   theme.navBorder)
+    root.style.setProperty('--theme-nav-active',   theme.navActive)
+    root.style.setProperty('--theme-nav-inactive', theme.navInactive)
+    root.style.setProperty('--theme-input-bg',     theme.inputBg)
+    root.style.setProperty('--theme-border',       theme.border)
+
+    const rootEl = document.getElementById('root')
+    if (rootEl) rootEl.style.backgroundColor = theme.bgPrimary
   }, [theme])
 
   return (

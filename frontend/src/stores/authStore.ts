@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { User } from '../types'
+import { saveToken, clearToken } from '../lib/api'
 
 interface AuthState {
   user:            User | null
@@ -21,28 +22,40 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isOnboarded:     false,
 
-      setUser:  (user)  => set({ user, isAuthenticated: true }),
+      setUser: (user) => set({ user, isAuthenticated: true }),
 
-      setToken: (accessToken) => {
-        localStorage.setItem('access_token', accessToken)
-        set({ accessToken })
+      setToken: (token) => {
+        // Write to localStorage immediately — before Zustand state updates
+        saveToken(token)
+        set({ accessToken: token })
       },
 
       setOnboarded: (isOnboarded) => set({ isOnboarded }),
 
       logout: () => {
-        localStorage.removeItem('access_token')
-        set({ user: null, accessToken: null, isAuthenticated: false, isOnboarded: false })
+        clearToken()
+        set({
+          user:            null,
+          accessToken:     null,
+          isAuthenticated: false,
+          isOnboarded:     false,
+        })
       },
     }),
     {
-      name: 'Nudgely-auth',
+      name: 'nudgely-auth',
       partialize: (s) => ({
         user:            s.user,
         accessToken:     s.accessToken,
         isAuthenticated: s.isAuthenticated,
         isOnboarded:     s.isOnboarded,
       }),
+      // After rehydration, sync token to our dedicated key
+      onRehydrateStorage: () => (state) => {
+        if (state?.accessToken) {
+          saveToken(state.accessToken)
+        }
+      },
     }
   )
 )

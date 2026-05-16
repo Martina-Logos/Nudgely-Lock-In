@@ -29,12 +29,12 @@ function Sidebar({
   collapsed,
   onToggle,
   theme,
-  isBold,
+  Aurora,
 }: {
   collapsed: boolean
   onToggle: () => void
   theme: any
-  isBold: boolean
+  Aurora: boolean
 }) {
   const navigate  = useNavigate()
   const location  = useLocation()
@@ -43,13 +43,13 @@ function Sidebar({
   const isActive = (path: string) => location.pathname === path ||
     (path === '/brain-beats' && ['/brain-beats','/meditation','/crossword'].includes(location.pathname))
 
-  const sidebarBg    = isBold ? '#1B4E63' : '#FFFFFF'
-  const borderColor  = isBold ? '#23627C' : '#E3DBE6'
-  const labelColor   = isBold ? '#A7C7D1' : '#9B8EA5'
-  const textColor    = isBold ? '#FFFFFF' : '#6B5878'
-  const activeColor  = isBold ? '#23BBB7' : '#744D83'
-  const activeBg     = isBold ? 'rgba(35,187,183,0.15)' : '#EDE8F5'
-  const hoverBg      = isBold ? 'rgba(255,255,255,0.06)' : '#F5F2F8'
+  const sidebarBg    = Aurora ? '#1B4E63' : '#FFFFFF'
+  const borderColor  = Aurora ? '#23627C' : '#E3DBE6'
+  const labelColor   = Aurora ? '#A7C7D1' : '#9B8EA5'
+  const textColor    = Aurora ? '#FFFFFF' : '#6B5878'
+  const activeColor  = Aurora ? '#23BBB7' : '#744D83'
+  const activeBg     = Aurora ? 'rgba(35,187,183,0.15)' : '#EDE8F5'
+  const hoverBg      = Aurora ? 'rgba(255,255,255,0.06)' : '#F5F2F8'
 
   function NavItem({ item }: { item: typeof NAV_MAIN[0] }) {
     const active = isActive(item.path)
@@ -190,7 +190,7 @@ function Sidebar({
           <div style={{
             width: 32, height: 32,
             borderRadius: '50%',
-            backgroundColor: isBold ? 'rgba(35,187,183,0.2)' : '#EDE8F5',
+            backgroundColor: Aurora ? 'rgba(35,187,183,0.2)' : '#EDE8F5',
             border: `2px solid ${activeColor}`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 12, fontWeight: 700, color: activeColor,
@@ -201,7 +201,7 @@ function Sidebar({
 
           {!collapsed && (
             <div style={{ textAlign: 'left', overflow: 'hidden', flex: 1 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: isBold ? '#FFFFFF' : '#744D83', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: Aurora ? '#FFFFFF' : '#744D83', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {user?.displayName || 'User'}
               </p>
               <p style={{ fontSize: 10, color: labelColor }}>
@@ -270,7 +270,7 @@ function BottomNav({ theme }: { theme: any }) {
 }
 
 // ─── Top bar (desktop) ────────────────────────────────────────────────────────
-function TopBar({ theme, isBold }: { theme: any; isBold: boolean }) {
+function TopBar({ theme, Aurora }: { theme: any; Aurora: boolean }) {
   const navigate = useNavigate()
   const user     = useAuthStore((s) => s.user)
 
@@ -278,10 +278,10 @@ function TopBar({ theme, isBold }: { theme: any; isBold: boolean }) {
     weekday: 'long', month: 'long', day: 'numeric',
   })
 
-  const barBg     = isBold ? '#23627C' : '#FFFFFF'
-  const barBorder = isBold ? '#1B4E63' : '#E3DBE6'
-  const textPri   = isBold ? '#FFFFFF' : '#2D1F35'
-  const textSec   = isBold ? '#A7C7D1' : '#8E7A99'
+  const barBg     = Aurora ? '#23627C' : '#FFFFFF'
+  const barBorder = Aurora ? '#1B4E63' : '#E3DBE6'
+  const textPri   = Aurora ? '#FFFFFF' : '#2D1F35'
+  const textSec   = Aurora ? '#A7C7D1' : '#8E7A99'
 
   return (
     <header style={{
@@ -308,7 +308,7 @@ function TopBar({ theme, isBold }: { theme: any; isBold: boolean }) {
           style={{
             width: 34, height: 34,
             borderRadius: '50%',
-            backgroundColor: isBold ? 'rgba(35,187,183,0.2)' : '#EDE8F5',
+            backgroundColor: Aurora ? 'rgba(35,187,183,0.2)' : '#EDE8F5',
             border: `2px solid ${theme.accent}`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 13, fontWeight: 700, color: theme.accent,
@@ -321,14 +321,14 @@ function TopBar({ theme, isBold }: { theme: any; isBold: boolean }) {
   )
 }
 
-// ─── Main AppShell ─────────────────────────────────────────────────────────────
-interface AppShellProps {
+// ─── Main Aurora ─────────────────────────────────────────────────────────────
+interface AuroraProps {
   children: React.ReactNode
   hideNav?: boolean
 }
 
-export default function AppShell({ children, hideNav = false }: AppShellProps) {
-  const { theme, isBold } = useTheme()
+export default function Aurora({ children, hideNav = false }: AuroraProps) {
+  const { theme, Aurora } = useTheme()
   const [isDesktop, setIsDesktop]       = useState(window.innerWidth >= 768)
   const [sidebarCollapsed, setSidebar]  = useState(false)
 
@@ -349,7 +349,7 @@ export default function AppShell({ children, hideNav = false }: AppShellProps) {
         backgroundColor: theme.bgPrimary,
         overflow: 'hidden',
       }}>
-        <TopBar theme={theme} isBold={isBold} />
+        <TopBar theme={theme} Aurora={Aurora} />
 
         <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
           {!hideNav && (
@@ -357,7 +357,7 @@ export default function AppShell({ children, hideNav = false }: AppShellProps) {
               collapsed={sidebarCollapsed}
               onToggle={() => setSidebar(c => !c)}
               theme={theme}
-              isBold={isBold}
+              Aurora={Aurora}
             />
           )}
 
