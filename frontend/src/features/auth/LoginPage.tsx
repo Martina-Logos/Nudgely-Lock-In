@@ -30,7 +30,14 @@ export default function LoginPage() {
         navigate('/onboarding/profile')
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid email or password.')
+      const status = err.response?.status
+      if (status === 401 || status === 403) {
+        setError('Incorrect email or password. Please try again.')
+      } else if (status === 404) {
+        setError('No account found with that email.')
+      } else {
+        setError('Hang in there — something went wrong. Please try again.')
+      }
     } finally {
       setLoading(false)
     }

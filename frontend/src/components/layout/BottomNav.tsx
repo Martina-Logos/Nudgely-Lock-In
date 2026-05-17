@@ -77,7 +77,7 @@ export default function BottomNav() {
       <div className="flex items-center justify-around px-2 py-2">
         {NAV_ITEMS.map((item) => {
           const isActive = location.pathname === item.path ||
-            (item.path === '/brain-beats' && ['/brain-beats', '/meditation', '/crossword'].includes(location.pathname))
+            (item.path === '/brain-beats' && ['/brain-beats', '/meditation', '/scramble'].includes(location.pathname))
           const color = isActive ? theme.navActive : theme.navInactive
 
           return (

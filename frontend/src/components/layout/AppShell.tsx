@@ -15,11 +15,12 @@ const NAV_FOCUS = [
   { path: '/brain-beats',    label: 'Brain Beats',   icon: 'ti-brain' },
   { path: '/focus',          label: 'Focus Mode',    icon: 'ti-player-play' },
   { path: '/meditation',     label: 'Meditation',    icon: 'ti-spa' },
-  { path: '/crossword',      label: 'Crossword',     icon: 'ti-puzzle' },
+  { path: '/scramble',      label: 'scramble',     icon: 'ti-puzzle' },
 ]
 
 const NAV_INSIGHTS = [
   { path: '/reports/weekly', label: 'Weekly Report', icon: 'ti-chart-bar' },
+  { path: '/about',          label: 'About Nudgely', icon: 'ti-info' },
 ]
 
 const ALL_NAV = [...NAV_MAIN, ...NAV_FOCUS, ...NAV_INSIGHTS]
@@ -41,7 +42,7 @@ function Sidebar({
   const user      = useAuthStore((s) => s.user)
 
   const isActive = (path: string) => location.pathname === path ||
-    (path === '/brain-beats' && ['/brain-beats','/meditation','/crossword'].includes(location.pathname))
+    (path === '/brain-beats' && ['/brain-beats','/meditation','/scramble'].includes(location.pathname))
 
   const sidebarBg    = Aurora ? '#1B4E63' : '#FFFFFF'
   const borderColor  = Aurora ? '#23627C' : '#E3DBE6'
@@ -250,7 +251,7 @@ function BottomNav({ theme }: { theme: any }) {
     }}>
       {BOTTOM_ITEMS.map(item => {
         const active = location.pathname === item.path ||
-          (item.path === '/brain-beats' && ['/brain-beats','/meditation','/crossword'].includes(location.pathname))
+          (item.path === '/brain-beats' && ['/brain-beats','/meditation','/scramble'].includes(location.pathname))
         const color = active ? theme.navActive : theme.navInactive
 
         return (

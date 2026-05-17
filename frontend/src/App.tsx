@@ -18,13 +18,14 @@ import CognitiveQuiz     from './features/onboarding/CognitiveQuiz'
 import Dashboard         from './features/dashboard/Dashboard'
 import BrainBeatsPage    from './features/brain-beats/BrainBeatsPage'
 import MeditationPage    from './features/meditation/MeditationPage'
-import CrosswordPage     from './features/crossword/CrosswordPage'
+import ScramblePage     from './features/scramble/ScramblePage'
 
 // Phase 3
 import TasksPage         from './features/tasks/TasksPage'
 import HabitsPage        from './features/habits/HabitsPage'
 import SelfAwarenessPage from './features/self-awareness/SelfAwarenessPage'
 import ProfilePage       from './features/profile/ProfilePage'
+import AboutPage         from './features/about/AboutPage'
 
 // ─── Guards ──────────────────────────────────────────────────────────────────
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -77,9 +78,10 @@ export default function App() {
           <Route path="/dashboard"   element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="/brain-beats" element={<RequireAuth><BrainBeatsPage /></RequireAuth>} />
           <Route path="/meditation"  element={<RequireAuth><MeditationPage /></RequireAuth>} />
-          <Route path="/crossword"   element={<RequireAuth><CrosswordPage /></RequireAuth>} />
+          <Route path="/scramble"   element={<RequireAuth><ScramblePage /></RequireAuth>} />
 
           {/* Phase 3 */}
+          <Route path="/about"          element={<RequireAuth><AboutPage /></RequireAuth>} />
           <Route path="/tasks"          element={<RequireAuth><TasksPage /></RequireAuth>} />
           <Route path="/habits"         element={<RequireAuth><HabitsPage /></RequireAuth>} />
           <Route path="/self-awareness" element={<RequireAuth><SelfAwarenessPage /></RequireAuth>} />

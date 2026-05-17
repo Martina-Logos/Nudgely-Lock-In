@@ -34,7 +34,14 @@ export default function SignUpPage() {
       setProfileBasics({ name: '', username: '', email })
       navigate('/verify')
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Something went wrong. Please try again.')
+      const status = err.response?.status
+      if (status === 409) {
+        setError('An account with this email already exists. Try signing in.')
+      } else if (status === 400) {
+        setError('Please check your details and try again.')
+      } else {
+        setError('Hang in there — something went wrong. Please try again.')
+      }
     } finally {
       setLoading(false)
     }

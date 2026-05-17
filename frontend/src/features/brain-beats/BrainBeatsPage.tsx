@@ -421,12 +421,12 @@ export default function BrainBeatsPage() {
             }}>
               Try Meditation
             </button>
-            <button onClick={() => navigate('/crossword')} style={{
+            <button onClick={() => navigate('/scramble')} style={{
               width:'100%', padding:'14px', borderRadius:12, cursor:'pointer',
               backgroundColor:'transparent', fontWeight:700, fontSize:14,
               border:`2px solid ${theme.accent}`, color:theme.accent, fontFamily:'inherit',
             }}>
-              Play Crossword
+              Play scramble
             </button>
           </div>
         </div>
