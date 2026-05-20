@@ -142,3 +142,57 @@ export const userApi = {
   update:  (data: object) => api.patch('/users/me', data),
   delete:  ()             => api.delete('/users/me'),
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADD THESE TO your existing src/lib/api.ts
+// Paste the assistantApi object alongside your other API groups
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const assistantApi = {
+  // Send a message and get a reply
+  chat: (message: string) =>
+    api.post<{ reply: string; messageId: string }>('/assistant/chat', { message }),
+
+  // Load conversation history
+  getHistory: (limit = 30) =>
+    api.get<{ id: string; role: string; content: string; createdAt: string }[]>(
+      `/assistant/history?limit=${limit}`
+    ).then(r => r.data),
+
+  // Clear the full conversation
+  clearHistory: () =>
+    api.delete('/assistant/history'),
+
+  // Get a proactive contextual nudge for a specific screen
+  getNudge: (type: 'dashboard_morning' | 'task_stuck' | 'focus_start' | 'journal_open') =>
+    api.get<{ nudge: string }>(`/assistant/nudge?type=${type}`).then(r => r.data),
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ALSO ADD to app.ts (backend) — register the new route:
+//
+//   import assistantRoutes from './modules/assistant/assistant.routes'
+//   app.use(`${API}/assistant`, assistantRoutes)
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HOW TO USE useNudge on each screen:
+//
+// Dashboard.tsx:
+//   import { useNudge } from '../../hooks/useNudge'
+//   const { nudge, loading } = useNudge('dashboard_morning')
+//   // Replace the hardcoded aiNudge string with: nudge || aiNudge
+//
+// TasksPage.tsx (on the stuck task card):
+//   const { nudge } = useNudge('task_stuck', hasSomeStuckTask)
+//   // Show below the stuck task as a soft prompt line
+//
+// FocusPage.tsx (on the setup screen):
+//   const { nudge } = useNudge('focus_start')
+//   // Show as a single line above the Start button
+//
+// SelfAwarenessPage.tsx (journal):
+//   const { nudge } = useNudge('journal_open')
+//   // Use as the placeholder or prompt above the textarea
+// ─────────────────────────────────────────────────────────────────────────────
