@@ -14,6 +14,7 @@ import habitsRoutes      from './modules/habits/habits.routes'
 import journalRoutes     from './modules/journal/journal.routes'
 import sessionsRoutes    from './modules/sessions/sessions.routes'
 import reportsRoutes     from './modules/reports/reports.routes'
+import assistantRoutes   from './modules/assistant/assistant.routes'
 
 const app = express()
 
@@ -49,6 +50,7 @@ app.use(`${API}/habits`,      habitsRoutes)
 app.use(`${API}/journal`,     journalRoutes)
 app.use(`${API}/sessions`,    sessionsRoutes)
 app.use(`${API}/reports`,     reportsRoutes)
+app.use(`${API}/assistant`,   assistantRoutes)
 
 // ─── 404 ──────────────────────────────────────────────────────────────────────
 app.use((_req, res) => {
