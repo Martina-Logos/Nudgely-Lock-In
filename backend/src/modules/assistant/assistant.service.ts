@@ -6,14 +6,14 @@
 // System B — chat():      the persistent conversation thread.
 //            Saves every message. Injects last 10 + context summary.
 
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { prisma }            from '../../lib/prisma'
 import { buildUserContext, buildLightContext } from './context.engine.service'
 import { env }               from '../../config/env'
 
-const claude = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY })
+const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY })
 
-const MODEL = 'claude-sonnet-4-20250514'
+const MODEL = 'gpt-5-mini'
 
 // ── Voice guidelines shared by both systems ───────────────────────────────────
 const VOICE_RULES = `
@@ -103,13 +103,18 @@ export async function getProactiveNudge(
     const ctx    = await buildLightContext(userId)
     const prompt = PROACTIVE_PROMPTS[type](ctx)
 
-    const response = await claude.messages.create({
-      model:      MODEL,
-      max_tokens: 120,
-      messages:   [{ role: 'user', content: prompt }],
-    })
+    const response = await openai.chat.completions.create({
+  model: MODEL,
+  messages: [
+    {
+      role: 'user',
+      content: prompt,
+    },
+  ],
+  max_completion_tokens: 120,
+})
 
-    const text = response.content
+    const text = response.choices[0]?.message?.content?.trim() || ''
       .filter(b => b.type === 'text')
       .map(b => (b as { type: 'text'; text: string }).text)
       .join('')
@@ -190,14 +195,23 @@ export async function chat(
   // 5. Call Claude
   let reply = ''
   try {
-    const response = await claude.messages.create({
-      model:      MODEL,
-      max_tokens: 400,
-      system:     buildSystemPrompt(context),
-      messages,
-    })
+    const response = await openai.chat.completions.create({
+  model: MODEL,
+  max_completion_tokens: 400,
+  messages: [
+    {
+      role: 'system',
+      content: buildSystemPrompt(context),
+    },
 
-    reply = response.content
+    ...messages.map(m => ({
+      role: m.role,
+      content: m.content,
+    })),
+  ],
+})
+
+reply = response.choices[0]?.message?.content?.trim() || ''
       .filter(b => b.type === 'text')
       .map(b => (b as { type: 'text'; text: string }).text)
       .join('')

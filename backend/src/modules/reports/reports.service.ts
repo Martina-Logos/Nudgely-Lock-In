@@ -1,9 +1,9 @@
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { prisma } from '../../lib/prisma'
 import { env } from '../../config/env'
 import { startOfWeek, endOfWeek, eachDayOfInterval, format } from 'date-fns'
 
-const anthropic = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY })
+const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY, })
 
 export async function getWeeklyReport(userId: string, weekStartStr?: string) {
   const baseDate  = weekStartStr ? new Date(weekStartStr) : new Date()
@@ -80,36 +80,45 @@ export async function getWeeklyReport(userId: string, weekStartStr?: string) {
   let tips: string[] = []
 
   try {
-    const message = await anthropic.messages.create({
-      model:      'claude-sonnet-4-20250514',
-      max_tokens: 300,
-      messages: [{
-        role:    'user',
-        content: `You are a supportive ADHD coach. Based on this week's data, write a brief summary and 3 actionable tips.
+    const response = await openai.chat.completions.create({
+  model: 'gpt-5-mini',
+  max_completion_tokens: 300,
+  response_format: { type: 'json_object' },
+
+  messages: [
+    {
+      role: 'system',
+      content: 'You are a supportive ADHD coach that returns valid JSON only.',
+    },
+
+    {
+      role: 'user',
+      content: `Based on this week's data, write a brief summary and 3 actionable tips.
 
 Data:
 - Focus time: ${totalFocusMin} minutes total
 - Tasks completed: ${tasksDone}
 - Average mood: ${avgMood.toFixed(1)}/5
-- Best focus day: ${dailyFocusData.sort((a,b) => b.minutes - a.minutes)[0]?.day || 'N/A'}
+- Best focus day: ${[...dailyFocusData].sort((a,b) => b.minutes - a.minutes)[0]?.day || 'N/A'}
 
-Return ONLY valid JSON, no markdown:
+Return JSON in this exact format:
 {
   "summary": "2-3 sentence summary",
   "tips": ["tip 1", "tip 2", "tip 3"]
 }`,
-      }],
-    })
+    },
+  ],
+})
 
-    const text   = message.content[0].type === 'text' ? message.content[0].text : '{}'
-    const parsed = JSON.parse(text.trim())
+const text = response.choices[0]?.message?.content || '{}'
+const parsed = JSON.parse(text)
     aiSummary    = parsed.summary || ''
     tips         = parsed.tips    || []
   } catch {
     aiSummary = `You focused for ${totalFocusMin} minutes and completed ${tasksDone} tasks this week.`
     tips      = [
       'Try shorter tasks on your hardest days.',
-      `Your best focus day was ${dailyFocusData.sort((a,b) => b.minutes - a.minutes)[0]?.day || 'this week'}.`,
+      `Your best focus day was ${[...dailyFocusData].sort((a,b) => b.minutes - a.minutes)[0]?.day || 'this week'}.`,
       'Add more breaks for sustained energy.',
     ]
   }

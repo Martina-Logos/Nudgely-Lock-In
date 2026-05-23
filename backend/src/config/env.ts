@@ -36,6 +36,6 @@ export const env = {
   // Client
   CLIENT_URL: optionalEnv('CLIENT_URL', 'http://localhost:5173'),
 
-  // Anthropic
-  ANTHROPIC_API_KEY: optionalEnv('ANTHROPIC_API_KEY', ''),
+  // OpenAI
+  OPENAI_API_KEY: optionalEnv('OPENAI_API_KEY', ''),
 }

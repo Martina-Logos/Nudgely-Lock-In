@@ -1,10 +1,9 @@
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { prisma } from '../../lib/prisma'
 import { AppError } from '../../middleware/errorHandler'
 import { env } from '../../config/env'
 
-const anthropic = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY })
-
+const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY, })
 // ─── Get all tasks ────────────────────────────────────────────────────────────
 
 export async function getAllTasks(userId: string) {
@@ -22,12 +21,27 @@ export async function createTaskFromAI(userId: string, input: string) {
   let parsed: { title: string; drive: string; estimatedMinutes: number; subtasks: string[] }
 
   try {
-    const message = await anthropic.messages.create({
-      model:      'claude-sonnet-4-20250514',
-      max_tokens: 500,
-      messages: [{
-        role:    'user',
-        content: `Parse this task request and return ONLY a JSON object with no markdown:
+    const response = await openai.chat.completions.create({
+  model: 'gpt-5-mini',
+  max_completion_tokens: 500,
+
+  response_format: {
+    type: 'json_object',
+  },
+
+  messages: [
+    {
+      role: 'system',
+      content: 'You extract structured task data and return valid JSON only.',
+    },
+
+    {
+      role: 'user',
+      content: `Parse this task request:
+
+"${input}"
+
+Return JSON in this exact format:
 {
   "title": "clear task title",
   "drive": "OnFire|DueSoon|LowLift|OpenSpace",
@@ -39,14 +53,13 @@ Drive rules:
 - OnFire: urgent, due today, critical
 - DueSoon: has a deadline soon
 - LowLift: admin, routine, low energy
-- OpenSpace: creative, exploratory, no deadline
+- OpenSpace: creative, exploratory, no deadline`,
+    },
+  ],
+})
 
-Task request: "${input}"`,
-      }],
-    })
-
-    const text = message.content[0].type === 'text' ? message.content[0].text : ''
-    parsed = JSON.parse(text.trim())
+const text = response.choices[0]?.message?.content || '{}'
+parsed = JSON.parse(text)
   } catch {
     // Fallback if AI fails
     parsed = {
@@ -115,20 +128,40 @@ export async function breakdownTask(userId: string, taskId: string) {
   let subtaskTitles: string[] = []
 
   try {
-    const message = await anthropic.messages.create({
-      model:      'claude-sonnet-4-20250514',
-      max_tokens: 400,
-      messages: [{
-        role:    'user',
-        content: `Break this task into 3-5 small, concrete steps. Return ONLY a JSON array of strings, no markdown:
-["step 1", "step 2", "step 3"]
+    const response = await openai.chat.completions.create({
+  model: 'gpt-5-mini',
+  max_completion_tokens: 400,
 
-Task: "${task.title}"`,
-      }],
-    })
+  response_format: {
+    type: 'json_object',
+  },
 
-    const text = message.content[0].type === 'text' ? message.content[0].text : '[]'
-    subtaskTitles = JSON.parse(text.trim())
+  messages: [
+    {
+      role: 'system',
+      content: 'You break tasks into concrete actionable subtasks and return valid JSON only.',
+    },
+
+    {
+      role: 'user',
+      content: `Break this task into 3-5 small, concrete steps.
+
+Task:
+"${task.title}"
+
+Return JSON in this exact format:
+{
+  "subtasks": ["step 1", "step 2", "step 3"]
+}`,
+    },
+  ],
+})
+
+const text = response.choices[0]?.message?.content || '{}'
+
+const parsed = JSON.parse(text)
+
+subtaskTitles = parsed.subtasks || []
   } catch {
     subtaskTitles = [
       `Start working on: ${task.title}`,
