@@ -41,7 +41,7 @@ model User {
   routines           Routine[]
   tasks              Task[]
   weeklyReports      WeeklyReport[]
-
+  chatMessages       ChatMessage[]
   @@map("users")
 }
 
@@ -246,6 +246,19 @@ model WeeklyReport {
   @@unique([userId, weekStart])
   @@index([userId])
   @@map("weekly_reports")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  role      String   // "user" | "assistant"
+  content   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("chat_messages")
 }
 
 enum UserRole {

@@ -23,9 +23,11 @@ import ScramblePage     from './features/scramble/ScramblePage'
 // Phase 3
 import TasksPage         from './features/tasks/TasksPage'
 import HabitsPage        from './features/habits/HabitsPage'
+import FocusPage         from './features/focus/FocusPage'
 import SelfAwarenessPage from './features/self-awareness/SelfAwarenessPage'
 import ProfilePage       from './features/profile/ProfilePage'
 import AboutPage         from './features/about/AboutPage'
+import WeeklyReportPage from './features/reports/WeeklyReportPage'
 
 // ─── Guards ──────────────────────────────────────────────────────────────────
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -88,9 +90,9 @@ export default function App() {
           <Route path="/profile"        element={<RequireAuth><ProfilePage /></RequireAuth>} />
 
           {/* Phase 4 placeholders */}
-          <Route path="/focus"          element={<RequireAuth><ComingSoon name="Focus Mode" /></RequireAuth>} />
-          <Route path="/reports/weekly" element={<RequireAuth><ComingSoon name="Weekly Report" /></RequireAuth>} />
-
+          <Route path="/focus" element={<RequireAuth><FocusPage /></RequireAuth>} />
+          <Route path="/reports/weekly" element={<RequireAuth><WeeklyReportPage /></RequireAuth>} />
+          <Route path="/about" element={<RequireAuth><AboutPage /></RequireAuth>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </ThemeProvider>

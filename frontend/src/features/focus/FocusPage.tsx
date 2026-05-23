@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import AppShell from '../../components/layout/AppShell'
 import { useTheme } from '../../lib/theme'
 import { sessionsApi } from '../../lib/api'
 
@@ -7,97 +8,136 @@ type FocusScreen = 'setup' | 'session' | 'complete'
 
 const DURATIONS = [
   { label: '25 min', value: 25, desc: 'Classic Pomodoro' },
-  { label: '45 min', value: 45, desc: 'Deep work' },
-  { label: '60 min', value: 60, desc: 'Flow state' },
-  { label: '90 min', value: 90, desc: 'Ultra focus' },
+  { label: '45 min', value: 45, desc: 'Deep work'        },
+  { label: '60 min', value: 60, desc: 'Flow state'       },
+  { label: '90 min', value: 90, desc: 'Ultra focus'      },
 ]
 
 const MOTIVATIONS = [
-  "Stay here, you've got this",
-  "One task at a time",
-  "You're doing great",
-  "Deep focus unlocked",
-  "This is your moment",
-  "Stay with it",
+  'Stay here. One task at a time.',
+  'Deep focus unlocked.',
+  "You're making real progress.",
+  'This is your moment.',
+  'Stay with it.',
+  'Momentum is building.',
 ]
 
-// ─── Setup screen ─────────────────────────────────────────────────────────────
-function FocusSetup({ onStart, theme }: {
+// ── Setup ──────────────────────────────────────────────────────────────────────
+function FocusSetup({ onStart, theme, isBold }: {
   onStart: (duration: number, taskTitle: string) => void
   theme: any
+  isBold: boolean
 }) {
-  const navigate     = useNavigate()
-  const location     = useLocation()
-  const [duration, setDuration]     = useState(25)
-  const [taskTitle, setTaskTitle]   = useState(
-    (location.state as any)?.taskTitle || ''
-  )
+  const navigate   = useNavigate()
+  const location   = useLocation()
+  const [duration, setDuration]   = useState(25)
+  const [taskTitle, setTaskTitle] = useState((location.state as any)?.taskTitle || '')
+
+  const textPrimary = isBold ? '#FFFFFF' : theme.textPrimary
+  const textSub     = isBold ? 'rgba(255,255,255,0.55)' : theme.textSecondary
+  const cardBg      = isBold ? 'rgba(255,255,255,0.06)' : '#FFFFFF'
+  const cardBorder  = isBold ? 'rgba(255,255,255,0.10)' : 'rgba(107,57,145,0.10)'
 
   return (
-    <div className="min-h-screen flex flex-col px-5 pt-6 pb-10"
-      style={{ backgroundColor: theme.bgPrimary }}>
+    <div style={{ backgroundColor: theme.bgPrimary, minHeight: '100%', padding: '28px 24px 48px' }}>
+      <div style={{ maxWidth: 560, margin: '0 auto' }}>
 
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-8">
-        <button onClick={() => navigate('/dashboard')}
-          className="w-9 h-9 rounded-full flex items-center justify-center"
-          style={{ backgroundColor: theme.cardBg, border: 'none', cursor: 'pointer' }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke={theme.textPrimary} strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </button>
-        <h1 className="text-xl font-bold"
-          style={{ color: theme.textPrimary, fontFamily: '"DM Serif Display", serif' }}>
-          Focus Mode
-        </h1>
-      </div>
-
-      {/* Task input */}
-      <div className="mb-6">
-        <p className="text-sm font-semibold mb-2" style={{ color: theme.textSecondary }}>
-          What are you working on?
-        </p>
-        <input className="input" placeholder="e.g. Design mockups, Write report..."
-          value={taskTitle} onChange={e => setTaskTitle(e.target.value)} />
-      </div>
-
-      {/* Duration picker */}
-      <p className="text-sm font-semibold mb-3" style={{ color: theme.textSecondary }}>
-        Session duration
-      </p>
-      <div className="grid grid-cols-2 gap-3 mb-8">
-        {DURATIONS.map(d => (
-          <button key={d.value} onClick={() => setDuration(d.value)}
-            className="py-4 px-4 rounded-2xl flex flex-col items-start transition-all active:scale-98"
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
+          <button
+            onClick={() => navigate('/dashboard')}
             style={{
-              backgroundColor: duration === d.value ? `${theme.accent}20` : theme.cardBg,
-              border: `2px solid ${duration === d.value ? theme.accent : theme.navBorder}`,
+              width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+              background: cardBg, border: `1px solid ${cardBorder}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer',
-            }}>
-            <span className="text-lg font-bold mb-0.5"
-              style={{ color: duration === d.value ? theme.accent : theme.textPrimary }}>
-              {d.label}
-            </span>
-            <span className="text-xs" style={{ color: theme.textSecondary }}>{d.desc}</span>
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke={textPrimary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
-        ))}
-      </div>
-
-      {/* Brain beats toggle note */}
-      <div className="rounded-2xl p-4 mb-8 flex items-center gap-3"
-        style={{ backgroundColor: theme.cardBg }}>
-        <span className="text-2xl">🎵</span>
-        <div>
-          <p className="text-sm font-semibold" style={{ color: theme.textPrimary }}>Brain Beats</p>
-          <p className="text-xs" style={{ color: theme.textSecondary }}>
-            Start Brain Beats before entering focus for ambient audio
-          </p>
+          <h1 style={{
+            fontSize: 20, fontWeight: 700, margin: 0,
+            color: textPrimary, fontFamily: '"DM Serif Display", serif',
+          }}>
+            Focus Mode
+          </h1>
         </div>
-      </div>
 
-      <div className="mt-auto">
-        <button className="btn-primary" onClick={() => onStart(duration, taskTitle)}
-          style={{ backgroundColor: theme.ctaBg }}>
+        {/* Task input */}
+        <div style={{ marginBottom: 24 }}>
+          <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: textSub, marginBottom: 10 }}>
+            What are you working on?
+          </p>
+          <input
+            className="input"
+            placeholder="e.g. Design mockups, Write report..."
+            value={taskTitle}
+            onChange={e => setTaskTitle(e.target.value)}
+          />
+        </div>
+
+        {/* Duration picker */}
+        <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: textSub, marginBottom: 10 }}>
+          Session duration
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
+          {DURATIONS.map(d => {
+            const active = duration === d.value
+            return (
+              <button
+                key={d.value}
+                onClick={() => setDuration(d.value)}
+                style={{
+                  padding: '16px',
+                  borderRadius: 14,
+                  border: `1.5px solid ${active ? theme.accent : cardBorder}`,
+                  background: active ? `${theme.accent}14` : cardBg,
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.18s ease',
+                  display: 'flex', flexDirection: 'column', gap: 4,
+                  fontFamily: 'inherit',
+                  boxShadow: active ? `0 4px 16px ${theme.accent}22` : 'none',
+                }}
+              >
+                <span style={{ fontSize: 16, fontWeight: 700, color: active ? theme.accent : textPrimary }}>
+                  {d.label}
+                </span>
+                <span style={{ fontSize: 12, color: textSub }}>{d.desc}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Brain Beats note */}
+        <div style={{
+          borderRadius: 14, padding: '14px 16px', marginBottom: 28,
+          background: cardBg, border: `1px solid ${cardBorder}`,
+          display: 'flex', alignItems: 'center', gap: 12,
+        }}>
+          <span style={{ fontSize: 22, flexShrink: 0 }}>🎵</span>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 700, color: textPrimary, margin: 0 }}>Brain Beats</p>
+            <p style={{ fontSize: 12, color: textSub, margin: '2px 0 0' }}>
+              Start Brain Beats before entering focus for ambient audio
+            </p>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <button
+          onClick={() => onStart(duration, taskTitle)}
+          style={{
+            width: '100%', padding: '15px 24px', borderRadius: 14, border: 'none',
+            background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent}cc)`,
+            color: '#0d3d38', fontSize: 15, fontWeight: 700,
+            cursor: 'pointer', fontFamily: 'inherit',
+            boxShadow: `0 4px 20px ${theme.accent}35`,
+            transition: 'all 0.2s ease',
+          }}
+        >
           Start Focus Session
         </button>
       </div>
@@ -105,12 +145,12 @@ function FocusSetup({ onStart, theme }: {
   )
 }
 
-// ─── Active session ───────────────────────────────────────────────────────────
+// ── Active session ─────────────────────────────────────────────────────────────
 function FocusSession({ duration, taskTitle, onComplete, onExit }: {
   duration: number; taskTitle: string
   onComplete: () => void; onExit: () => void
 }) {
-  const totalSeconds  = duration * 60
+  const totalSeconds = duration * 60
   const [remaining, setRemaining]   = useState(totalSeconds)
   const [paused, setPaused]         = useState(false)
   const [motivation, setMotivation] = useState(MOTIVATIONS[0])
@@ -119,7 +159,6 @@ function FocusSession({ duration, taskTitle, onComplete, onExit }: {
 
   const percent = Math.round(((totalSeconds - remaining) / totalSeconds) * 100)
 
-  // Countdown
   useEffect(() => {
     const t = setInterval(() => {
       if (!pausedRef.current) {
@@ -132,7 +171,6 @@ function FocusSession({ duration, taskTitle, onComplete, onExit }: {
     return () => clearInterval(t)
   }, [onComplete])
 
-  // Rotate motivation message every 2 minutes
   useEffect(() => {
     const t = setInterval(() => {
       setMotivation(MOTIVATIONS[Math.floor(Math.random() * MOTIVATIONS.length)])
@@ -142,155 +180,181 @@ function FocusSession({ duration, taskTitle, onComplete, onExit }: {
 
   const minutes = Math.floor(remaining / 60)
   const seconds = remaining % 60
-
-  // SVG ring
-  const size  = 220
-  const r     = 95
-  const circ  = 2 * Math.PI * r
-  const offset = circ - (percent / 100) * circ
+  const size    = 220
+  const r       = 95
+  const circ    = 2 * Math.PI * r
+  const offset  = circ - (percent / 100) * circ
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between px-6 py-10"
-      style={{ backgroundColor: '#744D83' }}>
-
+    // Session is fullscreen — intentionally no AppShell
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 999,
+      background: 'linear-gradient(160deg, #4a2568 0%, #744D83 50%, #23627C 100%)',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'space-between',
+      padding: '28px 24px 40px',
+      fontFamily: 'inherit',
+    }}>
       {/* Top bar */}
-      <div className="flex items-center justify-between w-full">
-        <button onClick={onExit}
-          className="w-9 h-9 rounded-full flex items-center justify-center"
-          style={{ backgroundColor: 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer' }}>
+      <div style={{ width: '100%', maxWidth: 480, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <button
+          onClick={onExit}
+          style={{
+            width: 36, height: 36, borderRadius: 10,
+            background: 'rgba(255,255,255,0.15)', border: 'none',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer',
+          }}
+        >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round" />
+            <path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round"/>
           </svg>
         </button>
 
-        <span className="text-white text-sm font-semibold opacity-80">
+        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 13, fontWeight: 600, maxWidth: 200, textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {taskTitle || 'Focus Session'}
         </span>
 
         <button
           onClick={() => window.history.pushState({}, '', '/brain-beats')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
-          style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: 'white', border: 'none', cursor: 'pointer' }}>
+          style={{
+            display: 'flex', alignItems: 'center', gap: 5,
+            padding: '6px 12px', borderRadius: 9999,
+            background: 'rgba(255,255,255,0.15)', border: 'none',
+            color: 'white', fontSize: 12, fontWeight: 600,
+            cursor: 'pointer', fontFamily: 'inherit',
+          }}
+        >
           🎵 Beats
         </button>
       </div>
 
       {/* Timer ring */}
-      <div className="flex flex-col items-center">
-        <div className="relative" style={{ width: size, height: size }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
+        <div style={{ position: 'relative', width: size, height: size }}>
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-            {/* Track */}
-            <circle cx={size/2} cy={size/2} r={r}
-              fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="8" />
-            {/* Progress */}
-            <circle cx={size/2} cy={size/2} r={r}
-              fill="none" stroke="#23BBB7" strokeWidth="8"
-              strokeLinecap="round"
-              strokeDasharray={circ} strokeDashoffset={offset}
+            <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="8"/>
+            <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#43e8d8" strokeWidth="8"
+              strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={offset}
               transform={`rotate(-90 ${size/2} ${size/2})`}
-              style={{ transition: 'stroke-dashoffset 1s linear' }} />
+              style={{ transition: 'stroke-dashoffset 1s linear', filter: 'drop-shadow(0 0 6px rgba(67,232,216,0.5))' }}
+            />
           </svg>
-
-          {/* Timer text */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-white opacity-60 text-sm font-medium mb-1">{percent}%</span>
-            <span className="text-white font-bold tabular-nums"
-              style={{ fontSize: 52, fontFamily: '"DM Serif Display", serif', lineHeight: 1 }}>
-              {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+          <div style={{
+            position: 'absolute', inset: 0,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            gap: 4,
+          }}>
+            <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, fontWeight: 600 }}>{percent}%</span>
+            <span style={{
+              color: 'white', fontWeight: 700, fontSize: 50,
+              fontFamily: '"DM Serif Display", serif', lineHeight: 1,
+              letterSpacing: '-1px',
+            }}>
+              {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
             </span>
-            {taskTitle && (
-              <span className="text-white opacity-70 text-sm mt-2 text-center px-4">
-                {taskTitle}
-              </span>
-            )}
           </div>
         </div>
 
-        {/* Drive badge */}
-        <div className="mt-4 px-4 py-1.5 rounded-full"
-          style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}>
-          <span className="text-white text-xs font-semibold">🔥 On Fire</span>
+        <div style={{
+          padding: '5px 14px', borderRadius: 9999,
+          background: 'rgba(255,255,255,0.12)',
+        }}>
+          <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12, fontWeight: 600 }}>🔥 On Fire</span>
         </div>
       </div>
 
-      {/* Bottom */}
-      <div className="w-full flex flex-col items-center gap-4">
-        <p className="text-white opacity-60 text-sm">{motivation}</p>
-
-        <button onClick={() => setPaused(p => !p)}
-          className="w-16 h-16 rounded-full flex items-center justify-center transition-all active:scale-95"
-          style={{ backgroundColor: 'rgba(255,255,255,0.2)', border: 'none', cursor: 'pointer' }}>
-          {paused ? (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-              <path d="M8 5V19L19 12L8 5Z" fill="white" />
-            </svg>
-          ) : (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-              <path d="M6 19H10V5H6V19ZM14 5V19H18V5H14Z" fill="white" />
-            </svg>
-          )}
+      {/* Bottom controls */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, margin: 0 }}>{motivation}</p>
+        <button
+          onClick={() => setPaused(p => !p)}
+          style={{
+            width: 60, height: 60, borderRadius: '50%',
+            background: 'rgba(255,255,255,0.18)', border: '1.5px solid rgba(255,255,255,0.25)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', transition: 'all 0.2s ease',
+          }}
+        >
+          {paused
+            ? <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5V19L19 12L8 5Z"/></svg>
+            : <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M6 19H10V5H6V19ZM14 5V19H18V5H14Z"/></svg>
+          }
         </button>
-
-        <p className="text-white text-xs opacity-40">Nudgely</p>
+        <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em' }}>
+          NUDGELY
+        </span>
       </div>
     </div>
   )
 }
 
-// ─── Complete screen ───────────────────────────────────────────────────────────
-function FocusComplete({ duration, taskTitle, onAgain, theme }: {
-  duration: number; taskTitle: string
-  onAgain: () => void; theme: any
+// ── Complete ───────────────────────────────────────────────────────────────────
+function FocusComplete({ duration, taskTitle, theme, isBold, onAgain }: {
+  duration: number; taskTitle: string; theme: any; isBold: boolean; onAgain: () => void
 }) {
-  const navigate = useNavigate()
+  const navigate    = useNavigate()
+  const textPrimary = isBold ? '#FFFFFF' : theme.textPrimary
+  const textSub     = isBold ? 'rgba(255,255,255,0.55)' : theme.textSecondary
+  const cardBg      = isBold ? 'rgba(255,255,255,0.06)' : '#FFFFFF'
+  const cardBorder  = isBold ? 'rgba(255,255,255,0.10)' : 'rgba(107,57,145,0.10)'
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ backgroundColor: theme.bgPrimary }}>
-      <div className="w-full max-w-sm text-center">
-        {/* Celebration */}
-        <div className="text-6xl mb-4 animate-bounce-soft">✨</div>
-        <h1 className="text-3xl font-bold mb-2"
-          style={{ color: theme.textPrimary, fontFamily: '"DM Serif Display", serif' }}>
-          Session Complete!
+    <div style={{
+      backgroundColor: theme.bgPrimary, minHeight: '100%',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      padding: '40px 24px',
+    }}>
+      <div style={{ width: '100%', maxWidth: 400, textAlign: 'center' }}>
+        <div style={{ fontSize: 44, marginBottom: 16 }}>✨</div>
+        <h1 style={{ fontSize: 26, fontWeight: 700, color: textPrimary, fontFamily: '"DM Serif Display", serif', marginBottom: 6 }}>
+          Session Complete
         </h1>
-        <p className="text-base mb-2" style={{ color: theme.textSecondary }}>
+        <p style={{ fontSize: 14, color: textSub, marginBottom: taskTitle ? 8 : 28 }}>
           {duration} minutes of deep focus
         </p>
         {taskTitle && (
-          <p className="text-sm mb-8 px-4 py-2 rounded-full inline-block"
-            style={{ backgroundColor: `${theme.accent}20`, color: theme.accent }}>
+          <span style={{
+            display: 'inline-block', fontSize: 13, fontWeight: 600,
+            color: theme.accent, background: `${theme.accent}14`,
+            padding: '5px 16px', borderRadius: 9999, marginBottom: 28,
+          }}>
             {taskTitle}
-          </p>
+          </span>
         )}
 
         {/* Stats */}
-        <div className="rounded-2xl p-5 mb-8 flex justify-around"
-          style={{ backgroundColor: theme.cardBg, boxShadow: '0 4px 20px rgba(116,77,131,0.10)' }}>
-          <div className="text-center">
-            <p className="text-2xl font-bold" style={{ color: theme.textPrimary }}>{duration}</p>
-            <p className="text-xs" style={{ color: theme.textSecondary }}>Minutes</p>
-          </div>
-          <div className="w-px" style={{ backgroundColor: theme.navBorder }} />
-          <div className="text-center">
-            <p className="text-2xl font-bold" style={{ color: theme.accent }}>+{duration}</p>
-            <p className="text-xs" style={{ color: theme.textSecondary }}>Focus mins</p>
-          </div>
-          <div className="w-px" style={{ backgroundColor: theme.navBorder }} />
-          <div className="text-center">
-            <p className="text-2xl font-bold" style={{ color: '#744D83' }}>🔥</p>
-            <p className="text-xs" style={{ color: theme.textSecondary }}>Streak</p>
-          </div>
+        <div style={{
+          borderRadius: 16, padding: '20px', marginBottom: 28,
+          background: cardBg, border: `1px solid ${cardBorder}`,
+          display: 'flex', justifyContent: 'space-around', alignItems: 'center',
+        }}>
+          {[
+            { value: duration,  label: 'Minutes',    color: textPrimary },
+            { value: `+${duration}`, label: 'Focus mins', color: theme.accent },
+            { value: '🔥',      label: 'Streak',     color: '#F59E0B' },
+          ].map((s, i) => (
+            <div key={i} style={{ textAlign: 'center', flex: 1 }}>
+              {i > 0 && <div style={{ position: 'absolute' }} />}
+              <p style={{ fontSize: 24, fontWeight: 800, color: s.color, margin: 0, fontFamily: '"DM Serif Display", serif' }}>
+                {s.value}
+              </p>
+              <p style={{ fontSize: 11, color: textSub, margin: '4px 0 0' }}>{s.label}</p>
+            </div>
+          ))}
         </div>
 
-        <div className="flex flex-col gap-3">
-          <button className="btn-primary" onClick={() => navigate('/tasks')}
-            style={{ backgroundColor: theme.ctaBg }}>
-            Ready to focus?
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <button
+            onClick={() => navigate('/tasks')}
+            className="btn-primary"
+          >
+            Go to tasks
           </button>
-          <button onClick={() => navigate('/dashboard')}
-            className="w-full py-4 rounded-full font-semibold border-2 transition-all"
-            style={{ borderColor: theme.accent, color: theme.accent, backgroundColor: 'transparent', cursor: 'pointer' }}>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="btn-secondary"
+          >
             Back to Dashboard
           </button>
         </div>
@@ -299,9 +363,9 @@ function FocusComplete({ duration, taskTitle, onAgain, theme }: {
   )
 }
 
-// ─── Main export ──────────────────────────────────────────────────────────────
+// ── Main export ────────────────────────────────────────────────────────────────
 export default function FocusPage() {
-  const { theme } = useTheme()
+  const { theme, isBold } = useTheme()
   const [screen, setScreen]       = useState<FocusScreen>('setup')
   const [duration, setDuration]   = useState(25)
   const [taskTitle, setTaskTitle] = useState('')
@@ -320,10 +384,11 @@ export default function FocusPage() {
         completed:       true,
         startedAt:       startedAt.current?.toISOString() || new Date().toISOString(),
       })
-    } catch {}
+    } catch { /* silent */ }
     setScreen('complete')
   }
 
+  // Session is intentionally fullscreen — no AppShell
   if (screen === 'session') {
     return (
       <FocusSession
@@ -335,16 +400,23 @@ export default function FocusPage() {
     )
   }
 
-  if (screen === 'complete') {
-    return (
-      <FocusComplete
-        duration={duration}
-        taskTitle={taskTitle}
-        onAgain={() => setScreen('setup')}
-        theme={theme}
-      />
-    )
-  }
-
-  return <FocusSetup onStart={handleStart} theme={theme} />
+  // Setup and complete live inside AppShell
+  return (
+    <AppShell>
+      {screen === 'complete'
+        ? <FocusComplete
+            duration={duration}
+            taskTitle={taskTitle}
+            theme={theme}
+            isBold={isBold}
+            onAgain={() => setScreen('setup')}
+          />
+        : <FocusSetup
+            onStart={handleStart}
+            theme={theme}
+            isBold={isBold}
+          />
+      }
+    </AppShell>
+  )
 }

@@ -106,6 +106,7 @@ function Bubble({ msg, userInitial, theme }: { msg: Message; userInitial: string
   )
 }
 
+
 // ── Typing indicator ───────────────────────────────────────────────────────────
 function TypingIndicator({ theme }: { theme: any }) {
   return (
@@ -158,6 +159,7 @@ export function NudgePanel({ isOpen, onClose, unreadCount }: NudgePanelProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput]       = useState('')
   const [loading, setLoading]   = useState(false)
+  const [error, setError]       = useState<string | null>(null)
   const [historyLoaded, setHistoryLoaded] = useState(false)
 
   const bottomRef  = useRef<HTMLDivElement>(null)
@@ -196,6 +198,7 @@ export function NudgePanel({ isOpen, onClose, unreadCount }: NudgePanelProps) {
     if (!content || loading) return
 
     setInput('')
+    setError(null)
 
     // Optimistic user message
     const tempId = `temp-${Date.now()}`
@@ -219,14 +222,13 @@ export function NudgePanel({ isOpen, onClose, unreadCount }: NudgePanelProps) {
         createdAt: new Date().toISOString(),
       }
       setMessages(prev => [...prev, assistantMsg])
-    } catch {
-      const errMsg: Message = {
-        id:        `err-${Date.now()}`,
-        role:      'assistant',
-        content:   "I'm having a moment — try again in a second. I'm still here.",
-        createdAt: new Date().toISOString(),
+    } catch (err: any) {
+      const status = err.response?.status
+      if (status === 402 || err.response?.data?.message?.includes('credit')) {
+        setError('Nudge is temporarily unavailable. Please try again shortly.')
+      } else {
+        setError('Something went wrong. Try again.')
       }
-      setMessages(prev => [...prev, errMsg])
     } finally {
       setLoading(false)
     }
@@ -325,6 +327,17 @@ export function NudgePanel({ isOpen, onClose, unreadCount }: NudgePanelProps) {
 
         {/* Context bar */}
         <ContextBar theme={theme} />
+
+        {error && (
+          <div style={{
+            margin: '0 16px 10px', padding: '12px 14px',
+            borderRadius: 14, background: '#ffece7',
+            color: '#71231d', fontSize: 13, lineHeight: 1.5,
+            border: '1px solid rgba(216, 67, 57, 0.18)',
+          }}>
+            {error}
+          </div>
+        )}
 
         {/* Message area */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px 16px 8px' }}

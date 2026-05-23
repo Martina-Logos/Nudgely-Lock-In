@@ -654,7 +654,7 @@ export default function ProfilePage() {
           </Card>
 
           <p style={{ textAlign: 'center', fontSize: 12, color: textLabel, marginTop: 8 }}>
-            Nudgely v1.0 · Your focus, aligned.
+            Nudgely Lock-In · Your focus, aligned.
           </p>
         </div>
       </div>

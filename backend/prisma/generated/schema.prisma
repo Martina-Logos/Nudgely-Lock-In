@@ -1,7 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// Nudgely · prisma/schema.prisma
-// ─────────────────────────────────────────────────────────────────────────────
-
 generator client {
   provider = "prisma-client-js"
   output   = "./generated"
@@ -13,9 +9,258 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENUMS
-// ─────────────────────────────────────────────────────────────────────────────
+model User {
+  id                 String              @id @default(uuid())
+  email              String              @unique
+  passwordHash       String?
+  displayName        String
+  username           String?             @unique
+  avatarUrl          String?
+  timezone           String              @default("UTC")
+  role               UserRole?
+  isEmailVerified    Boolean             @default(false)
+  isOnboarded        Boolean             @default(false)
+  focusTime          FocusTime?
+  emotionalState     EmotionalState?
+  distractions       Distraction[]
+  mainGoal           MainGoal?
+  weeklyGoal         String?
+  personalityVibe    PersonalityVibe?
+  temperament        Temperament?
+  iqScore            Int?
+  eqScore            Int?
+  sqScore            Int?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  focusSessions      FocusSession[]
+  habits             Habit[]
+  journalEntries     JournalEntry[]
+  meditationSessions MeditationSession[]
+  otpCodes           OtpCode[]
+  refreshTokens      RefreshToken[]
+  routines           Routine[]
+  tasks              Task[]
+  weeklyReports      WeeklyReport[]
+  chatMessages       ChatMessage[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model OtpCode {
+  id        String     @id @default(uuid())
+  code      String
+  userId    String
+  purpose   OtpPurpose @default(EmailVerification)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime   @default(now())
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("otp_codes")
+}
+
+model Task {
+  id               String         @id @default(uuid())
+  userId           String
+  title            String
+  naturalInput     String?
+  drive            Drive          @default(OnFire)
+  status           TaskStatus     @default(Todo)
+  priority         TaskPriority   @default(GoodToDo)
+  estimatedMinutes Int?
+  dueDate          DateTime?
+  completedAt      DateTime?
+  aiSuggested      Boolean        @default(false)
+  aiNudge          String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  focusSessions    FocusSession[]
+  subtasks         Subtask[]
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, drive])
+  @@index([userId, status])
+  @@map("tasks")
+}
+
+model Subtask {
+  id               String    @id @default(uuid())
+  taskId           String
+  title            String
+  estimatedMinutes Int?
+  completed        Boolean   @default(false)
+  completedAt      DateTime?
+  order            Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  task             Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@map("subtasks")
+}
+
+model Habit {
+  id           String            @id @default(uuid())
+  userId       String
+  name         String
+  emoji        String            @default("✅")
+  type         HabitType         @default(Build)
+  frequency    HabitFrequency    @default(Daily)
+  strength     HabitStrength     @default(Weak)
+  streak       Int               @default(0)
+  bestStreak   Int               @default(0)
+  isActive     Boolean           @default(true)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  completions  HabitCompletion[]
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  routineItems RoutineItem[]
+
+  @@index([userId])
+  @@map("habits")
+}
+
+model HabitCompletion {
+  id          String   @id @default(uuid())
+  habitId     String
+  completedAt DateTime @default(now())
+  date        String
+  habit       Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, date])
+  @@index([habitId])
+  @@map("habit_completions")
+}
+
+model Routine {
+  id        String        @id @default(uuid())
+  userId    String
+  name      String
+  time      String?
+  type      String        @default("Morning")
+  isActive  Boolean       @default(true)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  items     RoutineItem[]
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("routines")
+}
+
+model RoutineItem {
+  id        String  @id @default(uuid())
+  routineId String
+  habitId   String?
+  label     String
+  order     Int     @default(0)
+  habit     Habit?  @relation(fields: [habitId], references: [id])
+  routine   Routine @relation(fields: [routineId], references: [id], onDelete: Cascade)
+
+  @@index([routineId])
+  @@map("routine_items")
+}
+
+model JournalEntry {
+  id           String   @id @default(uuid())
+  userId       String
+  text         String?
+  tags         String[]
+  moodScore    Int
+  sleepQuality Int?
+  date         String
+  aiInsight    String?
+  aiPromptUsed Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("journal_entries")
+}
+
+model FocusSession {
+  id              String    @id @default(uuid())
+  userId          String
+  taskId          String?
+  durationMinutes Int
+  completed       Boolean   @default(true)
+  interrupted     Boolean   @default(false)
+  startedAt       DateTime
+  completedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  task            Task?     @relation(fields: [taskId], references: [id])
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, startedAt])
+  @@map("focus_sessions")
+}
+
+model MeditationSession {
+  id              String         @id @default(uuid())
+  userId          String
+  mode            MeditationMode
+  durationMinutes Int
+  completed       Boolean        @default(true)
+  startedAt       DateTime
+  completedAt     DateTime?
+  createdAt       DateTime       @default(now())
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("meditation_sessions")
+}
+
+model WeeklyReport {
+  id             String   @id @default(uuid())
+  userId         String
+  weekStart      DateTime
+  weekEnd        DateTime
+  totalFocusMin  Int      @default(0)
+  tasksDone      Int      @default(0)
+  avgMood        Float    @default(0)
+  dailyFocusData Json     @default("[]")
+  moodTrendData  Json     @default("[]")
+  wins           String[]
+  tips           String[]
+  aiSummary      String?
+  suggestions    String?
+  generatedAt    DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, weekStart])
+  @@index([userId])
+  @@map("weekly_reports")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  role      String // "user" | "assistant"
+  content   String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("chat_messages")
+}
 
 enum UserRole {
   Student
@@ -65,10 +310,10 @@ enum MainGoal {
 }
 
 enum Drive {
-  OnFire // Drive 1 — Urgent
-  DueSoon // Drive 2 — Deadline
-  LowLift // Drive 3 — Admin
-  OpenSpace // Drive 4 — Creative
+  OnFire
+  DueSoon
+  LowLift
+  OpenSpace
 }
 
 enum TaskStatus {
@@ -112,300 +357,4 @@ enum MeditationMode {
 enum OtpPurpose {
   EmailVerification
   PasswordReset
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// USER
-// ─────────────────────────────────────────────────────────────────────────────
-
-model User {
-  id              String    @id @default(uuid())
-  email           String    @unique
-  passwordHash    String?
-  displayName     String
-  username        String?   @unique
-  avatarUrl       String?
-  timezone        String    @default("UTC")
-  role            UserRole?
-  isEmailVerified Boolean   @default(false)
-  isOnboarded     Boolean   @default(false)
-
-  // Onboarding preferences
-  focusTime       FocusTime?
-  emotionalState  EmotionalState?
-  distractions    Distraction[]
-  mainGoal        MainGoal?
-  weeklyGoal      String?
-  personalityVibe PersonalityVibe?
-
-  // Cognitive profile
-  temperament Temperament?
-  iqScore     Int?
-  eqScore     Int?
-  sqScore     Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  refreshTokens      RefreshToken[]
-  otpCodes           OtpCode[]
-  tasks              Task[]
-  habits             Habit[]
-  routines           Routine[]
-  journalEntries     JournalEntry[]
-  focusSessions      FocusSession[]
-  meditationSessions MeditationSession[]
-  weeklyReports      WeeklyReport[]
-
-  @@map("users")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// AUTH — TOKENS & OTP
-// ─────────────────────────────────────────────────────────────────────────────
-
-model RefreshToken {
-  id        String   @id @default(uuid())
-  token     String   @unique
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@map("refresh_tokens")
-}
-
-model OtpCode {
-  id        String     @id @default(uuid())
-  code      String
-  userId    String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  purpose   OtpPurpose @default(EmailVerification)
-  expiresAt DateTime
-  usedAt    DateTime?
-  createdAt DateTime   @default(now())
-
-  @@index([userId])
-  @@map("otp_codes")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TASKS
-// ─────────────────────────────────────────────────────────────────────────────
-
-model Task {
-  id     String @id @default(uuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  title            String
-  naturalInput     String?
-  drive            Drive        @default(OnFire)
-  status           TaskStatus   @default(Todo)
-  priority         TaskPriority @default(GoodToDo)
-  estimatedMinutes Int?
-  dueDate          DateTime?
-  completedAt      DateTime?
-  aiSuggested      Boolean      @default(false)
-  aiNudge          String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  subtasks      Subtask[]
-  focusSessions FocusSession[]
-
-  @@index([userId])
-  @@index([userId, drive])
-  @@index([userId, status])
-  @@map("tasks")
-}
-
-model Subtask {
-  id     String @id @default(uuid())
-  taskId String
-  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
-
-  title            String
-  estimatedMinutes Int?
-  completed        Boolean   @default(false)
-  completedAt      DateTime?
-  order            Int       @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([taskId])
-  @@map("subtasks")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HABITS & ROUTINES
-// ─────────────────────────────────────────────────────────────────────────────
-
-model Habit {
-  id     String @id @default(uuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  name       String
-  emoji      String         @default("✅")
-  type       HabitType      @default(Build)
-  frequency  HabitFrequency @default(Daily)
-  strength   HabitStrength  @default(Weak)
-  streak     Int            @default(0)
-  bestStreak Int            @default(0)
-  isActive   Boolean        @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  completions  HabitCompletion[]
-  routineItems RoutineItem[]
-
-  @@index([userId])
-  @@map("habits")
-}
-
-model HabitCompletion {
-  id          String   @id @default(uuid())
-  habitId     String
-  habit       Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
-  completedAt DateTime @default(now())
-  date        String // YYYY-MM-DD — prevents duplicate completions per day
-
-  @@unique([habitId, date])
-  @@index([habitId])
-  @@map("habit_completions")
-}
-
-model Routine {
-  id     String @id @default(uuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  name     String
-  time     String? // "07:00"
-  type     String  @default("Morning")
-  isActive Boolean @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  items RoutineItem[]
-
-  @@index([userId])
-  @@map("routines")
-}
-
-model RoutineItem {
-  id        String  @id @default(uuid())
-  routineId String
-  routine   Routine @relation(fields: [routineId], references: [id], onDelete: Cascade)
-  habitId   String?
-  habit     Habit?  @relation(fields: [habitId], references: [id], onDelete: SetNull)
-  label     String
-  order     Int     @default(0)
-
-  @@index([routineId])
-  @@map("routine_items")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// JOURNAL
-// ─────────────────────────────────────────────────────────────────────────────
-
-model JournalEntry {
-  id     String @id @default(uuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  text         String?
-  tags         String[]
-  moodScore    Int // 1–5
-  sleepQuality Int? // 1–10
-  date         String // YYYY-MM-DD
-
-  aiInsight    String?
-  aiPromptUsed Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([userId, date])
-  @@index([userId])
-  @@map("journal_entries")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SESSIONS
-// ─────────────────────────────────────────────────────────────────────────────
-
-model FocusSession {
-  id     String  @id @default(uuid())
-  userId String
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  taskId String?
-  task   Task?   @relation(fields: [taskId], references: [id], onDelete: SetNull)
-
-  durationMinutes Int
-  completed       Boolean   @default(true)
-  interrupted     Boolean   @default(false)
-  startedAt       DateTime
-  completedAt     DateTime?
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([userId, startedAt])
-  @@map("focus_sessions")
-}
-
-model MeditationSession {
-  id     String @id @default(uuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  mode            MeditationMode
-  durationMinutes Int
-  completed       Boolean        @default(true)
-  startedAt       DateTime
-  completedAt     DateTime?
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@map("meditation_sessions")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// WEEKLY REPORT
-// ─────────────────────────────────────────────────────────────────────────────
-
-model WeeklyReport {
-  id     String @id @default(uuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  weekStart DateTime
-  weekEnd   DateTime
-
-  totalFocusMin Int   @default(0)
-  tasksDone     Int   @default(0)
-  avgMood       Float @default(0)
-
-  dailyFocusData Json     @default("[]")
-  moodTrendData  Json     @default("[]")
-  wins           String[]
-  tips           String[]
-  aiSummary      String?
-  suggestions    String?
-
-  generatedAt DateTime @default(now())
-
-  @@unique([userId, weekStart])
-  @@index([userId])
-  @@map("weekly_reports")
 }

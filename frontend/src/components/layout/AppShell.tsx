@@ -21,6 +21,7 @@ const NAV_FOCUS = [
 
 const NAV_INSIGHTS = [
   { path: '/reports/weekly', label: 'Weekly Report', icon: 'ti-chart-bar' },
+  { path: '/about', label: 'About'}
 ]
 
 const NAV_ASSISTANT = [

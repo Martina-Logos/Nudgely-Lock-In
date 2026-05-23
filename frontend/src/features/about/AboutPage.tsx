@@ -332,7 +332,7 @@ export default function AboutPage() {
             textAlign: 'center', fontSize: 11.5,
             color: '#948aa1', marginTop: 28,
           }}>
-            Nudgely Lock-In · v1.0 · Thoughtfully Built for Your Focus Journey
+            Nudgely Lock-In · Thoughtfully Built for Your Focus Journey
           </p>
         </div>
       </div>

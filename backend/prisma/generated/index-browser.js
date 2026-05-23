@@ -289,6 +289,14 @@ exports.Prisma.WeeklyReportScalarFieldEnum = {
   generatedAt: 'generatedAt'
 };
 
+exports.Prisma.ChatMessageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  role: 'role',
+  content: 'content',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -423,7 +431,8 @@ exports.Prisma.ModelName = {
   JournalEntry: 'JournalEntry',
   FocusSession: 'FocusSession',
   MeditationSession: 'MeditationSession',
-  WeeklyReport: 'WeeklyReport'
+  WeeklyReport: 'WeeklyReport',
+  ChatMessage: 'ChatMessage'
 };
 
 /**

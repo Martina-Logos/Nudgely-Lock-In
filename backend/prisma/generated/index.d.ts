@@ -78,6 +78,11 @@ export type MeditationSession = $Result.DefaultSelection<Prisma.$MeditationSessi
  * 
  */
 export type WeeklyReport = $Result.DefaultSelection<Prisma.$WeeklyReportPayload>
+/**
+ * Model ChatMessage
+ * 
+ */
+export type ChatMessage = $Result.DefaultSelection<Prisma.$ChatMessagePayload>
 
 /**
  * Enums
@@ -538,6 +543,16 @@ export class PrismaClient<
     * ```
     */
   get weeklyReport(): Prisma.WeeklyReportDelegate<ExtArgs>;
+
+  /**
+   * `prisma.chatMessage`: Exposes CRUD operations for the **ChatMessage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ChatMessages
+    * const chatMessages = await prisma.chatMessage.findMany()
+    * ```
+    */
+  get chatMessage(): Prisma.ChatMessageDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -991,7 +1006,8 @@ export namespace Prisma {
     JournalEntry: 'JournalEntry',
     FocusSession: 'FocusSession',
     MeditationSession: 'MeditationSession',
-    WeeklyReport: 'WeeklyReport'
+    WeeklyReport: 'WeeklyReport',
+    ChatMessage: 'ChatMessage'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1007,7 +1023,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "refreshToken" | "otpCode" | "task" | "subtask" | "habit" | "habitCompletion" | "routine" | "routineItem" | "journalEntry" | "focusSession" | "meditationSession" | "weeklyReport"
+      modelProps: "user" | "refreshToken" | "otpCode" | "task" | "subtask" | "habit" | "habitCompletion" | "routine" | "routineItem" | "journalEntry" | "focusSession" | "meditationSession" | "weeklyReport" | "chatMessage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1921,6 +1937,76 @@ export namespace Prisma {
           }
         }
       }
+      ChatMessage: {
+        payload: Prisma.$ChatMessagePayload<ExtArgs>
+        fields: Prisma.ChatMessageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChatMessageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChatMessageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          findFirst: {
+            args: Prisma.ChatMessageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChatMessageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          findMany: {
+            args: Prisma.ChatMessageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>[]
+          }
+          create: {
+            args: Prisma.ChatMessageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          createMany: {
+            args: Prisma.ChatMessageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChatMessageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>[]
+          }
+          delete: {
+            args: Prisma.ChatMessageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          update: {
+            args: Prisma.ChatMessageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          deleteMany: {
+            args: Prisma.ChatMessageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChatMessageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ChatMessageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatMessagePayload>
+          }
+          aggregate: {
+            args: Prisma.ChatMessageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChatMessage>
+          }
+          groupBy: {
+            args: Prisma.ChatMessageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChatMessageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChatMessageCountArgs<ExtArgs>
+            result: $Utils.Optional<ChatMessageCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2082,27 +2168,29 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    refreshTokens: number
-    otpCodes: number
-    tasks: number
-    habits: number
-    routines: number
-    journalEntries: number
     focusSessions: number
+    habits: number
+    journalEntries: number
     meditationSessions: number
+    otpCodes: number
+    refreshTokens: number
+    routines: number
+    tasks: number
     weeklyReports: number
+    chatMessages: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
-    otpCodes?: boolean | UserCountOutputTypeCountOtpCodesArgs
-    tasks?: boolean | UserCountOutputTypeCountTasksArgs
-    habits?: boolean | UserCountOutputTypeCountHabitsArgs
-    routines?: boolean | UserCountOutputTypeCountRoutinesArgs
-    journalEntries?: boolean | UserCountOutputTypeCountJournalEntriesArgs
     focusSessions?: boolean | UserCountOutputTypeCountFocusSessionsArgs
+    habits?: boolean | UserCountOutputTypeCountHabitsArgs
+    journalEntries?: boolean | UserCountOutputTypeCountJournalEntriesArgs
     meditationSessions?: boolean | UserCountOutputTypeCountMeditationSessionsArgs
+    otpCodes?: boolean | UserCountOutputTypeCountOtpCodesArgs
+    refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
+    routines?: boolean | UserCountOutputTypeCountRoutinesArgs
+    tasks?: boolean | UserCountOutputTypeCountTasksArgs
     weeklyReports?: boolean | UserCountOutputTypeCountWeeklyReportsArgs
+    chatMessages?: boolean | UserCountOutputTypeCountChatMessagesArgs
   }
 
   // Custom InputTypes
@@ -2119,22 +2207,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RefreshTokenWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountOtpCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OtpCodeWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TaskWhereInput
+  export type UserCountOutputTypeCountFocusSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FocusSessionWhereInput
   }
 
   /**
@@ -2147,22 +2221,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountRoutinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RoutineWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountJournalEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: JournalEntryWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountFocusSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FocusSessionWhereInput
   }
 
   /**
@@ -2175,8 +2235,43 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountOtpCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OtpCodeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RefreshTokenWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRoutinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoutineWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountWeeklyReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WeeklyReportWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountChatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMessageWhereInput
   }
 
 
@@ -2185,13 +2280,13 @@ export namespace Prisma {
    */
 
   export type TaskCountOutputType = {
-    subtasks: number
     focusSessions: number
+    subtasks: number
   }
 
   export type TaskCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subtasks?: boolean | TaskCountOutputTypeCountSubtasksArgs
     focusSessions?: boolean | TaskCountOutputTypeCountFocusSessionsArgs
+    subtasks?: boolean | TaskCountOutputTypeCountSubtasksArgs
   }
 
   // Custom InputTypes
@@ -2208,15 +2303,15 @@ export namespace Prisma {
   /**
    * TaskCountOutputType without action
    */
-  export type TaskCountOutputTypeCountSubtasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SubtaskWhereInput
+  export type TaskCountOutputTypeCountFocusSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FocusSessionWhereInput
   }
 
   /**
    * TaskCountOutputType without action
    */
-  export type TaskCountOutputTypeCountFocusSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FocusSessionWhereInput
+  export type TaskCountOutputTypeCountSubtasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubtaskWhereInput
   }
 
 
@@ -2633,15 +2728,16 @@ export namespace Prisma {
     sqScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
-    otpCodes?: boolean | User$otpCodesArgs<ExtArgs>
-    tasks?: boolean | User$tasksArgs<ExtArgs>
-    habits?: boolean | User$habitsArgs<ExtArgs>
-    routines?: boolean | User$routinesArgs<ExtArgs>
-    journalEntries?: boolean | User$journalEntriesArgs<ExtArgs>
     focusSessions?: boolean | User$focusSessionsArgs<ExtArgs>
+    habits?: boolean | User$habitsArgs<ExtArgs>
+    journalEntries?: boolean | User$journalEntriesArgs<ExtArgs>
     meditationSessions?: boolean | User$meditationSessionsArgs<ExtArgs>
+    otpCodes?: boolean | User$otpCodesArgs<ExtArgs>
+    refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
+    routines?: boolean | User$routinesArgs<ExtArgs>
+    tasks?: boolean | User$tasksArgs<ExtArgs>
     weeklyReports?: boolean | User$weeklyReportsArgs<ExtArgs>
+    chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2696,15 +2792,16 @@ export namespace Prisma {
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
-    otpCodes?: boolean | User$otpCodesArgs<ExtArgs>
-    tasks?: boolean | User$tasksArgs<ExtArgs>
-    habits?: boolean | User$habitsArgs<ExtArgs>
-    routines?: boolean | User$routinesArgs<ExtArgs>
-    journalEntries?: boolean | User$journalEntriesArgs<ExtArgs>
     focusSessions?: boolean | User$focusSessionsArgs<ExtArgs>
+    habits?: boolean | User$habitsArgs<ExtArgs>
+    journalEntries?: boolean | User$journalEntriesArgs<ExtArgs>
     meditationSessions?: boolean | User$meditationSessionsArgs<ExtArgs>
+    otpCodes?: boolean | User$otpCodesArgs<ExtArgs>
+    refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
+    routines?: boolean | User$routinesArgs<ExtArgs>
+    tasks?: boolean | User$tasksArgs<ExtArgs>
     weeklyReports?: boolean | User$weeklyReportsArgs<ExtArgs>
+    chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2712,15 +2809,16 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
-      otpCodes: Prisma.$OtpCodePayload<ExtArgs>[]
-      tasks: Prisma.$TaskPayload<ExtArgs>[]
-      habits: Prisma.$HabitPayload<ExtArgs>[]
-      routines: Prisma.$RoutinePayload<ExtArgs>[]
-      journalEntries: Prisma.$JournalEntryPayload<ExtArgs>[]
       focusSessions: Prisma.$FocusSessionPayload<ExtArgs>[]
+      habits: Prisma.$HabitPayload<ExtArgs>[]
+      journalEntries: Prisma.$JournalEntryPayload<ExtArgs>[]
       meditationSessions: Prisma.$MeditationSessionPayload<ExtArgs>[]
+      otpCodes: Prisma.$OtpCodePayload<ExtArgs>[]
+      refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+      routines: Prisma.$RoutinePayload<ExtArgs>[]
+      tasks: Prisma.$TaskPayload<ExtArgs>[]
       weeklyReports: Prisma.$WeeklyReportPayload<ExtArgs>[]
+      chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3109,15 +3207,16 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    refreshTokens<T extends User$refreshTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany"> | Null>
-    otpCodes<T extends User$otpCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$otpCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findMany"> | Null>
-    tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany"> | Null>
-    habits<T extends User$habitsArgs<ExtArgs> = {}>(args?: Subset<T, User$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany"> | Null>
-    routines<T extends User$routinesArgs<ExtArgs> = {}>(args?: Subset<T, User$routinesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoutinePayload<ExtArgs>, T, "findMany"> | Null>
-    journalEntries<T extends User$journalEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$journalEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JournalEntryPayload<ExtArgs>, T, "findMany"> | Null>
     focusSessions<T extends User$focusSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$focusSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FocusSessionPayload<ExtArgs>, T, "findMany"> | Null>
+    habits<T extends User$habitsArgs<ExtArgs> = {}>(args?: Subset<T, User$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany"> | Null>
+    journalEntries<T extends User$journalEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$journalEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JournalEntryPayload<ExtArgs>, T, "findMany"> | Null>
     meditationSessions<T extends User$meditationSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$meditationSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeditationSessionPayload<ExtArgs>, T, "findMany"> | Null>
+    otpCodes<T extends User$otpCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$otpCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtpCodePayload<ExtArgs>, T, "findMany"> | Null>
+    refreshTokens<T extends User$refreshTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany"> | Null>
+    routines<T extends User$routinesArgs<ExtArgs> = {}>(args?: Subset<T, User$routinesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoutinePayload<ExtArgs>, T, "findMany"> | Null>
+    tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany"> | Null>
     weeklyReports<T extends User$weeklyReportsArgs<ExtArgs> = {}>(args?: Subset<T, User$weeklyReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeeklyReportPayload<ExtArgs>, T, "findMany"> | Null>
+    chatMessages<T extends User$chatMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3483,63 +3582,23 @@ export namespace Prisma {
   }
 
   /**
-   * User.refreshTokens
+   * User.focusSessions
    */
-  export type User$refreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$focusSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the RefreshToken
+     * Select specific fields to fetch from the FocusSession
      */
-    select?: RefreshTokenSelect<ExtArgs> | null
+    select?: FocusSessionSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RefreshTokenInclude<ExtArgs> | null
-    where?: RefreshTokenWhereInput
-    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
-    cursor?: RefreshTokenWhereUniqueInput
+    include?: FocusSessionInclude<ExtArgs> | null
+    where?: FocusSessionWhereInput
+    orderBy?: FocusSessionOrderByWithRelationInput | FocusSessionOrderByWithRelationInput[]
+    cursor?: FocusSessionWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
-  }
-
-  /**
-   * User.otpCodes
-   */
-  export type User$otpCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OtpCode
-     */
-    select?: OtpCodeSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OtpCodeInclude<ExtArgs> | null
-    where?: OtpCodeWhereInput
-    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
-    cursor?: OtpCodeWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OtpCodeScalarFieldEnum | OtpCodeScalarFieldEnum[]
-  }
-
-  /**
-   * User.tasks
-   */
-  export type User$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Task
-     */
-    select?: TaskSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TaskInclude<ExtArgs> | null
-    where?: TaskWhereInput
-    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
-    cursor?: TaskWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+    distinct?: FocusSessionScalarFieldEnum | FocusSessionScalarFieldEnum[]
   }
 
   /**
@@ -3563,26 +3622,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.routines
-   */
-  export type User$routinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Routine
-     */
-    select?: RoutineSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RoutineInclude<ExtArgs> | null
-    where?: RoutineWhereInput
-    orderBy?: RoutineOrderByWithRelationInput | RoutineOrderByWithRelationInput[]
-    cursor?: RoutineWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RoutineScalarFieldEnum | RoutineScalarFieldEnum[]
-  }
-
-  /**
    * User.journalEntries
    */
   export type User$journalEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3600,26 +3639,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: JournalEntryScalarFieldEnum | JournalEntryScalarFieldEnum[]
-  }
-
-  /**
-   * User.focusSessions
-   */
-  export type User$focusSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the FocusSession
-     */
-    select?: FocusSessionSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FocusSessionInclude<ExtArgs> | null
-    where?: FocusSessionWhereInput
-    orderBy?: FocusSessionOrderByWithRelationInput | FocusSessionOrderByWithRelationInput[]
-    cursor?: FocusSessionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FocusSessionScalarFieldEnum | FocusSessionScalarFieldEnum[]
   }
 
   /**
@@ -3643,6 +3662,86 @@ export namespace Prisma {
   }
 
   /**
+   * User.otpCodes
+   */
+  export type User$otpCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtpCode
+     */
+    select?: OtpCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtpCodeInclude<ExtArgs> | null
+    where?: OtpCodeWhereInput
+    orderBy?: OtpCodeOrderByWithRelationInput | OtpCodeOrderByWithRelationInput[]
+    cursor?: OtpCodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OtpCodeScalarFieldEnum | OtpCodeScalarFieldEnum[]
+  }
+
+  /**
+   * User.refreshTokens
+   */
+  export type User$refreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    where?: RefreshTokenWhereInput
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    cursor?: RefreshTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * User.routines
+   */
+  export type User$routinesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Routine
+     */
+    select?: RoutineSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoutineInclude<ExtArgs> | null
+    where?: RoutineWhereInput
+    orderBy?: RoutineOrderByWithRelationInput | RoutineOrderByWithRelationInput[]
+    cursor?: RoutineWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoutineScalarFieldEnum | RoutineScalarFieldEnum[]
+  }
+
+  /**
+   * User.tasks
+   */
+  export type User$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
    * User.weeklyReports
    */
   export type User$weeklyReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3660,6 +3759,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WeeklyReportScalarFieldEnum | WeeklyReportScalarFieldEnum[]
+  }
+
+  /**
+   * User.chatMessages
+   */
+  export type User$chatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    where?: ChatMessageWhereInput
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    cursor?: ChatMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
   }
 
   /**
@@ -5837,9 +5956,9 @@ export namespace Prisma {
     aiNudge?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    subtasks?: boolean | Task$subtasksArgs<ExtArgs>
     focusSessions?: boolean | Task$focusSessionsArgs<ExtArgs>
+    subtasks?: boolean | Task$subtasksArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | TaskCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
 
@@ -5879,9 +5998,9 @@ export namespace Prisma {
   }
 
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    subtasks?: boolean | Task$subtasksArgs<ExtArgs>
     focusSessions?: boolean | Task$focusSessionsArgs<ExtArgs>
+    subtasks?: boolean | Task$subtasksArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | TaskCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5891,9 +6010,9 @@ export namespace Prisma {
   export type $TaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Task"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      subtasks: Prisma.$SubtaskPayload<ExtArgs>[]
       focusSessions: Prisma.$FocusSessionPayload<ExtArgs>[]
+      subtasks: Prisma.$SubtaskPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6274,9 +6393,9 @@ export namespace Prisma {
    */
   export interface Prisma__TaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    subtasks<T extends Task$subtasksArgs<ExtArgs> = {}>(args?: Subset<T, Task$subtasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubtaskPayload<ExtArgs>, T, "findMany"> | Null>
     focusSessions<T extends Task$focusSessionsArgs<ExtArgs> = {}>(args?: Subset<T, Task$focusSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FocusSessionPayload<ExtArgs>, T, "findMany"> | Null>
+    subtasks<T extends Task$subtasksArgs<ExtArgs> = {}>(args?: Subset<T, Task$subtasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubtaskPayload<ExtArgs>, T, "findMany"> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6638,26 +6757,6 @@ export namespace Prisma {
   }
 
   /**
-   * Task.subtasks
-   */
-  export type Task$subtasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Subtask
-     */
-    select?: SubtaskSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SubtaskInclude<ExtArgs> | null
-    where?: SubtaskWhereInput
-    orderBy?: SubtaskOrderByWithRelationInput | SubtaskOrderByWithRelationInput[]
-    cursor?: SubtaskWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SubtaskScalarFieldEnum | SubtaskScalarFieldEnum[]
-  }
-
-  /**
    * Task.focusSessions
    */
   export type Task$focusSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6675,6 +6774,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FocusSessionScalarFieldEnum | FocusSessionScalarFieldEnum[]
+  }
+
+  /**
+   * Task.subtasks
+   */
+  export type Task$subtasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subtask
+     */
+    select?: SubtaskSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubtaskInclude<ExtArgs> | null
+    where?: SubtaskWhereInput
+    orderBy?: SubtaskOrderByWithRelationInput | SubtaskOrderByWithRelationInput[]
+    cursor?: SubtaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubtaskScalarFieldEnum | SubtaskScalarFieldEnum[]
   }
 
   /**
@@ -7969,8 +8088,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     routineItems?: boolean | Habit$routineItemsArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
@@ -8007,8 +8126,8 @@ export namespace Prisma {
   }
 
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     routineItems?: boolean | Habit$routineItemsArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -8019,8 +8138,8 @@ export namespace Prisma {
   export type $HabitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Habit"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       completions: Prisma.$HabitCompletionPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
       routineItems: Prisma.$RoutineItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -8400,8 +8519,8 @@ export namespace Prisma {
    */
   export interface Prisma__HabitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     completions<T extends Habit$completionsArgs<ExtArgs> = {}>(args?: Subset<T, Habit$completionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitCompletionPayload<ExtArgs>, T, "findMany"> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     routineItems<T extends Habit$routineItemsArgs<ExtArgs> = {}>(args?: Subset<T, Habit$routineItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoutineItemPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9925,8 +10044,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     items?: boolean | Routine$itemsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | RoutineCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["routine"]>
 
@@ -9954,8 +10073,8 @@ export namespace Prisma {
   }
 
   export type RoutineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     items?: boolean | Routine$itemsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | RoutineCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RoutineIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9965,8 +10084,8 @@ export namespace Prisma {
   export type $RoutinePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Routine"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       items: Prisma.$RoutineItemPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10341,8 +10460,8 @@ export namespace Prisma {
    */
   export interface Prisma__RoutineClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     items<T extends Routine$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Routine$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoutineItemPayload<ExtArgs>, T, "findMany"> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10930,8 +11049,8 @@ export namespace Prisma {
     habitId?: boolean
     label?: boolean
     order?: boolean
-    routine?: boolean | RoutineDefaultArgs<ExtArgs>
     habit?: boolean | RoutineItem$habitArgs<ExtArgs>
+    routine?: boolean | RoutineDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["routineItem"]>
 
   export type RoutineItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10940,8 +11059,8 @@ export namespace Prisma {
     habitId?: boolean
     label?: boolean
     order?: boolean
-    routine?: boolean | RoutineDefaultArgs<ExtArgs>
     habit?: boolean | RoutineItem$habitArgs<ExtArgs>
+    routine?: boolean | RoutineDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["routineItem"]>
 
   export type RoutineItemSelectScalar = {
@@ -10953,19 +11072,19 @@ export namespace Prisma {
   }
 
   export type RoutineItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    routine?: boolean | RoutineDefaultArgs<ExtArgs>
     habit?: boolean | RoutineItem$habitArgs<ExtArgs>
+    routine?: boolean | RoutineDefaultArgs<ExtArgs>
   }
   export type RoutineItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    routine?: boolean | RoutineDefaultArgs<ExtArgs>
     habit?: boolean | RoutineItem$habitArgs<ExtArgs>
+    routine?: boolean | RoutineDefaultArgs<ExtArgs>
   }
 
   export type $RoutineItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "RoutineItem"
     objects: {
-      routine: Prisma.$RoutinePayload<ExtArgs>
       habit: Prisma.$HabitPayload<ExtArgs> | null
+      routine: Prisma.$RoutinePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11337,8 +11456,8 @@ export namespace Prisma {
    */
   export interface Prisma__RoutineItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    routine<T extends RoutineDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoutineDefaultArgs<ExtArgs>>): Prisma__RoutineClient<$Result.GetResult<Prisma.$RoutinePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     habit<T extends RoutineItem$habitArgs<ExtArgs> = {}>(args?: Subset<T, RoutineItem$habitArgs<ExtArgs>>): Prisma__HabitClient<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    routine<T extends RoutineDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoutineDefaultArgs<ExtArgs>>): Prisma__RoutineClient<$Result.GetResult<Prisma.$RoutinePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12989,8 +13108,8 @@ export namespace Prisma {
     startedAt?: boolean
     completedAt?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     task?: boolean | FocusSession$taskArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["focusSession"]>
 
   export type FocusSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13003,8 +13122,8 @@ export namespace Prisma {
     startedAt?: boolean
     completedAt?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     task?: boolean | FocusSession$taskArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["focusSession"]>
 
   export type FocusSessionSelectScalar = {
@@ -13020,19 +13139,19 @@ export namespace Prisma {
   }
 
   export type FocusSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     task?: boolean | FocusSession$taskArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type FocusSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     task?: boolean | FocusSession$taskArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $FocusSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FocusSession"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       task: Prisma.$TaskPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13408,8 +13527,8 @@ export namespace Prisma {
    */
   export interface Prisma__FocusSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     task<T extends FocusSession$taskArgs<ExtArgs> = {}>(args?: Subset<T, FocusSession$taskArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15866,6 +15985,939 @@ export namespace Prisma {
 
 
   /**
+   * Model ChatMessage
+   */
+
+  export type AggregateChatMessage = {
+    _count: ChatMessageCountAggregateOutputType | null
+    _min: ChatMessageMinAggregateOutputType | null
+    _max: ChatMessageMaxAggregateOutputType | null
+  }
+
+  export type ChatMessageMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    role: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type ChatMessageMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    role: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type ChatMessageCountAggregateOutputType = {
+    id: number
+    userId: number
+    role: number
+    content: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ChatMessageMinAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type ChatMessageMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type ChatMessageCountAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    content?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ChatMessageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatMessage to aggregate.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ChatMessages
+    **/
+    _count?: true | ChatMessageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChatMessageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChatMessageMaxAggregateInputType
+  }
+
+  export type GetChatMessageAggregateType<T extends ChatMessageAggregateArgs> = {
+        [P in keyof T & keyof AggregateChatMessage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChatMessage[P]>
+      : GetScalarType<T[P], AggregateChatMessage[P]>
+  }
+
+
+
+
+  export type ChatMessageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMessageWhereInput
+    orderBy?: ChatMessageOrderByWithAggregationInput | ChatMessageOrderByWithAggregationInput[]
+    by: ChatMessageScalarFieldEnum[] | ChatMessageScalarFieldEnum
+    having?: ChatMessageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChatMessageCountAggregateInputType | true
+    _min?: ChatMessageMinAggregateInputType
+    _max?: ChatMessageMaxAggregateInputType
+  }
+
+  export type ChatMessageGroupByOutputType = {
+    id: string
+    userId: string
+    role: string
+    content: string
+    createdAt: Date
+    _count: ChatMessageCountAggregateOutputType | null
+    _min: ChatMessageMinAggregateOutputType | null
+    _max: ChatMessageMaxAggregateOutputType | null
+  }
+
+  type GetChatMessageGroupByPayload<T extends ChatMessageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChatMessageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChatMessageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChatMessageGroupByOutputType[P]>
+            : GetScalarType<T[P], ChatMessageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChatMessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    content?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMessage"]>
+
+  export type ChatMessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    content?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatMessage"]>
+
+  export type ChatMessageSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    content?: boolean
+    createdAt?: boolean
+  }
+
+  export type ChatMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ChatMessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ChatMessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ChatMessage"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      role: string
+      content: string
+      createdAt: Date
+    }, ExtArgs["result"]["chatMessage"]>
+    composites: {}
+  }
+
+  type ChatMessageGetPayload<S extends boolean | null | undefined | ChatMessageDefaultArgs> = $Result.GetResult<Prisma.$ChatMessagePayload, S>
+
+  type ChatMessageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ChatMessageFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ChatMessageCountAggregateInputType | true
+    }
+
+  export interface ChatMessageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ChatMessage'], meta: { name: 'ChatMessage' } }
+    /**
+     * Find zero or one ChatMessage that matches the filter.
+     * @param {ChatMessageFindUniqueArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChatMessageFindUniqueArgs>(args: SelectSubset<T, ChatMessageFindUniqueArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one ChatMessage that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ChatMessageFindUniqueOrThrowArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChatMessageFindUniqueOrThrowArgs>(args: SelectSubset<T, ChatMessageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first ChatMessage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindFirstArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChatMessageFindFirstArgs>(args?: SelectSubset<T, ChatMessageFindFirstArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first ChatMessage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindFirstOrThrowArgs} args - Arguments to find a ChatMessage
+     * @example
+     * // Get one ChatMessage
+     * const chatMessage = await prisma.chatMessage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChatMessageFindFirstOrThrowArgs>(args?: SelectSubset<T, ChatMessageFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more ChatMessages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ChatMessages
+     * const chatMessages = await prisma.chatMessage.findMany()
+     * 
+     * // Get first 10 ChatMessages
+     * const chatMessages = await prisma.chatMessage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const chatMessageWithIdOnly = await prisma.chatMessage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ChatMessageFindManyArgs>(args?: SelectSubset<T, ChatMessageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a ChatMessage.
+     * @param {ChatMessageCreateArgs} args - Arguments to create a ChatMessage.
+     * @example
+     * // Create one ChatMessage
+     * const ChatMessage = await prisma.chatMessage.create({
+     *   data: {
+     *     // ... data to create a ChatMessage
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChatMessageCreateArgs>(args: SelectSubset<T, ChatMessageCreateArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many ChatMessages.
+     * @param {ChatMessageCreateManyArgs} args - Arguments to create many ChatMessages.
+     * @example
+     * // Create many ChatMessages
+     * const chatMessage = await prisma.chatMessage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChatMessageCreateManyArgs>(args?: SelectSubset<T, ChatMessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ChatMessages and returns the data saved in the database.
+     * @param {ChatMessageCreateManyAndReturnArgs} args - Arguments to create many ChatMessages.
+     * @example
+     * // Create many ChatMessages
+     * const chatMessage = await prisma.chatMessage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ChatMessages and only return the `id`
+     * const chatMessageWithIdOnly = await prisma.chatMessage.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChatMessageCreateManyAndReturnArgs>(args?: SelectSubset<T, ChatMessageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a ChatMessage.
+     * @param {ChatMessageDeleteArgs} args - Arguments to delete one ChatMessage.
+     * @example
+     * // Delete one ChatMessage
+     * const ChatMessage = await prisma.chatMessage.delete({
+     *   where: {
+     *     // ... filter to delete one ChatMessage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChatMessageDeleteArgs>(args: SelectSubset<T, ChatMessageDeleteArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one ChatMessage.
+     * @param {ChatMessageUpdateArgs} args - Arguments to update one ChatMessage.
+     * @example
+     * // Update one ChatMessage
+     * const chatMessage = await prisma.chatMessage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChatMessageUpdateArgs>(args: SelectSubset<T, ChatMessageUpdateArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more ChatMessages.
+     * @param {ChatMessageDeleteManyArgs} args - Arguments to filter ChatMessages to delete.
+     * @example
+     * // Delete a few ChatMessages
+     * const { count } = await prisma.chatMessage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChatMessageDeleteManyArgs>(args?: SelectSubset<T, ChatMessageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ChatMessages
+     * const chatMessage = await prisma.chatMessage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChatMessageUpdateManyArgs>(args: SelectSubset<T, ChatMessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ChatMessage.
+     * @param {ChatMessageUpsertArgs} args - Arguments to update or create a ChatMessage.
+     * @example
+     * // Update or create a ChatMessage
+     * const chatMessage = await prisma.chatMessage.upsert({
+     *   create: {
+     *     // ... data to create a ChatMessage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ChatMessage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChatMessageUpsertArgs>(args: SelectSubset<T, ChatMessageUpsertArgs<ExtArgs>>): Prisma__ChatMessageClient<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of ChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageCountArgs} args - Arguments to filter ChatMessages to count.
+     * @example
+     * // Count the number of ChatMessages
+     * const count = await prisma.chatMessage.count({
+     *   where: {
+     *     // ... the filter for the ChatMessages we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChatMessageCountArgs>(
+      args?: Subset<T, ChatMessageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChatMessageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChatMessageAggregateArgs>(args: Subset<T, ChatMessageAggregateArgs>): Prisma.PrismaPromise<GetChatMessageAggregateType<T>>
+
+    /**
+     * Group by ChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatMessageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChatMessageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChatMessageGroupByArgs['orderBy'] }
+        : { orderBy?: ChatMessageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChatMessageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChatMessageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ChatMessage model
+   */
+  readonly fields: ChatMessageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChatMessage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChatMessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ChatMessage model
+   */ 
+  interface ChatMessageFieldRefs {
+    readonly id: FieldRef<"ChatMessage", 'String'>
+    readonly userId: FieldRef<"ChatMessage", 'String'>
+    readonly role: FieldRef<"ChatMessage", 'String'>
+    readonly content: FieldRef<"ChatMessage", 'String'>
+    readonly createdAt: FieldRef<"ChatMessage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ChatMessage findUnique
+   */
+  export type ChatMessageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage findUniqueOrThrow
+   */
+  export type ChatMessageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage findFirst
+   */
+  export type ChatMessageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatMessages.
+     */
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage findFirstOrThrow
+   */
+  export type ChatMessageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessage to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatMessages.
+     */
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage findMany
+   */
+  export type ChatMessageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatMessages to fetch.
+     */
+    where?: ChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatMessages to fetch.
+     */
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ChatMessages.
+     */
+    cursor?: ChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatMessages.
+     */
+    skip?: number
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * ChatMessage create
+   */
+  export type ChatMessageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ChatMessage.
+     */
+    data: XOR<ChatMessageCreateInput, ChatMessageUncheckedCreateInput>
+  }
+
+  /**
+   * ChatMessage createMany
+   */
+  export type ChatMessageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ChatMessages.
+     */
+    data: ChatMessageCreateManyInput | ChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ChatMessage createManyAndReturn
+   */
+  export type ChatMessageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many ChatMessages.
+     */
+    data: ChatMessageCreateManyInput | ChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatMessage update
+   */
+  export type ChatMessageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ChatMessage.
+     */
+    data: XOR<ChatMessageUpdateInput, ChatMessageUncheckedUpdateInput>
+    /**
+     * Choose, which ChatMessage to update.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage updateMany
+   */
+  export type ChatMessageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ChatMessages.
+     */
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatMessages to update
+     */
+    where?: ChatMessageWhereInput
+  }
+
+  /**
+   * ChatMessage upsert
+   */
+  export type ChatMessageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ChatMessage to update in case it exists.
+     */
+    where: ChatMessageWhereUniqueInput
+    /**
+     * In case the ChatMessage found by the `where` argument doesn't exist, create a new ChatMessage with this data.
+     */
+    create: XOR<ChatMessageCreateInput, ChatMessageUncheckedCreateInput>
+    /**
+     * In case the ChatMessage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChatMessageUpdateInput, ChatMessageUncheckedUpdateInput>
+  }
+
+  /**
+   * ChatMessage delete
+   */
+  export type ChatMessageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter which ChatMessage to delete.
+     */
+    where: ChatMessageWhereUniqueInput
+  }
+
+  /**
+   * ChatMessage deleteMany
+   */
+  export type ChatMessageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatMessages to delete
+     */
+    where?: ChatMessageWhereInput
+  }
+
+  /**
+   * ChatMessage without action
+   */
+  export type ChatMessageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16083,6 +17135,17 @@ export namespace Prisma {
   };
 
   export type WeeklyReportScalarFieldEnum = (typeof WeeklyReportScalarFieldEnum)[keyof typeof WeeklyReportScalarFieldEnum]
+
+
+  export const ChatMessageScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    role: 'role',
+    content: 'content',
+    createdAt: 'createdAt'
+  };
+
+  export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -16439,15 +17502,16 @@ export namespace Prisma {
     sqScore?: IntNullableFilter<"User"> | number | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    refreshTokens?: RefreshTokenListRelationFilter
-    otpCodes?: OtpCodeListRelationFilter
-    tasks?: TaskListRelationFilter
-    habits?: HabitListRelationFilter
-    routines?: RoutineListRelationFilter
-    journalEntries?: JournalEntryListRelationFilter
     focusSessions?: FocusSessionListRelationFilter
+    habits?: HabitListRelationFilter
+    journalEntries?: JournalEntryListRelationFilter
     meditationSessions?: MeditationSessionListRelationFilter
+    otpCodes?: OtpCodeListRelationFilter
+    refreshTokens?: RefreshTokenListRelationFilter
+    routines?: RoutineListRelationFilter
+    tasks?: TaskListRelationFilter
     weeklyReports?: WeeklyReportListRelationFilter
+    chatMessages?: ChatMessageListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -16473,15 +17537,16 @@ export namespace Prisma {
     sqScore?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    refreshTokens?: RefreshTokenOrderByRelationAggregateInput
-    otpCodes?: OtpCodeOrderByRelationAggregateInput
-    tasks?: TaskOrderByRelationAggregateInput
-    habits?: HabitOrderByRelationAggregateInput
-    routines?: RoutineOrderByRelationAggregateInput
-    journalEntries?: JournalEntryOrderByRelationAggregateInput
     focusSessions?: FocusSessionOrderByRelationAggregateInput
+    habits?: HabitOrderByRelationAggregateInput
+    journalEntries?: JournalEntryOrderByRelationAggregateInput
     meditationSessions?: MeditationSessionOrderByRelationAggregateInput
+    otpCodes?: OtpCodeOrderByRelationAggregateInput
+    refreshTokens?: RefreshTokenOrderByRelationAggregateInput
+    routines?: RoutineOrderByRelationAggregateInput
+    tasks?: TaskOrderByRelationAggregateInput
     weeklyReports?: WeeklyReportOrderByRelationAggregateInput
+    chatMessages?: ChatMessageOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -16510,15 +17575,16 @@ export namespace Prisma {
     sqScore?: IntNullableFilter<"User"> | number | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    refreshTokens?: RefreshTokenListRelationFilter
-    otpCodes?: OtpCodeListRelationFilter
-    tasks?: TaskListRelationFilter
-    habits?: HabitListRelationFilter
-    routines?: RoutineListRelationFilter
-    journalEntries?: JournalEntryListRelationFilter
     focusSessions?: FocusSessionListRelationFilter
+    habits?: HabitListRelationFilter
+    journalEntries?: JournalEntryListRelationFilter
     meditationSessions?: MeditationSessionListRelationFilter
+    otpCodes?: OtpCodeListRelationFilter
+    refreshTokens?: RefreshTokenListRelationFilter
+    routines?: RoutineListRelationFilter
+    tasks?: TaskListRelationFilter
     weeklyReports?: WeeklyReportListRelationFilter
+    chatMessages?: ChatMessageListRelationFilter
   }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -16717,9 +17783,9 @@ export namespace Prisma {
     aiNudge?: StringNullableFilter<"Task"> | string | null
     createdAt?: DateTimeFilter<"Task"> | Date | string
     updatedAt?: DateTimeFilter<"Task"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    subtasks?: SubtaskListRelationFilter
     focusSessions?: FocusSessionListRelationFilter
+    subtasks?: SubtaskListRelationFilter
+    user?: XOR<UserRelationFilter, UserWhereInput>
   }
 
   export type TaskOrderByWithRelationInput = {
@@ -16737,9 +17803,9 @@ export namespace Prisma {
     aiNudge?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    subtasks?: SubtaskOrderByRelationAggregateInput
     focusSessions?: FocusSessionOrderByRelationAggregateInput
+    subtasks?: SubtaskOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type TaskWhereUniqueInput = Prisma.AtLeast<{
@@ -16760,9 +17826,9 @@ export namespace Prisma {
     aiNudge?: StringNullableFilter<"Task"> | string | null
     createdAt?: DateTimeFilter<"Task"> | Date | string
     updatedAt?: DateTimeFilter<"Task"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    subtasks?: SubtaskListRelationFilter
     focusSessions?: FocusSessionListRelationFilter
+    subtasks?: SubtaskListRelationFilter
+    user?: XOR<UserRelationFilter, UserWhereInput>
   }, "id">
 
   export type TaskOrderByWithAggregationInput = {
@@ -16900,8 +17966,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
     completions?: HabitCompletionListRelationFilter
+    user?: XOR<UserRelationFilter, UserWhereInput>
     routineItems?: RoutineItemListRelationFilter
   }
 
@@ -16918,8 +17984,8 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     completions?: HabitCompletionOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
     routineItems?: RoutineItemOrderByRelationAggregateInput
   }
 
@@ -16939,8 +18005,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
     completions?: HabitCompletionListRelationFilter
+    user?: XOR<UserRelationFilter, UserWhereInput>
     routineItems?: RoutineItemListRelationFilter
   }, "id">
 
@@ -17045,8 +18111,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"Routine"> | boolean
     createdAt?: DateTimeFilter<"Routine"> | Date | string
     updatedAt?: DateTimeFilter<"Routine"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
     items?: RoutineItemListRelationFilter
+    user?: XOR<UserRelationFilter, UserWhereInput>
   }
 
   export type RoutineOrderByWithRelationInput = {
@@ -17058,8 +18124,8 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     items?: RoutineItemOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type RoutineWhereUniqueInput = Prisma.AtLeast<{
@@ -17074,8 +18140,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"Routine"> | boolean
     createdAt?: DateTimeFilter<"Routine"> | Date | string
     updatedAt?: DateTimeFilter<"Routine"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
     items?: RoutineItemListRelationFilter
+    user?: XOR<UserRelationFilter, UserWhereInput>
   }, "id">
 
   export type RoutineOrderByWithAggregationInput = {
@@ -17115,8 +18181,8 @@ export namespace Prisma {
     habitId?: StringNullableFilter<"RoutineItem"> | string | null
     label?: StringFilter<"RoutineItem"> | string
     order?: IntFilter<"RoutineItem"> | number
-    routine?: XOR<RoutineRelationFilter, RoutineWhereInput>
     habit?: XOR<HabitNullableRelationFilter, HabitWhereInput> | null
+    routine?: XOR<RoutineRelationFilter, RoutineWhereInput>
   }
 
   export type RoutineItemOrderByWithRelationInput = {
@@ -17125,8 +18191,8 @@ export namespace Prisma {
     habitId?: SortOrderInput | SortOrder
     label?: SortOrder
     order?: SortOrder
-    routine?: RoutineOrderByWithRelationInput
     habit?: HabitOrderByWithRelationInput
+    routine?: RoutineOrderByWithRelationInput
   }
 
   export type RoutineItemWhereUniqueInput = Prisma.AtLeast<{
@@ -17138,8 +18204,8 @@ export namespace Prisma {
     habitId?: StringNullableFilter<"RoutineItem"> | string | null
     label?: StringFilter<"RoutineItem"> | string
     order?: IntFilter<"RoutineItem"> | number
-    routine?: XOR<RoutineRelationFilter, RoutineWhereInput>
     habit?: XOR<HabitNullableRelationFilter, HabitWhereInput> | null
+    routine?: XOR<RoutineRelationFilter, RoutineWhereInput>
   }, "id">
 
   export type RoutineItemOrderByWithAggregationInput = {
@@ -17267,8 +18333,8 @@ export namespace Prisma {
     startedAt?: DateTimeFilter<"FocusSession"> | Date | string
     completedAt?: DateTimeNullableFilter<"FocusSession"> | Date | string | null
     createdAt?: DateTimeFilter<"FocusSession"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
     task?: XOR<TaskNullableRelationFilter, TaskWhereInput> | null
+    user?: XOR<UserRelationFilter, UserWhereInput>
   }
 
   export type FocusSessionOrderByWithRelationInput = {
@@ -17281,8 +18347,8 @@ export namespace Prisma {
     startedAt?: SortOrder
     completedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     task?: TaskOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type FocusSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -17298,8 +18364,8 @@ export namespace Prisma {
     startedAt?: DateTimeFilter<"FocusSession"> | Date | string
     completedAt?: DateTimeNullableFilter<"FocusSession"> | Date | string | null
     createdAt?: DateTimeFilter<"FocusSession"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
     task?: XOR<TaskNullableRelationFilter, TaskWhereInput> | null
+    user?: XOR<UserRelationFilter, UserWhereInput>
   }, "id">
 
   export type FocusSessionOrderByWithAggregationInput = {
@@ -17509,6 +18575,61 @@ export namespace Prisma {
     generatedAt?: DateTimeWithAggregatesFilter<"WeeklyReport"> | Date | string
   }
 
+  export type ChatMessageWhereInput = {
+    AND?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    OR?: ChatMessageWhereInput[]
+    NOT?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    id?: StringFilter<"ChatMessage"> | string
+    userId?: StringFilter<"ChatMessage"> | string
+    role?: StringFilter<"ChatMessage"> | string
+    content?: StringFilter<"ChatMessage"> | string
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type ChatMessageOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ChatMessageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    OR?: ChatMessageWhereInput[]
+    NOT?: ChatMessageWhereInput | ChatMessageWhereInput[]
+    userId?: StringFilter<"ChatMessage"> | string
+    role?: StringFilter<"ChatMessage"> | string
+    content?: StringFilter<"ChatMessage"> | string
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ChatMessageOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    _count?: ChatMessageCountOrderByAggregateInput
+    _max?: ChatMessageMaxOrderByAggregateInput
+    _min?: ChatMessageMinOrderByAggregateInput
+  }
+
+  export type ChatMessageScalarWhereWithAggregatesInput = {
+    AND?: ChatMessageScalarWhereWithAggregatesInput | ChatMessageScalarWhereWithAggregatesInput[]
+    OR?: ChatMessageScalarWhereWithAggregatesInput[]
+    NOT?: ChatMessageScalarWhereWithAggregatesInput | ChatMessageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ChatMessage"> | string
+    userId?: StringWithAggregatesFilter<"ChatMessage"> | string
+    role?: StringWithAggregatesFilter<"ChatMessage"> | string
+    content?: StringWithAggregatesFilter<"ChatMessage"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ChatMessage"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -17532,15 +18653,16 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -17566,15 +18688,16 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -17600,15 +18723,16 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -17634,15 +18758,16 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -17858,9 +18983,9 @@ export namespace Prisma {
     aiNudge?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutTasksInput
-    subtasks?: SubtaskCreateNestedManyWithoutTaskInput
     focusSessions?: FocusSessionCreateNestedManyWithoutTaskInput
+    subtasks?: SubtaskCreateNestedManyWithoutTaskInput
+    user: UserCreateNestedOneWithoutTasksInput
   }
 
   export type TaskUncheckedCreateInput = {
@@ -17878,8 +19003,8 @@ export namespace Prisma {
     aiNudge?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subtasks?: SubtaskUncheckedCreateNestedManyWithoutTaskInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutTaskInput
+    subtasks?: SubtaskUncheckedCreateNestedManyWithoutTaskInput
   }
 
   export type TaskUpdateInput = {
@@ -17896,9 +19021,9 @@ export namespace Prisma {
     aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTasksNestedInput
-    subtasks?: SubtaskUpdateManyWithoutTaskNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutTaskNestedInput
+    subtasks?: SubtaskUpdateManyWithoutTaskNestedInput
+    user?: UserUpdateOneRequiredWithoutTasksNestedInput
   }
 
   export type TaskUncheckedUpdateInput = {
@@ -17916,8 +19041,8 @@ export namespace Prisma {
     aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subtasks?: SubtaskUncheckedUpdateManyWithoutTaskNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutTaskNestedInput
+    subtasks?: SubtaskUncheckedUpdateManyWithoutTaskNestedInput
   }
 
   export type TaskCreateManyInput = {
@@ -18065,8 +19190,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutHabitsInput
     completions?: HabitCompletionCreateNestedManyWithoutHabitInput
+    user: UserCreateNestedOneWithoutHabitsInput
     routineItems?: RoutineItemCreateNestedManyWithoutHabitInput
   }
 
@@ -18099,8 +19224,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutHabitsNestedInput
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
+    user?: UserUpdateOneRequiredWithoutHabitsNestedInput
     routineItems?: RoutineItemUpdateManyWithoutHabitNestedInput
   }
 
@@ -18221,8 +19346,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutRoutinesInput
     items?: RoutineItemCreateNestedManyWithoutRoutineInput
+    user: UserCreateNestedOneWithoutRoutinesInput
   }
 
   export type RoutineUncheckedCreateInput = {
@@ -18245,8 +19370,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutRoutinesNestedInput
     items?: RoutineItemUpdateManyWithoutRoutineNestedInput
+    user?: UserUpdateOneRequiredWithoutRoutinesNestedInput
   }
 
   export type RoutineUncheckedUpdateInput = {
@@ -18297,8 +19422,8 @@ export namespace Prisma {
     id?: string
     label: string
     order?: number
-    routine: RoutineCreateNestedOneWithoutItemsInput
     habit?: HabitCreateNestedOneWithoutRoutineItemsInput
+    routine: RoutineCreateNestedOneWithoutItemsInput
   }
 
   export type RoutineItemUncheckedCreateInput = {
@@ -18313,8 +19438,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
-    routine?: RoutineUpdateOneRequiredWithoutItemsNestedInput
     habit?: HabitUpdateOneWithoutRoutineItemsNestedInput
+    routine?: RoutineUpdateOneRequiredWithoutItemsNestedInput
   }
 
   export type RoutineItemUncheckedUpdateInput = {
@@ -18452,8 +19577,8 @@ export namespace Prisma {
     startedAt: Date | string
     completedAt?: Date | string | null
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutFocusSessionsInput
     task?: TaskCreateNestedOneWithoutFocusSessionsInput
+    user: UserCreateNestedOneWithoutFocusSessionsInput
   }
 
   export type FocusSessionUncheckedCreateInput = {
@@ -18476,8 +19601,8 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutFocusSessionsNestedInput
     task?: TaskUpdateOneWithoutFocusSessionsNestedInput
+    user?: UserUpdateOneRequiredWithoutFocusSessionsNestedInput
   }
 
   export type FocusSessionUncheckedUpdateInput = {
@@ -18720,6 +19845,61 @@ export namespace Prisma {
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ChatMessageCreateInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutChatMessagesInput
+  }
+
+  export type ChatMessageUncheckedCreateInput = {
+    id?: string
+    userId: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type ChatMessageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutChatMessagesNestedInput
+  }
+
+  export type ChatMessageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageCreateManyInput = {
+    id?: string
+    userId: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type ChatMessageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -18827,22 +20007,10 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type RefreshTokenListRelationFilter = {
-    every?: RefreshTokenWhereInput
-    some?: RefreshTokenWhereInput
-    none?: RefreshTokenWhereInput
-  }
-
-  export type OtpCodeListRelationFilter = {
-    every?: OtpCodeWhereInput
-    some?: OtpCodeWhereInput
-    none?: OtpCodeWhereInput
-  }
-
-  export type TaskListRelationFilter = {
-    every?: TaskWhereInput
-    some?: TaskWhereInput
-    none?: TaskWhereInput
+  export type FocusSessionListRelationFilter = {
+    every?: FocusSessionWhereInput
+    some?: FocusSessionWhereInput
+    none?: FocusSessionWhereInput
   }
 
   export type HabitListRelationFilter = {
@@ -18851,22 +20019,10 @@ export namespace Prisma {
     none?: HabitWhereInput
   }
 
-  export type RoutineListRelationFilter = {
-    every?: RoutineWhereInput
-    some?: RoutineWhereInput
-    none?: RoutineWhereInput
-  }
-
   export type JournalEntryListRelationFilter = {
     every?: JournalEntryWhereInput
     some?: JournalEntryWhereInput
     none?: JournalEntryWhereInput
-  }
-
-  export type FocusSessionListRelationFilter = {
-    every?: FocusSessionWhereInput
-    some?: FocusSessionWhereInput
-    none?: FocusSessionWhereInput
   }
 
   export type MeditationSessionListRelationFilter = {
@@ -18875,10 +20031,40 @@ export namespace Prisma {
     none?: MeditationSessionWhereInput
   }
 
+  export type OtpCodeListRelationFilter = {
+    every?: OtpCodeWhereInput
+    some?: OtpCodeWhereInput
+    none?: OtpCodeWhereInput
+  }
+
+  export type RefreshTokenListRelationFilter = {
+    every?: RefreshTokenWhereInput
+    some?: RefreshTokenWhereInput
+    none?: RefreshTokenWhereInput
+  }
+
+  export type RoutineListRelationFilter = {
+    every?: RoutineWhereInput
+    some?: RoutineWhereInput
+    none?: RoutineWhereInput
+  }
+
+  export type TaskListRelationFilter = {
+    every?: TaskWhereInput
+    some?: TaskWhereInput
+    none?: TaskWhereInput
+  }
+
   export type WeeklyReportListRelationFilter = {
     every?: WeeklyReportWhereInput
     some?: WeeklyReportWhereInput
     none?: WeeklyReportWhereInput
+  }
+
+  export type ChatMessageListRelationFilter = {
+    every?: ChatMessageWhereInput
+    some?: ChatMessageWhereInput
+    none?: ChatMessageWhereInput
   }
 
   export type SortOrderInput = {
@@ -18886,15 +20072,7 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type RefreshTokenOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type OtpCodeOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TaskOrderByRelationAggregateInput = {
+  export type FocusSessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -18902,15 +20080,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type RoutineOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type JournalEntryOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type FocusSessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -18918,7 +20088,27 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type OtpCodeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RefreshTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RoutineOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type WeeklyReportOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChatMessageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19630,14 +20820,14 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type RoutineRelationFilter = {
-    is?: RoutineWhereInput
-    isNot?: RoutineWhereInput
-  }
-
   export type HabitNullableRelationFilter = {
     is?: HabitWhereInput | null
     isNot?: HabitWhereInput | null
+  }
+
+  export type RoutineRelationFilter = {
+    is?: RoutineWhereInput
+    isNot?: RoutineWhereInput
   }
 
   export type RoutineItemCountOrderByAggregateInput = {
@@ -19976,50 +21166,32 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type ChatMessageCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ChatMessageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ChatMessageMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreatedistractionsInput = {
     set: $Enums.Distraction[]
-  }
-
-  export type RefreshTokenCreateNestedManyWithoutUserInput = {
-    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
-    createMany?: RefreshTokenCreateManyUserInputEnvelope
-    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-  }
-
-  export type OtpCodeCreateNestedManyWithoutUserInput = {
-    create?: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput> | OtpCodeCreateWithoutUserInput[] | OtpCodeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OtpCodeCreateOrConnectWithoutUserInput | OtpCodeCreateOrConnectWithoutUserInput[]
-    createMany?: OtpCodeCreateManyUserInputEnvelope
-    connect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-  }
-
-  export type TaskCreateNestedManyWithoutUserInput = {
-    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
-    createMany?: TaskCreateManyUserInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type HabitCreateNestedManyWithoutUserInput = {
-    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
-    createMany?: HabitCreateManyUserInputEnvelope
-    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-  }
-
-  export type RoutineCreateNestedManyWithoutUserInput = {
-    create?: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput> | RoutineCreateWithoutUserInput[] | RoutineUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RoutineCreateOrConnectWithoutUserInput | RoutineCreateOrConnectWithoutUserInput[]
-    createMany?: RoutineCreateManyUserInputEnvelope
-    connect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-  }
-
-  export type JournalEntryCreateNestedManyWithoutUserInput = {
-    create?: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput> | JournalEntryCreateWithoutUserInput[] | JournalEntryUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: JournalEntryCreateOrConnectWithoutUserInput | JournalEntryCreateOrConnectWithoutUserInput[]
-    createMany?: JournalEntryCreateManyUserInputEnvelope
-    connect?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
   }
 
   export type FocusSessionCreateNestedManyWithoutUserInput = {
@@ -20029,11 +21201,53 @@ export namespace Prisma {
     connect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
   }
 
+  export type HabitCreateNestedManyWithoutUserInput = {
+    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
+    createMany?: HabitCreateManyUserInputEnvelope
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
+  export type JournalEntryCreateNestedManyWithoutUserInput = {
+    create?: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput> | JournalEntryCreateWithoutUserInput[] | JournalEntryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JournalEntryCreateOrConnectWithoutUserInput | JournalEntryCreateOrConnectWithoutUserInput[]
+    createMany?: JournalEntryCreateManyUserInputEnvelope
+    connect?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
+  }
+
   export type MeditationSessionCreateNestedManyWithoutUserInput = {
     create?: XOR<MeditationSessionCreateWithoutUserInput, MeditationSessionUncheckedCreateWithoutUserInput> | MeditationSessionCreateWithoutUserInput[] | MeditationSessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: MeditationSessionCreateOrConnectWithoutUserInput | MeditationSessionCreateOrConnectWithoutUserInput[]
     createMany?: MeditationSessionCreateManyUserInputEnvelope
     connect?: MeditationSessionWhereUniqueInput | MeditationSessionWhereUniqueInput[]
+  }
+
+  export type OtpCodeCreateNestedManyWithoutUserInput = {
+    create?: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput> | OtpCodeCreateWithoutUserInput[] | OtpCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OtpCodeCreateOrConnectWithoutUserInput | OtpCodeCreateOrConnectWithoutUserInput[]
+    createMany?: OtpCodeCreateManyUserInputEnvelope
+    connect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+  }
+
+  export type RefreshTokenCreateNestedManyWithoutUserInput = {
+    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
+    createMany?: RefreshTokenCreateManyUserInputEnvelope
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+  }
+
+  export type RoutineCreateNestedManyWithoutUserInput = {
+    create?: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput> | RoutineCreateWithoutUserInput[] | RoutineUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RoutineCreateOrConnectWithoutUserInput | RoutineCreateOrConnectWithoutUserInput[]
+    createMany?: RoutineCreateManyUserInputEnvelope
+    connect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+  }
+
+  export type TaskCreateNestedManyWithoutUserInput = {
+    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
+    createMany?: TaskCreateManyUserInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
   export type WeeklyReportCreateNestedManyWithoutUserInput = {
@@ -20043,46 +21257,11 @@ export namespace Prisma {
     connect?: WeeklyReportWhereUniqueInput | WeeklyReportWhereUniqueInput[]
   }
 
-  export type RefreshTokenUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
-    createMany?: RefreshTokenCreateManyUserInputEnvelope
-    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-  }
-
-  export type OtpCodeUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput> | OtpCodeCreateWithoutUserInput[] | OtpCodeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OtpCodeCreateOrConnectWithoutUserInput | OtpCodeCreateOrConnectWithoutUserInput[]
-    createMany?: OtpCodeCreateManyUserInputEnvelope
-    connect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-  }
-
-  export type TaskUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
-    createMany?: TaskCreateManyUserInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type HabitUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
-    createMany?: HabitCreateManyUserInputEnvelope
-    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-  }
-
-  export type RoutineUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput> | RoutineCreateWithoutUserInput[] | RoutineUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RoutineCreateOrConnectWithoutUserInput | RoutineCreateOrConnectWithoutUserInput[]
-    createMany?: RoutineCreateManyUserInputEnvelope
-    connect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-  }
-
-  export type JournalEntryUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput> | JournalEntryCreateWithoutUserInput[] | JournalEntryUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: JournalEntryCreateOrConnectWithoutUserInput | JournalEntryCreateOrConnectWithoutUserInput[]
-    createMany?: JournalEntryCreateManyUserInputEnvelope
-    connect?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
+  export type ChatMessageCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
   }
 
   export type FocusSessionUncheckedCreateNestedManyWithoutUserInput = {
@@ -20092,6 +21271,20 @@ export namespace Prisma {
     connect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
   }
 
+  export type HabitUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
+    createMany?: HabitCreateManyUserInputEnvelope
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
+  export type JournalEntryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput> | JournalEntryCreateWithoutUserInput[] | JournalEntryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JournalEntryCreateOrConnectWithoutUserInput | JournalEntryCreateOrConnectWithoutUserInput[]
+    createMany?: JournalEntryCreateManyUserInputEnvelope
+    connect?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
+  }
+
   export type MeditationSessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<MeditationSessionCreateWithoutUserInput, MeditationSessionUncheckedCreateWithoutUserInput> | MeditationSessionCreateWithoutUserInput[] | MeditationSessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: MeditationSessionCreateOrConnectWithoutUserInput | MeditationSessionCreateOrConnectWithoutUserInput[]
@@ -20099,11 +21292,46 @@ export namespace Prisma {
     connect?: MeditationSessionWhereUniqueInput | MeditationSessionWhereUniqueInput[]
   }
 
+  export type OtpCodeUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput> | OtpCodeCreateWithoutUserInput[] | OtpCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OtpCodeCreateOrConnectWithoutUserInput | OtpCodeCreateOrConnectWithoutUserInput[]
+    createMany?: OtpCodeCreateManyUserInputEnvelope
+    connect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+  }
+
+  export type RefreshTokenUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
+    createMany?: RefreshTokenCreateManyUserInputEnvelope
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+  }
+
+  export type RoutineUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput> | RoutineCreateWithoutUserInput[] | RoutineUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RoutineCreateOrConnectWithoutUserInput | RoutineCreateOrConnectWithoutUserInput[]
+    createMany?: RoutineCreateManyUserInputEnvelope
+    connect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
+    createMany?: TaskCreateManyUserInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
   export type WeeklyReportUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<WeeklyReportCreateWithoutUserInput, WeeklyReportUncheckedCreateWithoutUserInput> | WeeklyReportCreateWithoutUserInput[] | WeeklyReportUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WeeklyReportCreateOrConnectWithoutUserInput | WeeklyReportCreateOrConnectWithoutUserInput[]
     createMany?: WeeklyReportCreateManyUserInputEnvelope
     connect?: WeeklyReportWhereUniqueInput | WeeklyReportWhereUniqueInput[]
+  }
+
+  export type ChatMessageUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -20159,46 +21387,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type RefreshTokenUpdateManyWithoutUserNestedInput = {
-    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
-    upsert?: RefreshTokenUpsertWithWhereUniqueWithoutUserInput | RefreshTokenUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: RefreshTokenCreateManyUserInputEnvelope
-    set?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-    disconnect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-    delete?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-    update?: RefreshTokenUpdateWithWhereUniqueWithoutUserInput | RefreshTokenUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: RefreshTokenUpdateManyWithWhereWithoutUserInput | RefreshTokenUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
-  }
-
-  export type OtpCodeUpdateManyWithoutUserNestedInput = {
-    create?: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput> | OtpCodeCreateWithoutUserInput[] | OtpCodeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OtpCodeCreateOrConnectWithoutUserInput | OtpCodeCreateOrConnectWithoutUserInput[]
-    upsert?: OtpCodeUpsertWithWhereUniqueWithoutUserInput | OtpCodeUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: OtpCodeCreateManyUserInputEnvelope
-    set?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-    disconnect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-    delete?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-    connect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-    update?: OtpCodeUpdateWithWhereUniqueWithoutUserInput | OtpCodeUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: OtpCodeUpdateManyWithWhereWithoutUserInput | OtpCodeUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: OtpCodeScalarWhereInput | OtpCodeScalarWhereInput[]
-  }
-
-  export type TaskUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutUserInput | TaskUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TaskCreateManyUserInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  export type FocusSessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FocusSessionCreateWithoutUserInput, FocusSessionUncheckedCreateWithoutUserInput> | FocusSessionCreateWithoutUserInput[] | FocusSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FocusSessionCreateOrConnectWithoutUserInput | FocusSessionCreateOrConnectWithoutUserInput[]
+    upsert?: FocusSessionUpsertWithWhereUniqueWithoutUserInput | FocusSessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FocusSessionCreateManyUserInputEnvelope
+    set?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
+    disconnect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
+    delete?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
+    connect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
+    update?: FocusSessionUpdateWithWhereUniqueWithoutUserInput | FocusSessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FocusSessionUpdateManyWithWhereWithoutUserInput | FocusSessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
   }
 
   export type HabitUpdateManyWithoutUserNestedInput = {
@@ -20215,20 +21415,6 @@ export namespace Prisma {
     deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
   }
 
-  export type RoutineUpdateManyWithoutUserNestedInput = {
-    create?: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput> | RoutineCreateWithoutUserInput[] | RoutineUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RoutineCreateOrConnectWithoutUserInput | RoutineCreateOrConnectWithoutUserInput[]
-    upsert?: RoutineUpsertWithWhereUniqueWithoutUserInput | RoutineUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: RoutineCreateManyUserInputEnvelope
-    set?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-    disconnect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-    delete?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-    connect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-    update?: RoutineUpdateWithWhereUniqueWithoutUserInput | RoutineUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: RoutineUpdateManyWithWhereWithoutUserInput | RoutineUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: RoutineScalarWhereInput | RoutineScalarWhereInput[]
-  }
-
   export type JournalEntryUpdateManyWithoutUserNestedInput = {
     create?: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput> | JournalEntryCreateWithoutUserInput[] | JournalEntryUncheckedCreateWithoutUserInput[]
     connectOrCreate?: JournalEntryCreateOrConnectWithoutUserInput | JournalEntryCreateOrConnectWithoutUserInput[]
@@ -20241,20 +21427,6 @@ export namespace Prisma {
     update?: JournalEntryUpdateWithWhereUniqueWithoutUserInput | JournalEntryUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: JournalEntryUpdateManyWithWhereWithoutUserInput | JournalEntryUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: JournalEntryScalarWhereInput | JournalEntryScalarWhereInput[]
-  }
-
-  export type FocusSessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<FocusSessionCreateWithoutUserInput, FocusSessionUncheckedCreateWithoutUserInput> | FocusSessionCreateWithoutUserInput[] | FocusSessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: FocusSessionCreateOrConnectWithoutUserInput | FocusSessionCreateOrConnectWithoutUserInput[]
-    upsert?: FocusSessionUpsertWithWhereUniqueWithoutUserInput | FocusSessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: FocusSessionCreateManyUserInputEnvelope
-    set?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
-    disconnect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
-    delete?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
-    connect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
-    update?: FocusSessionUpdateWithWhereUniqueWithoutUserInput | FocusSessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: FocusSessionUpdateManyWithWhereWithoutUserInput | FocusSessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
   }
 
   export type MeditationSessionUpdateManyWithoutUserNestedInput = {
@@ -20271,6 +21443,62 @@ export namespace Prisma {
     deleteMany?: MeditationSessionScalarWhereInput | MeditationSessionScalarWhereInput[]
   }
 
+  export type OtpCodeUpdateManyWithoutUserNestedInput = {
+    create?: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput> | OtpCodeCreateWithoutUserInput[] | OtpCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OtpCodeCreateOrConnectWithoutUserInput | OtpCodeCreateOrConnectWithoutUserInput[]
+    upsert?: OtpCodeUpsertWithWhereUniqueWithoutUserInput | OtpCodeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: OtpCodeCreateManyUserInputEnvelope
+    set?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+    disconnect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+    delete?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+    connect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+    update?: OtpCodeUpdateWithWhereUniqueWithoutUserInput | OtpCodeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: OtpCodeUpdateManyWithWhereWithoutUserInput | OtpCodeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: OtpCodeScalarWhereInput | OtpCodeScalarWhereInput[]
+  }
+
+  export type RefreshTokenUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
+    upsert?: RefreshTokenUpsertWithWhereUniqueWithoutUserInput | RefreshTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RefreshTokenCreateManyUserInputEnvelope
+    set?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    disconnect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    delete?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    update?: RefreshTokenUpdateWithWhereUniqueWithoutUserInput | RefreshTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RefreshTokenUpdateManyWithWhereWithoutUserInput | RefreshTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+  }
+
+  export type RoutineUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput> | RoutineCreateWithoutUserInput[] | RoutineUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RoutineCreateOrConnectWithoutUserInput | RoutineCreateOrConnectWithoutUserInput[]
+    upsert?: RoutineUpsertWithWhereUniqueWithoutUserInput | RoutineUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RoutineCreateManyUserInputEnvelope
+    set?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+    disconnect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+    delete?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+    connect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+    update?: RoutineUpdateWithWhereUniqueWithoutUserInput | RoutineUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RoutineUpdateManyWithWhereWithoutUserInput | RoutineUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RoutineScalarWhereInput | RoutineScalarWhereInput[]
+  }
+
+  export type TaskUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutUserInput | TaskUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TaskCreateManyUserInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
   export type WeeklyReportUpdateManyWithoutUserNestedInput = {
     create?: XOR<WeeklyReportCreateWithoutUserInput, WeeklyReportUncheckedCreateWithoutUserInput> | WeeklyReportCreateWithoutUserInput[] | WeeklyReportUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WeeklyReportCreateOrConnectWithoutUserInput | WeeklyReportCreateOrConnectWithoutUserInput[]
@@ -20285,88 +21513,18 @@ export namespace Prisma {
     deleteMany?: WeeklyReportScalarWhereInput | WeeklyReportScalarWhereInput[]
   }
 
-  export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
-    upsert?: RefreshTokenUpsertWithWhereUniqueWithoutUserInput | RefreshTokenUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: RefreshTokenCreateManyUserInputEnvelope
-    set?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-    disconnect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-    delete?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
-    update?: RefreshTokenUpdateWithWhereUniqueWithoutUserInput | RefreshTokenUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: RefreshTokenUpdateManyWithWhereWithoutUserInput | RefreshTokenUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
-  }
-
-  export type OtpCodeUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput> | OtpCodeCreateWithoutUserInput[] | OtpCodeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OtpCodeCreateOrConnectWithoutUserInput | OtpCodeCreateOrConnectWithoutUserInput[]
-    upsert?: OtpCodeUpsertWithWhereUniqueWithoutUserInput | OtpCodeUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: OtpCodeCreateManyUserInputEnvelope
-    set?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-    disconnect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-    delete?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-    connect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
-    update?: OtpCodeUpdateWithWhereUniqueWithoutUserInput | OtpCodeUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: OtpCodeUpdateManyWithWhereWithoutUserInput | OtpCodeUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: OtpCodeScalarWhereInput | OtpCodeScalarWhereInput[]
-  }
-
-  export type TaskUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutUserInput | TaskUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TaskCreateManyUserInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type HabitUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
-    upsert?: HabitUpsertWithWhereUniqueWithoutUserInput | HabitUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: HabitCreateManyUserInputEnvelope
-    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    update?: HabitUpdateWithWhereUniqueWithoutUserInput | HabitUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: HabitUpdateManyWithWhereWithoutUserInput | HabitUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
-  }
-
-  export type RoutineUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput> | RoutineCreateWithoutUserInput[] | RoutineUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RoutineCreateOrConnectWithoutUserInput | RoutineCreateOrConnectWithoutUserInput[]
-    upsert?: RoutineUpsertWithWhereUniqueWithoutUserInput | RoutineUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: RoutineCreateManyUserInputEnvelope
-    set?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-    disconnect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-    delete?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-    connect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
-    update?: RoutineUpdateWithWhereUniqueWithoutUserInput | RoutineUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: RoutineUpdateManyWithWhereWithoutUserInput | RoutineUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: RoutineScalarWhereInput | RoutineScalarWhereInput[]
-  }
-
-  export type JournalEntryUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput> | JournalEntryCreateWithoutUserInput[] | JournalEntryUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: JournalEntryCreateOrConnectWithoutUserInput | JournalEntryCreateOrConnectWithoutUserInput[]
-    upsert?: JournalEntryUpsertWithWhereUniqueWithoutUserInput | JournalEntryUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: JournalEntryCreateManyUserInputEnvelope
-    set?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
-    disconnect?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
-    delete?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
-    connect?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
-    update?: JournalEntryUpdateWithWhereUniqueWithoutUserInput | JournalEntryUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: JournalEntryUpdateManyWithWhereWithoutUserInput | JournalEntryUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: JournalEntryScalarWhereInput | JournalEntryScalarWhereInput[]
+  export type ChatMessageUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutUserInput | ChatMessageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutUserInput | ChatMessageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutUserInput | ChatMessageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
   }
 
   export type FocusSessionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -20383,6 +21541,34 @@ export namespace Prisma {
     deleteMany?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
   }
 
+  export type HabitUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
+    upsert?: HabitUpsertWithWhereUniqueWithoutUserInput | HabitUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: HabitCreateManyUserInputEnvelope
+    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    update?: HabitUpdateWithWhereUniqueWithoutUserInput | HabitUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: HabitUpdateManyWithWhereWithoutUserInput | HabitUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
+  }
+
+  export type JournalEntryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput> | JournalEntryCreateWithoutUserInput[] | JournalEntryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JournalEntryCreateOrConnectWithoutUserInput | JournalEntryCreateOrConnectWithoutUserInput[]
+    upsert?: JournalEntryUpsertWithWhereUniqueWithoutUserInput | JournalEntryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: JournalEntryCreateManyUserInputEnvelope
+    set?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
+    disconnect?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
+    delete?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
+    connect?: JournalEntryWhereUniqueInput | JournalEntryWhereUniqueInput[]
+    update?: JournalEntryUpdateWithWhereUniqueWithoutUserInput | JournalEntryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: JournalEntryUpdateManyWithWhereWithoutUserInput | JournalEntryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: JournalEntryScalarWhereInput | JournalEntryScalarWhereInput[]
+  }
+
   export type MeditationSessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<MeditationSessionCreateWithoutUserInput, MeditationSessionUncheckedCreateWithoutUserInput> | MeditationSessionCreateWithoutUserInput[] | MeditationSessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: MeditationSessionCreateOrConnectWithoutUserInput | MeditationSessionCreateOrConnectWithoutUserInput[]
@@ -20397,6 +21583,62 @@ export namespace Prisma {
     deleteMany?: MeditationSessionScalarWhereInput | MeditationSessionScalarWhereInput[]
   }
 
+  export type OtpCodeUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput> | OtpCodeCreateWithoutUserInput[] | OtpCodeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OtpCodeCreateOrConnectWithoutUserInput | OtpCodeCreateOrConnectWithoutUserInput[]
+    upsert?: OtpCodeUpsertWithWhereUniqueWithoutUserInput | OtpCodeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: OtpCodeCreateManyUserInputEnvelope
+    set?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+    disconnect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+    delete?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+    connect?: OtpCodeWhereUniqueInput | OtpCodeWhereUniqueInput[]
+    update?: OtpCodeUpdateWithWhereUniqueWithoutUserInput | OtpCodeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: OtpCodeUpdateManyWithWhereWithoutUserInput | OtpCodeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: OtpCodeScalarWhereInput | OtpCodeScalarWhereInput[]
+  }
+
+  export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
+    upsert?: RefreshTokenUpsertWithWhereUniqueWithoutUserInput | RefreshTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RefreshTokenCreateManyUserInputEnvelope
+    set?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    disconnect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    delete?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    update?: RefreshTokenUpdateWithWhereUniqueWithoutUserInput | RefreshTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RefreshTokenUpdateManyWithWhereWithoutUserInput | RefreshTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+  }
+
+  export type RoutineUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput> | RoutineCreateWithoutUserInput[] | RoutineUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RoutineCreateOrConnectWithoutUserInput | RoutineCreateOrConnectWithoutUserInput[]
+    upsert?: RoutineUpsertWithWhereUniqueWithoutUserInput | RoutineUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RoutineCreateManyUserInputEnvelope
+    set?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+    disconnect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+    delete?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+    connect?: RoutineWhereUniqueInput | RoutineWhereUniqueInput[]
+    update?: RoutineUpdateWithWhereUniqueWithoutUserInput | RoutineUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RoutineUpdateManyWithWhereWithoutUserInput | RoutineUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RoutineScalarWhereInput | RoutineScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutUserInput | TaskUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TaskCreateManyUserInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
   export type WeeklyReportUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<WeeklyReportCreateWithoutUserInput, WeeklyReportUncheckedCreateWithoutUserInput> | WeeklyReportCreateWithoutUserInput[] | WeeklyReportUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WeeklyReportCreateOrConnectWithoutUserInput | WeeklyReportCreateOrConnectWithoutUserInput[]
@@ -20409,6 +21651,20 @@ export namespace Prisma {
     update?: WeeklyReportUpdateWithWhereUniqueWithoutUserInput | WeeklyReportUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: WeeklyReportUpdateManyWithWhereWithoutUserInput | WeeklyReportUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: WeeklyReportScalarWhereInput | WeeklyReportScalarWhereInput[]
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutUserInput | ChatMessageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutUserInput | ChatMessageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutUserInput | ChatMessageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutRefreshTokensInput = {
@@ -20447,10 +21703,11 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOtpCodesInput, UserUpdateWithoutOtpCodesInput>, UserUncheckedUpdateWithoutOtpCodesInput>
   }
 
-  export type UserCreateNestedOneWithoutTasksInput = {
-    create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTasksInput
-    connect?: UserWhereUniqueInput
+  export type FocusSessionCreateNestedManyWithoutTaskInput = {
+    create?: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput> | FocusSessionCreateWithoutTaskInput[] | FocusSessionUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: FocusSessionCreateOrConnectWithoutTaskInput | FocusSessionCreateOrConnectWithoutTaskInput[]
+    createMany?: FocusSessionCreateManyTaskInputEnvelope
+    connect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
   }
 
   export type SubtaskCreateNestedManyWithoutTaskInput = {
@@ -20460,7 +21717,13 @@ export namespace Prisma {
     connect?: SubtaskWhereUniqueInput | SubtaskWhereUniqueInput[]
   }
 
-  export type FocusSessionCreateNestedManyWithoutTaskInput = {
+  export type UserCreateNestedOneWithoutTasksInput = {
+    create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTasksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type FocusSessionUncheckedCreateNestedManyWithoutTaskInput = {
     create?: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput> | FocusSessionCreateWithoutTaskInput[] | FocusSessionUncheckedCreateWithoutTaskInput[]
     connectOrCreate?: FocusSessionCreateOrConnectWithoutTaskInput | FocusSessionCreateOrConnectWithoutTaskInput[]
     createMany?: FocusSessionCreateManyTaskInputEnvelope
@@ -20472,13 +21735,6 @@ export namespace Prisma {
     connectOrCreate?: SubtaskCreateOrConnectWithoutTaskInput | SubtaskCreateOrConnectWithoutTaskInput[]
     createMany?: SubtaskCreateManyTaskInputEnvelope
     connect?: SubtaskWhereUniqueInput | SubtaskWhereUniqueInput[]
-  }
-
-  export type FocusSessionUncheckedCreateNestedManyWithoutTaskInput = {
-    create?: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput> | FocusSessionCreateWithoutTaskInput[] | FocusSessionUncheckedCreateWithoutTaskInput[]
-    connectOrCreate?: FocusSessionCreateOrConnectWithoutTaskInput | FocusSessionCreateOrConnectWithoutTaskInput[]
-    createMany?: FocusSessionCreateManyTaskInputEnvelope
-    connect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
   }
 
   export type EnumDriveFieldUpdateOperationsInput = {
@@ -20493,12 +21749,18 @@ export namespace Prisma {
     set?: $Enums.TaskPriority
   }
 
-  export type UserUpdateOneRequiredWithoutTasksNestedInput = {
-    create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTasksInput
-    upsert?: UserUpsertWithoutTasksInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTasksInput, UserUpdateWithoutTasksInput>, UserUncheckedUpdateWithoutTasksInput>
+  export type FocusSessionUpdateManyWithoutTaskNestedInput = {
+    create?: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput> | FocusSessionCreateWithoutTaskInput[] | FocusSessionUncheckedCreateWithoutTaskInput[]
+    connectOrCreate?: FocusSessionCreateOrConnectWithoutTaskInput | FocusSessionCreateOrConnectWithoutTaskInput[]
+    upsert?: FocusSessionUpsertWithWhereUniqueWithoutTaskInput | FocusSessionUpsertWithWhereUniqueWithoutTaskInput[]
+    createMany?: FocusSessionCreateManyTaskInputEnvelope
+    set?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
+    disconnect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
+    delete?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
+    connect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
+    update?: FocusSessionUpdateWithWhereUniqueWithoutTaskInput | FocusSessionUpdateWithWhereUniqueWithoutTaskInput[]
+    updateMany?: FocusSessionUpdateManyWithWhereWithoutTaskInput | FocusSessionUpdateManyWithWhereWithoutTaskInput[]
+    deleteMany?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
   }
 
   export type SubtaskUpdateManyWithoutTaskNestedInput = {
@@ -20515,7 +21777,15 @@ export namespace Prisma {
     deleteMany?: SubtaskScalarWhereInput | SubtaskScalarWhereInput[]
   }
 
-  export type FocusSessionUpdateManyWithoutTaskNestedInput = {
+  export type UserUpdateOneRequiredWithoutTasksNestedInput = {
+    create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTasksInput
+    upsert?: UserUpsertWithoutTasksInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTasksInput, UserUpdateWithoutTasksInput>, UserUncheckedUpdateWithoutTasksInput>
+  }
+
+  export type FocusSessionUncheckedUpdateManyWithoutTaskNestedInput = {
     create?: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput> | FocusSessionCreateWithoutTaskInput[] | FocusSessionUncheckedCreateWithoutTaskInput[]
     connectOrCreate?: FocusSessionCreateOrConnectWithoutTaskInput | FocusSessionCreateOrConnectWithoutTaskInput[]
     upsert?: FocusSessionUpsertWithWhereUniqueWithoutTaskInput | FocusSessionUpsertWithWhereUniqueWithoutTaskInput[]
@@ -20543,20 +21813,6 @@ export namespace Prisma {
     deleteMany?: SubtaskScalarWhereInput | SubtaskScalarWhereInput[]
   }
 
-  export type FocusSessionUncheckedUpdateManyWithoutTaskNestedInput = {
-    create?: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput> | FocusSessionCreateWithoutTaskInput[] | FocusSessionUncheckedCreateWithoutTaskInput[]
-    connectOrCreate?: FocusSessionCreateOrConnectWithoutTaskInput | FocusSessionCreateOrConnectWithoutTaskInput[]
-    upsert?: FocusSessionUpsertWithWhereUniqueWithoutTaskInput | FocusSessionUpsertWithWhereUniqueWithoutTaskInput[]
-    createMany?: FocusSessionCreateManyTaskInputEnvelope
-    set?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
-    disconnect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
-    delete?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
-    connect?: FocusSessionWhereUniqueInput | FocusSessionWhereUniqueInput[]
-    update?: FocusSessionUpdateWithWhereUniqueWithoutTaskInput | FocusSessionUpdateWithWhereUniqueWithoutTaskInput[]
-    updateMany?: FocusSessionUpdateManyWithWhereWithoutTaskInput | FocusSessionUpdateManyWithWhereWithoutTaskInput[]
-    deleteMany?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
-  }
-
   export type TaskCreateNestedOneWithoutSubtasksInput = {
     create?: XOR<TaskCreateWithoutSubtasksInput, TaskUncheckedCreateWithoutSubtasksInput>
     connectOrCreate?: TaskCreateOrConnectWithoutSubtasksInput
@@ -20579,17 +21835,17 @@ export namespace Prisma {
     update?: XOR<XOR<TaskUpdateToOneWithWhereWithoutSubtasksInput, TaskUpdateWithoutSubtasksInput>, TaskUncheckedUpdateWithoutSubtasksInput>
   }
 
-  export type UserCreateNestedOneWithoutHabitsInput = {
-    create?: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutHabitsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type HabitCompletionCreateNestedManyWithoutHabitInput = {
     create?: XOR<HabitCompletionCreateWithoutHabitInput, HabitCompletionUncheckedCreateWithoutHabitInput> | HabitCompletionCreateWithoutHabitInput[] | HabitCompletionUncheckedCreateWithoutHabitInput[]
     connectOrCreate?: HabitCompletionCreateOrConnectWithoutHabitInput | HabitCompletionCreateOrConnectWithoutHabitInput[]
     createMany?: HabitCompletionCreateManyHabitInputEnvelope
     connect?: HabitCompletionWhereUniqueInput | HabitCompletionWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutHabitsInput = {
+    create?: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutHabitsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type RoutineItemCreateNestedManyWithoutHabitInput = {
@@ -20625,14 +21881,6 @@ export namespace Prisma {
     set?: $Enums.HabitStrength
   }
 
-  export type UserUpdateOneRequiredWithoutHabitsNestedInput = {
-    create?: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutHabitsInput
-    upsert?: UserUpsertWithoutHabitsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutHabitsInput, UserUpdateWithoutHabitsInput>, UserUncheckedUpdateWithoutHabitsInput>
-  }
-
   export type HabitCompletionUpdateManyWithoutHabitNestedInput = {
     create?: XOR<HabitCompletionCreateWithoutHabitInput, HabitCompletionUncheckedCreateWithoutHabitInput> | HabitCompletionCreateWithoutHabitInput[] | HabitCompletionUncheckedCreateWithoutHabitInput[]
     connectOrCreate?: HabitCompletionCreateOrConnectWithoutHabitInput | HabitCompletionCreateOrConnectWithoutHabitInput[]
@@ -20645,6 +21893,14 @@ export namespace Prisma {
     update?: HabitCompletionUpdateWithWhereUniqueWithoutHabitInput | HabitCompletionUpdateWithWhereUniqueWithoutHabitInput[]
     updateMany?: HabitCompletionUpdateManyWithWhereWithoutHabitInput | HabitCompletionUpdateManyWithWhereWithoutHabitInput[]
     deleteMany?: HabitCompletionScalarWhereInput | HabitCompletionScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutHabitsNestedInput = {
+    create?: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutHabitsInput
+    upsert?: UserUpsertWithoutHabitsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutHabitsInput, UserUpdateWithoutHabitsInput>, UserUncheckedUpdateWithoutHabitsInput>
   }
 
   export type RoutineItemUpdateManyWithoutHabitNestedInput = {
@@ -20703,12 +21959,6 @@ export namespace Prisma {
     update?: XOR<XOR<HabitUpdateToOneWithWhereWithoutCompletionsInput, HabitUpdateWithoutCompletionsInput>, HabitUncheckedUpdateWithoutCompletionsInput>
   }
 
-  export type UserCreateNestedOneWithoutRoutinesInput = {
-    create?: XOR<UserCreateWithoutRoutinesInput, UserUncheckedCreateWithoutRoutinesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutRoutinesInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type RoutineItemCreateNestedManyWithoutRoutineInput = {
     create?: XOR<RoutineItemCreateWithoutRoutineInput, RoutineItemUncheckedCreateWithoutRoutineInput> | RoutineItemCreateWithoutRoutineInput[] | RoutineItemUncheckedCreateWithoutRoutineInput[]
     connectOrCreate?: RoutineItemCreateOrConnectWithoutRoutineInput | RoutineItemCreateOrConnectWithoutRoutineInput[]
@@ -20716,19 +21966,17 @@ export namespace Prisma {
     connect?: RoutineItemWhereUniqueInput | RoutineItemWhereUniqueInput[]
   }
 
+  export type UserCreateNestedOneWithoutRoutinesInput = {
+    create?: XOR<UserCreateWithoutRoutinesInput, UserUncheckedCreateWithoutRoutinesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRoutinesInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type RoutineItemUncheckedCreateNestedManyWithoutRoutineInput = {
     create?: XOR<RoutineItemCreateWithoutRoutineInput, RoutineItemUncheckedCreateWithoutRoutineInput> | RoutineItemCreateWithoutRoutineInput[] | RoutineItemUncheckedCreateWithoutRoutineInput[]
     connectOrCreate?: RoutineItemCreateOrConnectWithoutRoutineInput | RoutineItemCreateOrConnectWithoutRoutineInput[]
     createMany?: RoutineItemCreateManyRoutineInputEnvelope
     connect?: RoutineItemWhereUniqueInput | RoutineItemWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutRoutinesNestedInput = {
-    create?: XOR<UserCreateWithoutRoutinesInput, UserUncheckedCreateWithoutRoutinesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutRoutinesInput
-    upsert?: UserUpsertWithoutRoutinesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRoutinesInput, UserUpdateWithoutRoutinesInput>, UserUncheckedUpdateWithoutRoutinesInput>
   }
 
   export type RoutineItemUpdateManyWithoutRoutineNestedInput = {
@@ -20745,6 +21993,14 @@ export namespace Prisma {
     deleteMany?: RoutineItemScalarWhereInput | RoutineItemScalarWhereInput[]
   }
 
+  export type UserUpdateOneRequiredWithoutRoutinesNestedInput = {
+    create?: XOR<UserCreateWithoutRoutinesInput, UserUncheckedCreateWithoutRoutinesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRoutinesInput
+    upsert?: UserUpsertWithoutRoutinesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRoutinesInput, UserUpdateWithoutRoutinesInput>, UserUncheckedUpdateWithoutRoutinesInput>
+  }
+
   export type RoutineItemUncheckedUpdateManyWithoutRoutineNestedInput = {
     create?: XOR<RoutineItemCreateWithoutRoutineInput, RoutineItemUncheckedCreateWithoutRoutineInput> | RoutineItemCreateWithoutRoutineInput[] | RoutineItemUncheckedCreateWithoutRoutineInput[]
     connectOrCreate?: RoutineItemCreateOrConnectWithoutRoutineInput | RoutineItemCreateOrConnectWithoutRoutineInput[]
@@ -20759,24 +22015,16 @@ export namespace Prisma {
     deleteMany?: RoutineItemScalarWhereInput | RoutineItemScalarWhereInput[]
   }
 
-  export type RoutineCreateNestedOneWithoutItemsInput = {
-    create?: XOR<RoutineCreateWithoutItemsInput, RoutineUncheckedCreateWithoutItemsInput>
-    connectOrCreate?: RoutineCreateOrConnectWithoutItemsInput
-    connect?: RoutineWhereUniqueInput
-  }
-
   export type HabitCreateNestedOneWithoutRoutineItemsInput = {
     create?: XOR<HabitCreateWithoutRoutineItemsInput, HabitUncheckedCreateWithoutRoutineItemsInput>
     connectOrCreate?: HabitCreateOrConnectWithoutRoutineItemsInput
     connect?: HabitWhereUniqueInput
   }
 
-  export type RoutineUpdateOneRequiredWithoutItemsNestedInput = {
+  export type RoutineCreateNestedOneWithoutItemsInput = {
     create?: XOR<RoutineCreateWithoutItemsInput, RoutineUncheckedCreateWithoutItemsInput>
     connectOrCreate?: RoutineCreateOrConnectWithoutItemsInput
-    upsert?: RoutineUpsertWithoutItemsInput
     connect?: RoutineWhereUniqueInput
-    update?: XOR<XOR<RoutineUpdateToOneWithWhereWithoutItemsInput, RoutineUpdateWithoutItemsInput>, RoutineUncheckedUpdateWithoutItemsInput>
   }
 
   export type HabitUpdateOneWithoutRoutineItemsNestedInput = {
@@ -20787,6 +22035,14 @@ export namespace Prisma {
     delete?: HabitWhereInput | boolean
     connect?: HabitWhereUniqueInput
     update?: XOR<XOR<HabitUpdateToOneWithWhereWithoutRoutineItemsInput, HabitUpdateWithoutRoutineItemsInput>, HabitUncheckedUpdateWithoutRoutineItemsInput>
+  }
+
+  export type RoutineUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<RoutineCreateWithoutItemsInput, RoutineUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: RoutineCreateOrConnectWithoutItemsInput
+    upsert?: RoutineUpsertWithoutItemsInput
+    connect?: RoutineWhereUniqueInput
+    update?: XOR<XOR<RoutineUpdateToOneWithWhereWithoutItemsInput, RoutineUpdateWithoutItemsInput>, RoutineUncheckedUpdateWithoutItemsInput>
   }
 
   export type JournalEntryCreatetagsInput = {
@@ -20812,24 +22068,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutJournalEntriesInput, UserUpdateWithoutJournalEntriesInput>, UserUncheckedUpdateWithoutJournalEntriesInput>
   }
 
-  export type UserCreateNestedOneWithoutFocusSessionsInput = {
-    create?: XOR<UserCreateWithoutFocusSessionsInput, UserUncheckedCreateWithoutFocusSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutFocusSessionsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type TaskCreateNestedOneWithoutFocusSessionsInput = {
     create?: XOR<TaskCreateWithoutFocusSessionsInput, TaskUncheckedCreateWithoutFocusSessionsInput>
     connectOrCreate?: TaskCreateOrConnectWithoutFocusSessionsInput
     connect?: TaskWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutFocusSessionsNestedInput = {
+  export type UserCreateNestedOneWithoutFocusSessionsInput = {
     create?: XOR<UserCreateWithoutFocusSessionsInput, UserUncheckedCreateWithoutFocusSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutFocusSessionsInput
-    upsert?: UserUpsertWithoutFocusSessionsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFocusSessionsInput, UserUpdateWithoutFocusSessionsInput>, UserUncheckedUpdateWithoutFocusSessionsInput>
   }
 
   export type TaskUpdateOneWithoutFocusSessionsNestedInput = {
@@ -20840,6 +22088,14 @@ export namespace Prisma {
     delete?: TaskWhereInput | boolean
     connect?: TaskWhereUniqueInput
     update?: XOR<XOR<TaskUpdateToOneWithWhereWithoutFocusSessionsInput, TaskUpdateWithoutFocusSessionsInput>, TaskUncheckedUpdateWithoutFocusSessionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutFocusSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutFocusSessionsInput, UserUncheckedCreateWithoutFocusSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFocusSessionsInput
+    upsert?: UserUpsertWithoutFocusSessionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFocusSessionsInput, UserUpdateWithoutFocusSessionsInput>, UserUncheckedUpdateWithoutFocusSessionsInput>
   }
 
   export type UserCreateNestedOneWithoutMeditationSessionsInput = {
@@ -20898,6 +22154,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutWeeklyReportsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWeeklyReportsInput, UserUpdateWithoutWeeklyReportsInput>, UserUncheckedUpdateWithoutWeeklyReportsInput>
+  }
+
+  export type UserCreateNestedOneWithoutChatMessagesInput = {
+    create?: XOR<UserCreateWithoutChatMessagesInput, UserUncheckedCreateWithoutChatMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutChatMessagesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutChatMessagesNestedInput = {
+    create?: XOR<UserCreateWithoutChatMessagesInput, UserUncheckedCreateWithoutChatMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutChatMessagesInput
+    upsert?: UserUpsertWithoutChatMessagesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutChatMessagesInput, UserUpdateWithoutChatMessagesInput>, UserUncheckedUpdateWithoutChatMessagesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -21377,101 +22647,35 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type RefreshTokenCreateWithoutUserInput = {
+  export type FocusSessionCreateWithoutUserInput = {
     id?: string
-    token: string
-    expiresAt: Date | string
-    createdAt?: Date | string
-  }
-
-  export type RefreshTokenUncheckedCreateWithoutUserInput = {
-    id?: string
-    token: string
-    expiresAt: Date | string
-    createdAt?: Date | string
-  }
-
-  export type RefreshTokenCreateOrConnectWithoutUserInput = {
-    where: RefreshTokenWhereUniqueInput
-    create: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput>
-  }
-
-  export type RefreshTokenCreateManyUserInputEnvelope = {
-    data: RefreshTokenCreateManyUserInput | RefreshTokenCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type OtpCodeCreateWithoutUserInput = {
-    id?: string
-    code: string
-    purpose?: $Enums.OtpPurpose
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type OtpCodeUncheckedCreateWithoutUserInput = {
-    id?: string
-    code: string
-    purpose?: $Enums.OtpPurpose
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type OtpCodeCreateOrConnectWithoutUserInput = {
-    where: OtpCodeWhereUniqueInput
-    create: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput>
-  }
-
-  export type OtpCodeCreateManyUserInputEnvelope = {
-    data: OtpCodeCreateManyUserInput | OtpCodeCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TaskCreateWithoutUserInput = {
-    id?: string
-    title: string
-    naturalInput?: string | null
-    drive?: $Enums.Drive
-    status?: $Enums.TaskStatus
-    priority?: $Enums.TaskPriority
-    estimatedMinutes?: number | null
-    dueDate?: Date | string | null
+    durationMinutes: number
+    completed?: boolean
+    interrupted?: boolean
+    startedAt: Date | string
     completedAt?: Date | string | null
-    aiSuggested?: boolean
-    aiNudge?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    subtasks?: SubtaskCreateNestedManyWithoutTaskInput
-    focusSessions?: FocusSessionCreateNestedManyWithoutTaskInput
+    task?: TaskCreateNestedOneWithoutFocusSessionsInput
   }
 
-  export type TaskUncheckedCreateWithoutUserInput = {
+  export type FocusSessionUncheckedCreateWithoutUserInput = {
     id?: string
-    title: string
-    naturalInput?: string | null
-    drive?: $Enums.Drive
-    status?: $Enums.TaskStatus
-    priority?: $Enums.TaskPriority
-    estimatedMinutes?: number | null
-    dueDate?: Date | string | null
+    taskId?: string | null
+    durationMinutes: number
+    completed?: boolean
+    interrupted?: boolean
+    startedAt: Date | string
     completedAt?: Date | string | null
-    aiSuggested?: boolean
-    aiNudge?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    subtasks?: SubtaskUncheckedCreateNestedManyWithoutTaskInput
-    focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutTaskInput
   }
 
-  export type TaskCreateOrConnectWithoutUserInput = {
-    where: TaskWhereUniqueInput
-    create: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput>
+  export type FocusSessionCreateOrConnectWithoutUserInput = {
+    where: FocusSessionWhereUniqueInput
+    create: XOR<FocusSessionCreateWithoutUserInput, FocusSessionUncheckedCreateWithoutUserInput>
   }
 
-  export type TaskCreateManyUserInputEnvelope = {
-    data: TaskCreateManyUserInput | TaskCreateManyUserInput[]
+  export type FocusSessionCreateManyUserInputEnvelope = {
+    data: FocusSessionCreateManyUserInput | FocusSessionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -21517,38 +22721,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type RoutineCreateWithoutUserInput = {
-    id?: string
-    name: string
-    time?: string | null
-    type?: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    items?: RoutineItemCreateNestedManyWithoutRoutineInput
-  }
-
-  export type RoutineUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    time?: string | null
-    type?: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    items?: RoutineItemUncheckedCreateNestedManyWithoutRoutineInput
-  }
-
-  export type RoutineCreateOrConnectWithoutUserInput = {
-    where: RoutineWhereUniqueInput
-    create: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput>
-  }
-
-  export type RoutineCreateManyUserInputEnvelope = {
-    data: RoutineCreateManyUserInput | RoutineCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type JournalEntryCreateWithoutUserInput = {
     id?: string
     text?: string | null
@@ -21585,38 +22757,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FocusSessionCreateWithoutUserInput = {
-    id?: string
-    durationMinutes: number
-    completed?: boolean
-    interrupted?: boolean
-    startedAt: Date | string
-    completedAt?: Date | string | null
-    createdAt?: Date | string
-    task?: TaskCreateNestedOneWithoutFocusSessionsInput
-  }
-
-  export type FocusSessionUncheckedCreateWithoutUserInput = {
-    id?: string
-    taskId?: string | null
-    durationMinutes: number
-    completed?: boolean
-    interrupted?: boolean
-    startedAt: Date | string
-    completedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type FocusSessionCreateOrConnectWithoutUserInput = {
-    where: FocusSessionWhereUniqueInput
-    create: XOR<FocusSessionCreateWithoutUserInput, FocusSessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type FocusSessionCreateManyUserInputEnvelope = {
-    data: FocusSessionCreateManyUserInput | FocusSessionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type MeditationSessionCreateWithoutUserInput = {
     id?: string
     mode: $Enums.MeditationMode
@@ -21644,6 +22784,136 @@ export namespace Prisma {
 
   export type MeditationSessionCreateManyUserInputEnvelope = {
     data: MeditationSessionCreateManyUserInput | MeditationSessionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OtpCodeCreateWithoutUserInput = {
+    id?: string
+    code: string
+    purpose?: $Enums.OtpPurpose
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type OtpCodeUncheckedCreateWithoutUserInput = {
+    id?: string
+    code: string
+    purpose?: $Enums.OtpPurpose
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type OtpCodeCreateOrConnectWithoutUserInput = {
+    where: OtpCodeWhereUniqueInput
+    create: XOR<OtpCodeCreateWithoutUserInput, OtpCodeUncheckedCreateWithoutUserInput>
+  }
+
+  export type OtpCodeCreateManyUserInputEnvelope = {
+    data: OtpCodeCreateManyUserInput | OtpCodeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RefreshTokenCreateWithoutUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type RefreshTokenUncheckedCreateWithoutUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type RefreshTokenCreateOrConnectWithoutUserInput = {
+    where: RefreshTokenWhereUniqueInput
+    create: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type RefreshTokenCreateManyUserInputEnvelope = {
+    data: RefreshTokenCreateManyUserInput | RefreshTokenCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoutineCreateWithoutUserInput = {
+    id?: string
+    name: string
+    time?: string | null
+    type?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: RoutineItemCreateNestedManyWithoutRoutineInput
+  }
+
+  export type RoutineUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    time?: string | null
+    type?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: RoutineItemUncheckedCreateNestedManyWithoutRoutineInput
+  }
+
+  export type RoutineCreateOrConnectWithoutUserInput = {
+    where: RoutineWhereUniqueInput
+    create: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput>
+  }
+
+  export type RoutineCreateManyUserInputEnvelope = {
+    data: RoutineCreateManyUserInput | RoutineCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TaskCreateWithoutUserInput = {
+    id?: string
+    title: string
+    naturalInput?: string | null
+    drive?: $Enums.Drive
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    estimatedMinutes?: number | null
+    dueDate?: Date | string | null
+    completedAt?: Date | string | null
+    aiSuggested?: boolean
+    aiNudge?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    focusSessions?: FocusSessionCreateNestedManyWithoutTaskInput
+    subtasks?: SubtaskCreateNestedManyWithoutTaskInput
+  }
+
+  export type TaskUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    naturalInput?: string | null
+    drive?: $Enums.Drive
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    estimatedMinutes?: number | null
+    dueDate?: Date | string | null
+    completedAt?: Date | string | null
+    aiSuggested?: boolean
+    aiNudge?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutTaskInput
+    subtasks?: SubtaskUncheckedCreateNestedManyWithoutTaskInput
+  }
+
+  export type TaskCreateOrConnectWithoutUserInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput>
+  }
+
+  export type TaskCreateManyUserInputEnvelope = {
+    data: TaskCreateManyUserInput | TaskCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -21689,31 +22959,156 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type RefreshTokenUpsertWithWhereUniqueWithoutUserInput = {
-    where: RefreshTokenWhereUniqueInput
-    update: XOR<RefreshTokenUpdateWithoutUserInput, RefreshTokenUncheckedUpdateWithoutUserInput>
-    create: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput>
+  export type ChatMessageCreateWithoutUserInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
   }
 
-  export type RefreshTokenUpdateWithWhereUniqueWithoutUserInput = {
-    where: RefreshTokenWhereUniqueInput
-    data: XOR<RefreshTokenUpdateWithoutUserInput, RefreshTokenUncheckedUpdateWithoutUserInput>
+  export type ChatMessageUncheckedCreateWithoutUserInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
   }
 
-  export type RefreshTokenUpdateManyWithWhereWithoutUserInput = {
-    where: RefreshTokenScalarWhereInput
-    data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyWithoutUserInput>
+  export type ChatMessageCreateOrConnectWithoutUserInput = {
+    where: ChatMessageWhereUniqueInput
+    create: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput>
   }
 
-  export type RefreshTokenScalarWhereInput = {
-    AND?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
-    OR?: RefreshTokenScalarWhereInput[]
-    NOT?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
-    id?: StringFilter<"RefreshToken"> | string
-    token?: StringFilter<"RefreshToken"> | string
-    userId?: StringFilter<"RefreshToken"> | string
-    expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
-    createdAt?: DateTimeFilter<"RefreshToken"> | Date | string
+  export type ChatMessageCreateManyUserInputEnvelope = {
+    data: ChatMessageCreateManyUserInput | ChatMessageCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FocusSessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: FocusSessionWhereUniqueInput
+    update: XOR<FocusSessionUpdateWithoutUserInput, FocusSessionUncheckedUpdateWithoutUserInput>
+    create: XOR<FocusSessionCreateWithoutUserInput, FocusSessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type FocusSessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: FocusSessionWhereUniqueInput
+    data: XOR<FocusSessionUpdateWithoutUserInput, FocusSessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FocusSessionUpdateManyWithWhereWithoutUserInput = {
+    where: FocusSessionScalarWhereInput
+    data: XOR<FocusSessionUpdateManyMutationInput, FocusSessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type FocusSessionScalarWhereInput = {
+    AND?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
+    OR?: FocusSessionScalarWhereInput[]
+    NOT?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
+    id?: StringFilter<"FocusSession"> | string
+    userId?: StringFilter<"FocusSession"> | string
+    taskId?: StringNullableFilter<"FocusSession"> | string | null
+    durationMinutes?: IntFilter<"FocusSession"> | number
+    completed?: BoolFilter<"FocusSession"> | boolean
+    interrupted?: BoolFilter<"FocusSession"> | boolean
+    startedAt?: DateTimeFilter<"FocusSession"> | Date | string
+    completedAt?: DateTimeNullableFilter<"FocusSession"> | Date | string | null
+    createdAt?: DateTimeFilter<"FocusSession"> | Date | string
+  }
+
+  export type HabitUpsertWithWhereUniqueWithoutUserInput = {
+    where: HabitWhereUniqueInput
+    update: XOR<HabitUpdateWithoutUserInput, HabitUncheckedUpdateWithoutUserInput>
+    create: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput>
+  }
+
+  export type HabitUpdateWithWhereUniqueWithoutUserInput = {
+    where: HabitWhereUniqueInput
+    data: XOR<HabitUpdateWithoutUserInput, HabitUncheckedUpdateWithoutUserInput>
+  }
+
+  export type HabitUpdateManyWithWhereWithoutUserInput = {
+    where: HabitScalarWhereInput
+    data: XOR<HabitUpdateManyMutationInput, HabitUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type HabitScalarWhereInput = {
+    AND?: HabitScalarWhereInput | HabitScalarWhereInput[]
+    OR?: HabitScalarWhereInput[]
+    NOT?: HabitScalarWhereInput | HabitScalarWhereInput[]
+    id?: StringFilter<"Habit"> | string
+    userId?: StringFilter<"Habit"> | string
+    name?: StringFilter<"Habit"> | string
+    emoji?: StringFilter<"Habit"> | string
+    type?: EnumHabitTypeFilter<"Habit"> | $Enums.HabitType
+    frequency?: EnumHabitFrequencyFilter<"Habit"> | $Enums.HabitFrequency
+    strength?: EnumHabitStrengthFilter<"Habit"> | $Enums.HabitStrength
+    streak?: IntFilter<"Habit"> | number
+    bestStreak?: IntFilter<"Habit"> | number
+    isActive?: BoolFilter<"Habit"> | boolean
+    createdAt?: DateTimeFilter<"Habit"> | Date | string
+    updatedAt?: DateTimeFilter<"Habit"> | Date | string
+  }
+
+  export type JournalEntryUpsertWithWhereUniqueWithoutUserInput = {
+    where: JournalEntryWhereUniqueInput
+    update: XOR<JournalEntryUpdateWithoutUserInput, JournalEntryUncheckedUpdateWithoutUserInput>
+    create: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput>
+  }
+
+  export type JournalEntryUpdateWithWhereUniqueWithoutUserInput = {
+    where: JournalEntryWhereUniqueInput
+    data: XOR<JournalEntryUpdateWithoutUserInput, JournalEntryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type JournalEntryUpdateManyWithWhereWithoutUserInput = {
+    where: JournalEntryScalarWhereInput
+    data: XOR<JournalEntryUpdateManyMutationInput, JournalEntryUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type JournalEntryScalarWhereInput = {
+    AND?: JournalEntryScalarWhereInput | JournalEntryScalarWhereInput[]
+    OR?: JournalEntryScalarWhereInput[]
+    NOT?: JournalEntryScalarWhereInput | JournalEntryScalarWhereInput[]
+    id?: StringFilter<"JournalEntry"> | string
+    userId?: StringFilter<"JournalEntry"> | string
+    text?: StringNullableFilter<"JournalEntry"> | string | null
+    tags?: StringNullableListFilter<"JournalEntry">
+    moodScore?: IntFilter<"JournalEntry"> | number
+    sleepQuality?: IntNullableFilter<"JournalEntry"> | number | null
+    date?: StringFilter<"JournalEntry"> | string
+    aiInsight?: StringNullableFilter<"JournalEntry"> | string | null
+    aiPromptUsed?: BoolFilter<"JournalEntry"> | boolean
+    createdAt?: DateTimeFilter<"JournalEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"JournalEntry"> | Date | string
+  }
+
+  export type MeditationSessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: MeditationSessionWhereUniqueInput
+    update: XOR<MeditationSessionUpdateWithoutUserInput, MeditationSessionUncheckedUpdateWithoutUserInput>
+    create: XOR<MeditationSessionCreateWithoutUserInput, MeditationSessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type MeditationSessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: MeditationSessionWhereUniqueInput
+    data: XOR<MeditationSessionUpdateWithoutUserInput, MeditationSessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MeditationSessionUpdateManyWithWhereWithoutUserInput = {
+    where: MeditationSessionScalarWhereInput
+    data: XOR<MeditationSessionUpdateManyMutationInput, MeditationSessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MeditationSessionScalarWhereInput = {
+    AND?: MeditationSessionScalarWhereInput | MeditationSessionScalarWhereInput[]
+    OR?: MeditationSessionScalarWhereInput[]
+    NOT?: MeditationSessionScalarWhereInput | MeditationSessionScalarWhereInput[]
+    id?: StringFilter<"MeditationSession"> | string
+    userId?: StringFilter<"MeditationSession"> | string
+    mode?: EnumMeditationModeFilter<"MeditationSession"> | $Enums.MeditationMode
+    durationMinutes?: IntFilter<"MeditationSession"> | number
+    completed?: BoolFilter<"MeditationSession"> | boolean
+    startedAt?: DateTimeFilter<"MeditationSession"> | Date | string
+    completedAt?: DateTimeNullableFilter<"MeditationSession"> | Date | string | null
+    createdAt?: DateTimeFilter<"MeditationSession"> | Date | string
   }
 
   export type OtpCodeUpsertWithWhereUniqueWithoutUserInput = {
@@ -21743,6 +23138,63 @@ export namespace Prisma {
     expiresAt?: DateTimeFilter<"OtpCode"> | Date | string
     usedAt?: DateTimeNullableFilter<"OtpCode"> | Date | string | null
     createdAt?: DateTimeFilter<"OtpCode"> | Date | string
+  }
+
+  export type RefreshTokenUpsertWithWhereUniqueWithoutUserInput = {
+    where: RefreshTokenWhereUniqueInput
+    update: XOR<RefreshTokenUpdateWithoutUserInput, RefreshTokenUncheckedUpdateWithoutUserInput>
+    create: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type RefreshTokenUpdateWithWhereUniqueWithoutUserInput = {
+    where: RefreshTokenWhereUniqueInput
+    data: XOR<RefreshTokenUpdateWithoutUserInput, RefreshTokenUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RefreshTokenUpdateManyWithWhereWithoutUserInput = {
+    where: RefreshTokenScalarWhereInput
+    data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type RefreshTokenScalarWhereInput = {
+    AND?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+    OR?: RefreshTokenScalarWhereInput[]
+    NOT?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+    id?: StringFilter<"RefreshToken"> | string
+    token?: StringFilter<"RefreshToken"> | string
+    userId?: StringFilter<"RefreshToken"> | string
+    expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    createdAt?: DateTimeFilter<"RefreshToken"> | Date | string
+  }
+
+  export type RoutineUpsertWithWhereUniqueWithoutUserInput = {
+    where: RoutineWhereUniqueInput
+    update: XOR<RoutineUpdateWithoutUserInput, RoutineUncheckedUpdateWithoutUserInput>
+    create: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput>
+  }
+
+  export type RoutineUpdateWithWhereUniqueWithoutUserInput = {
+    where: RoutineWhereUniqueInput
+    data: XOR<RoutineUpdateWithoutUserInput, RoutineUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RoutineUpdateManyWithWhereWithoutUserInput = {
+    where: RoutineScalarWhereInput
+    data: XOR<RoutineUpdateManyMutationInput, RoutineUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type RoutineScalarWhereInput = {
+    AND?: RoutineScalarWhereInput | RoutineScalarWhereInput[]
+    OR?: RoutineScalarWhereInput[]
+    NOT?: RoutineScalarWhereInput | RoutineScalarWhereInput[]
+    id?: StringFilter<"Routine"> | string
+    userId?: StringFilter<"Routine"> | string
+    name?: StringFilter<"Routine"> | string
+    time?: StringNullableFilter<"Routine"> | string | null
+    type?: StringFilter<"Routine"> | string
+    isActive?: BoolFilter<"Routine"> | boolean
+    createdAt?: DateTimeFilter<"Routine"> | Date | string
+    updatedAt?: DateTimeFilter<"Routine"> | Date | string
   }
 
   export type TaskUpsertWithWhereUniqueWithoutUserInput = {
@@ -21781,164 +23233,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Task"> | Date | string
   }
 
-  export type HabitUpsertWithWhereUniqueWithoutUserInput = {
-    where: HabitWhereUniqueInput
-    update: XOR<HabitUpdateWithoutUserInput, HabitUncheckedUpdateWithoutUserInput>
-    create: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput>
-  }
-
-  export type HabitUpdateWithWhereUniqueWithoutUserInput = {
-    where: HabitWhereUniqueInput
-    data: XOR<HabitUpdateWithoutUserInput, HabitUncheckedUpdateWithoutUserInput>
-  }
-
-  export type HabitUpdateManyWithWhereWithoutUserInput = {
-    where: HabitScalarWhereInput
-    data: XOR<HabitUpdateManyMutationInput, HabitUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type HabitScalarWhereInput = {
-    AND?: HabitScalarWhereInput | HabitScalarWhereInput[]
-    OR?: HabitScalarWhereInput[]
-    NOT?: HabitScalarWhereInput | HabitScalarWhereInput[]
-    id?: StringFilter<"Habit"> | string
-    userId?: StringFilter<"Habit"> | string
-    name?: StringFilter<"Habit"> | string
-    emoji?: StringFilter<"Habit"> | string
-    type?: EnumHabitTypeFilter<"Habit"> | $Enums.HabitType
-    frequency?: EnumHabitFrequencyFilter<"Habit"> | $Enums.HabitFrequency
-    strength?: EnumHabitStrengthFilter<"Habit"> | $Enums.HabitStrength
-    streak?: IntFilter<"Habit"> | number
-    bestStreak?: IntFilter<"Habit"> | number
-    isActive?: BoolFilter<"Habit"> | boolean
-    createdAt?: DateTimeFilter<"Habit"> | Date | string
-    updatedAt?: DateTimeFilter<"Habit"> | Date | string
-  }
-
-  export type RoutineUpsertWithWhereUniqueWithoutUserInput = {
-    where: RoutineWhereUniqueInput
-    update: XOR<RoutineUpdateWithoutUserInput, RoutineUncheckedUpdateWithoutUserInput>
-    create: XOR<RoutineCreateWithoutUserInput, RoutineUncheckedCreateWithoutUserInput>
-  }
-
-  export type RoutineUpdateWithWhereUniqueWithoutUserInput = {
-    where: RoutineWhereUniqueInput
-    data: XOR<RoutineUpdateWithoutUserInput, RoutineUncheckedUpdateWithoutUserInput>
-  }
-
-  export type RoutineUpdateManyWithWhereWithoutUserInput = {
-    where: RoutineScalarWhereInput
-    data: XOR<RoutineUpdateManyMutationInput, RoutineUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type RoutineScalarWhereInput = {
-    AND?: RoutineScalarWhereInput | RoutineScalarWhereInput[]
-    OR?: RoutineScalarWhereInput[]
-    NOT?: RoutineScalarWhereInput | RoutineScalarWhereInput[]
-    id?: StringFilter<"Routine"> | string
-    userId?: StringFilter<"Routine"> | string
-    name?: StringFilter<"Routine"> | string
-    time?: StringNullableFilter<"Routine"> | string | null
-    type?: StringFilter<"Routine"> | string
-    isActive?: BoolFilter<"Routine"> | boolean
-    createdAt?: DateTimeFilter<"Routine"> | Date | string
-    updatedAt?: DateTimeFilter<"Routine"> | Date | string
-  }
-
-  export type JournalEntryUpsertWithWhereUniqueWithoutUserInput = {
-    where: JournalEntryWhereUniqueInput
-    update: XOR<JournalEntryUpdateWithoutUserInput, JournalEntryUncheckedUpdateWithoutUserInput>
-    create: XOR<JournalEntryCreateWithoutUserInput, JournalEntryUncheckedCreateWithoutUserInput>
-  }
-
-  export type JournalEntryUpdateWithWhereUniqueWithoutUserInput = {
-    where: JournalEntryWhereUniqueInput
-    data: XOR<JournalEntryUpdateWithoutUserInput, JournalEntryUncheckedUpdateWithoutUserInput>
-  }
-
-  export type JournalEntryUpdateManyWithWhereWithoutUserInput = {
-    where: JournalEntryScalarWhereInput
-    data: XOR<JournalEntryUpdateManyMutationInput, JournalEntryUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type JournalEntryScalarWhereInput = {
-    AND?: JournalEntryScalarWhereInput | JournalEntryScalarWhereInput[]
-    OR?: JournalEntryScalarWhereInput[]
-    NOT?: JournalEntryScalarWhereInput | JournalEntryScalarWhereInput[]
-    id?: StringFilter<"JournalEntry"> | string
-    userId?: StringFilter<"JournalEntry"> | string
-    text?: StringNullableFilter<"JournalEntry"> | string | null
-    tags?: StringNullableListFilter<"JournalEntry">
-    moodScore?: IntFilter<"JournalEntry"> | number
-    sleepQuality?: IntNullableFilter<"JournalEntry"> | number | null
-    date?: StringFilter<"JournalEntry"> | string
-    aiInsight?: StringNullableFilter<"JournalEntry"> | string | null
-    aiPromptUsed?: BoolFilter<"JournalEntry"> | boolean
-    createdAt?: DateTimeFilter<"JournalEntry"> | Date | string
-    updatedAt?: DateTimeFilter<"JournalEntry"> | Date | string
-  }
-
-  export type FocusSessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: FocusSessionWhereUniqueInput
-    update: XOR<FocusSessionUpdateWithoutUserInput, FocusSessionUncheckedUpdateWithoutUserInput>
-    create: XOR<FocusSessionCreateWithoutUserInput, FocusSessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type FocusSessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: FocusSessionWhereUniqueInput
-    data: XOR<FocusSessionUpdateWithoutUserInput, FocusSessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type FocusSessionUpdateManyWithWhereWithoutUserInput = {
-    where: FocusSessionScalarWhereInput
-    data: XOR<FocusSessionUpdateManyMutationInput, FocusSessionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type FocusSessionScalarWhereInput = {
-    AND?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
-    OR?: FocusSessionScalarWhereInput[]
-    NOT?: FocusSessionScalarWhereInput | FocusSessionScalarWhereInput[]
-    id?: StringFilter<"FocusSession"> | string
-    userId?: StringFilter<"FocusSession"> | string
-    taskId?: StringNullableFilter<"FocusSession"> | string | null
-    durationMinutes?: IntFilter<"FocusSession"> | number
-    completed?: BoolFilter<"FocusSession"> | boolean
-    interrupted?: BoolFilter<"FocusSession"> | boolean
-    startedAt?: DateTimeFilter<"FocusSession"> | Date | string
-    completedAt?: DateTimeNullableFilter<"FocusSession"> | Date | string | null
-    createdAt?: DateTimeFilter<"FocusSession"> | Date | string
-  }
-
-  export type MeditationSessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: MeditationSessionWhereUniqueInput
-    update: XOR<MeditationSessionUpdateWithoutUserInput, MeditationSessionUncheckedUpdateWithoutUserInput>
-    create: XOR<MeditationSessionCreateWithoutUserInput, MeditationSessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type MeditationSessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: MeditationSessionWhereUniqueInput
-    data: XOR<MeditationSessionUpdateWithoutUserInput, MeditationSessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MeditationSessionUpdateManyWithWhereWithoutUserInput = {
-    where: MeditationSessionScalarWhereInput
-    data: XOR<MeditationSessionUpdateManyMutationInput, MeditationSessionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type MeditationSessionScalarWhereInput = {
-    AND?: MeditationSessionScalarWhereInput | MeditationSessionScalarWhereInput[]
-    OR?: MeditationSessionScalarWhereInput[]
-    NOT?: MeditationSessionScalarWhereInput | MeditationSessionScalarWhereInput[]
-    id?: StringFilter<"MeditationSession"> | string
-    userId?: StringFilter<"MeditationSession"> | string
-    mode?: EnumMeditationModeFilter<"MeditationSession"> | $Enums.MeditationMode
-    durationMinutes?: IntFilter<"MeditationSession"> | number
-    completed?: BoolFilter<"MeditationSession"> | boolean
-    startedAt?: DateTimeFilter<"MeditationSession"> | Date | string
-    completedAt?: DateTimeNullableFilter<"MeditationSession"> | Date | string | null
-    createdAt?: DateTimeFilter<"MeditationSession"> | Date | string
-  }
-
   export type WeeklyReportUpsertWithWhereUniqueWithoutUserInput = {
     where: WeeklyReportWhereUniqueInput
     update: XOR<WeeklyReportUpdateWithoutUserInput, WeeklyReportUncheckedUpdateWithoutUserInput>
@@ -21975,6 +23269,33 @@ export namespace Prisma {
     generatedAt?: DateTimeFilter<"WeeklyReport"> | Date | string
   }
 
+  export type ChatMessageUpsertWithWhereUniqueWithoutUserInput = {
+    where: ChatMessageWhereUniqueInput
+    update: XOR<ChatMessageUpdateWithoutUserInput, ChatMessageUncheckedUpdateWithoutUserInput>
+    create: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput>
+  }
+
+  export type ChatMessageUpdateWithWhereUniqueWithoutUserInput = {
+    where: ChatMessageWhereUniqueInput
+    data: XOR<ChatMessageUpdateWithoutUserInput, ChatMessageUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ChatMessageUpdateManyWithWhereWithoutUserInput = {
+    where: ChatMessageScalarWhereInput
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ChatMessageScalarWhereInput = {
+    AND?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+    OR?: ChatMessageScalarWhereInput[]
+    NOT?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+    id?: StringFilter<"ChatMessage"> | string
+    userId?: StringFilter<"ChatMessage"> | string
+    role?: StringFilter<"ChatMessage"> | string
+    content?: StringFilter<"ChatMessage"> | string
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
+  }
+
   export type UserCreateWithoutRefreshTokensInput = {
     id?: string
     email: string
@@ -21998,14 +23319,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -22031,14 +23353,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -22080,14 +23403,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -22113,14 +23437,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutOtpCodesInput = {
@@ -22146,14 +23471,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOtpCodesInput = {
@@ -22179,14 +23505,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOtpCodesInput = {
@@ -22228,14 +23555,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOtpCodesInput = {
@@ -22261,85 +23589,47 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserCreateWithoutTasksInput = {
+  export type FocusSessionCreateWithoutTaskInput = {
     id?: string
-    email: string
-    passwordHash?: string | null
-    displayName: string
-    username?: string | null
-    avatarUrl?: string | null
-    timezone?: string
-    role?: $Enums.UserRole | null
-    isEmailVerified?: boolean
-    isOnboarded?: boolean
-    focusTime?: $Enums.FocusTime | null
-    emotionalState?: $Enums.EmotionalState | null
-    distractions?: UserCreatedistractionsInput | $Enums.Distraction[]
-    mainGoal?: $Enums.MainGoal | null
-    weeklyGoal?: string | null
-    personalityVibe?: $Enums.PersonalityVibe | null
-    temperament?: $Enums.Temperament | null
-    iqScore?: number | null
-    eqScore?: number | null
-    sqScore?: number | null
+    durationMinutes: number
+    completed?: boolean
+    interrupted?: boolean
+    startedAt: Date | string
+    completedAt?: Date | string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
-    focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
-    meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
-    weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    user: UserCreateNestedOneWithoutFocusSessionsInput
   }
 
-  export type UserUncheckedCreateWithoutTasksInput = {
+  export type FocusSessionUncheckedCreateWithoutTaskInput = {
     id?: string
-    email: string
-    passwordHash?: string | null
-    displayName: string
-    username?: string | null
-    avatarUrl?: string | null
-    timezone?: string
-    role?: $Enums.UserRole | null
-    isEmailVerified?: boolean
-    isOnboarded?: boolean
-    focusTime?: $Enums.FocusTime | null
-    emotionalState?: $Enums.EmotionalState | null
-    distractions?: UserCreatedistractionsInput | $Enums.Distraction[]
-    mainGoal?: $Enums.MainGoal | null
-    weeklyGoal?: string | null
-    personalityVibe?: $Enums.PersonalityVibe | null
-    temperament?: $Enums.Temperament | null
-    iqScore?: number | null
-    eqScore?: number | null
-    sqScore?: number | null
+    userId: string
+    durationMinutes: number
+    completed?: boolean
+    interrupted?: boolean
+    startedAt: Date | string
+    completedAt?: Date | string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
-    focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
-    meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
-    weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutTasksInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+  export type FocusSessionCreateOrConnectWithoutTaskInput = {
+    where: FocusSessionWhereUniqueInput
+    create: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput>
+  }
+
+  export type FocusSessionCreateManyTaskInputEnvelope = {
+    data: FocusSessionCreateManyTaskInput | FocusSessionCreateManyTaskInput[]
+    skipDuplicates?: boolean
   }
 
   export type SubtaskCreateWithoutTaskInput = {
@@ -22374,36 +23664,124 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FocusSessionCreateWithoutTaskInput = {
+  export type UserCreateWithoutTasksInput = {
     id?: string
-    durationMinutes: number
-    completed?: boolean
-    interrupted?: boolean
-    startedAt: Date | string
-    completedAt?: Date | string | null
+    email: string
+    passwordHash?: string | null
+    displayName: string
+    username?: string | null
+    avatarUrl?: string | null
+    timezone?: string
+    role?: $Enums.UserRole | null
+    isEmailVerified?: boolean
+    isOnboarded?: boolean
+    focusTime?: $Enums.FocusTime | null
+    emotionalState?: $Enums.EmotionalState | null
+    distractions?: UserCreatedistractionsInput | $Enums.Distraction[]
+    mainGoal?: $Enums.MainGoal | null
+    weeklyGoal?: string | null
+    personalityVibe?: $Enums.PersonalityVibe | null
+    temperament?: $Enums.Temperament | null
+    iqScore?: number | null
+    eqScore?: number | null
+    sqScore?: number | null
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutFocusSessionsInput
+    updatedAt?: Date | string
+    focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
+    meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
-  export type FocusSessionUncheckedCreateWithoutTaskInput = {
+  export type UserUncheckedCreateWithoutTasksInput = {
     id?: string
-    userId: string
-    durationMinutes: number
-    completed?: boolean
-    interrupted?: boolean
-    startedAt: Date | string
-    completedAt?: Date | string | null
+    email: string
+    passwordHash?: string | null
+    displayName: string
+    username?: string | null
+    avatarUrl?: string | null
+    timezone?: string
+    role?: $Enums.UserRole | null
+    isEmailVerified?: boolean
+    isOnboarded?: boolean
+    focusTime?: $Enums.FocusTime | null
+    emotionalState?: $Enums.EmotionalState | null
+    distractions?: UserCreatedistractionsInput | $Enums.Distraction[]
+    mainGoal?: $Enums.MainGoal | null
+    weeklyGoal?: string | null
+    personalityVibe?: $Enums.PersonalityVibe | null
+    temperament?: $Enums.Temperament | null
+    iqScore?: number | null
+    eqScore?: number | null
+    sqScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
+    focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
+    meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type FocusSessionCreateOrConnectWithoutTaskInput = {
+  export type UserCreateOrConnectWithoutTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+  }
+
+  export type FocusSessionUpsertWithWhereUniqueWithoutTaskInput = {
     where: FocusSessionWhereUniqueInput
+    update: XOR<FocusSessionUpdateWithoutTaskInput, FocusSessionUncheckedUpdateWithoutTaskInput>
     create: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput>
   }
 
-  export type FocusSessionCreateManyTaskInputEnvelope = {
-    data: FocusSessionCreateManyTaskInput | FocusSessionCreateManyTaskInput[]
-    skipDuplicates?: boolean
+  export type FocusSessionUpdateWithWhereUniqueWithoutTaskInput = {
+    where: FocusSessionWhereUniqueInput
+    data: XOR<FocusSessionUpdateWithoutTaskInput, FocusSessionUncheckedUpdateWithoutTaskInput>
+  }
+
+  export type FocusSessionUpdateManyWithWhereWithoutTaskInput = {
+    where: FocusSessionScalarWhereInput
+    data: XOR<FocusSessionUpdateManyMutationInput, FocusSessionUncheckedUpdateManyWithoutTaskInput>
+  }
+
+  export type SubtaskUpsertWithWhereUniqueWithoutTaskInput = {
+    where: SubtaskWhereUniqueInput
+    update: XOR<SubtaskUpdateWithoutTaskInput, SubtaskUncheckedUpdateWithoutTaskInput>
+    create: XOR<SubtaskCreateWithoutTaskInput, SubtaskUncheckedCreateWithoutTaskInput>
+  }
+
+  export type SubtaskUpdateWithWhereUniqueWithoutTaskInput = {
+    where: SubtaskWhereUniqueInput
+    data: XOR<SubtaskUpdateWithoutTaskInput, SubtaskUncheckedUpdateWithoutTaskInput>
+  }
+
+  export type SubtaskUpdateManyWithWhereWithoutTaskInput = {
+    where: SubtaskScalarWhereInput
+    data: XOR<SubtaskUpdateManyMutationInput, SubtaskUncheckedUpdateManyWithoutTaskInput>
+  }
+
+  export type SubtaskScalarWhereInput = {
+    AND?: SubtaskScalarWhereInput | SubtaskScalarWhereInput[]
+    OR?: SubtaskScalarWhereInput[]
+    NOT?: SubtaskScalarWhereInput | SubtaskScalarWhereInput[]
+    id?: StringFilter<"Subtask"> | string
+    taskId?: StringFilter<"Subtask"> | string
+    title?: StringFilter<"Subtask"> | string
+    estimatedMinutes?: IntNullableFilter<"Subtask"> | number | null
+    completed?: BoolFilter<"Subtask"> | boolean
+    completedAt?: DateTimeNullableFilter<"Subtask"> | Date | string | null
+    order?: IntFilter<"Subtask"> | number
+    createdAt?: DateTimeFilter<"Subtask"> | Date | string
+    updatedAt?: DateTimeFilter<"Subtask"> | Date | string
   }
 
   export type UserUpsertWithoutTasksInput = {
@@ -22440,14 +23818,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -22473,61 +23852,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type SubtaskUpsertWithWhereUniqueWithoutTaskInput = {
-    where: SubtaskWhereUniqueInput
-    update: XOR<SubtaskUpdateWithoutTaskInput, SubtaskUncheckedUpdateWithoutTaskInput>
-    create: XOR<SubtaskCreateWithoutTaskInput, SubtaskUncheckedCreateWithoutTaskInput>
-  }
-
-  export type SubtaskUpdateWithWhereUniqueWithoutTaskInput = {
-    where: SubtaskWhereUniqueInput
-    data: XOR<SubtaskUpdateWithoutTaskInput, SubtaskUncheckedUpdateWithoutTaskInput>
-  }
-
-  export type SubtaskUpdateManyWithWhereWithoutTaskInput = {
-    where: SubtaskScalarWhereInput
-    data: XOR<SubtaskUpdateManyMutationInput, SubtaskUncheckedUpdateManyWithoutTaskInput>
-  }
-
-  export type SubtaskScalarWhereInput = {
-    AND?: SubtaskScalarWhereInput | SubtaskScalarWhereInput[]
-    OR?: SubtaskScalarWhereInput[]
-    NOT?: SubtaskScalarWhereInput | SubtaskScalarWhereInput[]
-    id?: StringFilter<"Subtask"> | string
-    taskId?: StringFilter<"Subtask"> | string
-    title?: StringFilter<"Subtask"> | string
-    estimatedMinutes?: IntNullableFilter<"Subtask"> | number | null
-    completed?: BoolFilter<"Subtask"> | boolean
-    completedAt?: DateTimeNullableFilter<"Subtask"> | Date | string | null
-    order?: IntFilter<"Subtask"> | number
-    createdAt?: DateTimeFilter<"Subtask"> | Date | string
-    updatedAt?: DateTimeFilter<"Subtask"> | Date | string
-  }
-
-  export type FocusSessionUpsertWithWhereUniqueWithoutTaskInput = {
-    where: FocusSessionWhereUniqueInput
-    update: XOR<FocusSessionUpdateWithoutTaskInput, FocusSessionUncheckedUpdateWithoutTaskInput>
-    create: XOR<FocusSessionCreateWithoutTaskInput, FocusSessionUncheckedCreateWithoutTaskInput>
-  }
-
-  export type FocusSessionUpdateWithWhereUniqueWithoutTaskInput = {
-    where: FocusSessionWhereUniqueInput
-    data: XOR<FocusSessionUpdateWithoutTaskInput, FocusSessionUncheckedUpdateWithoutTaskInput>
-  }
-
-  export type FocusSessionUpdateManyWithWhereWithoutTaskInput = {
-    where: FocusSessionScalarWhereInput
-    data: XOR<FocusSessionUpdateManyMutationInput, FocusSessionUncheckedUpdateManyWithoutTaskInput>
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TaskCreateWithoutSubtasksInput = {
@@ -22544,8 +23877,8 @@ export namespace Prisma {
     aiNudge?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutTasksInput
     focusSessions?: FocusSessionCreateNestedManyWithoutTaskInput
+    user: UserCreateNestedOneWithoutTasksInput
   }
 
   export type TaskUncheckedCreateWithoutSubtasksInput = {
@@ -22596,8 +23929,8 @@ export namespace Prisma {
     aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTasksNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutTaskNestedInput
+    user?: UserUpdateOneRequiredWithoutTasksNestedInput
   }
 
   export type TaskUncheckedUpdateWithoutSubtasksInput = {
@@ -22616,6 +23949,28 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutTaskNestedInput
+  }
+
+  export type HabitCompletionCreateWithoutHabitInput = {
+    id?: string
+    completedAt?: Date | string
+    date: string
+  }
+
+  export type HabitCompletionUncheckedCreateWithoutHabitInput = {
+    id?: string
+    completedAt?: Date | string
+    date: string
+  }
+
+  export type HabitCompletionCreateOrConnectWithoutHabitInput = {
+    where: HabitCompletionWhereUniqueInput
+    create: XOR<HabitCompletionCreateWithoutHabitInput, HabitCompletionUncheckedCreateWithoutHabitInput>
+  }
+
+  export type HabitCompletionCreateManyHabitInputEnvelope = {
+    data: HabitCompletionCreateManyHabitInput | HabitCompletionCreateManyHabitInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserCreateWithoutHabitsInput = {
@@ -22641,14 +23996,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitsInput = {
@@ -22674,41 +24030,20 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
-  }
-
-  export type HabitCompletionCreateWithoutHabitInput = {
-    id?: string
-    completedAt?: Date | string
-    date: string
-  }
-
-  export type HabitCompletionUncheckedCreateWithoutHabitInput = {
-    id?: string
-    completedAt?: Date | string
-    date: string
-  }
-
-  export type HabitCompletionCreateOrConnectWithoutHabitInput = {
-    where: HabitCompletionWhereUniqueInput
-    create: XOR<HabitCompletionCreateWithoutHabitInput, HabitCompletionUncheckedCreateWithoutHabitInput>
-  }
-
-  export type HabitCompletionCreateManyHabitInputEnvelope = {
-    data: HabitCompletionCreateManyHabitInput | HabitCompletionCreateManyHabitInput[]
-    skipDuplicates?: boolean
   }
 
   export type RoutineItemCreateWithoutHabitInput = {
@@ -22733,6 +24068,32 @@ export namespace Prisma {
   export type RoutineItemCreateManyHabitInputEnvelope = {
     data: RoutineItemCreateManyHabitInput | RoutineItemCreateManyHabitInput[]
     skipDuplicates?: boolean
+  }
+
+  export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
+    where: HabitCompletionWhereUniqueInput
+    update: XOR<HabitCompletionUpdateWithoutHabitInput, HabitCompletionUncheckedUpdateWithoutHabitInput>
+    create: XOR<HabitCompletionCreateWithoutHabitInput, HabitCompletionUncheckedCreateWithoutHabitInput>
+  }
+
+  export type HabitCompletionUpdateWithWhereUniqueWithoutHabitInput = {
+    where: HabitCompletionWhereUniqueInput
+    data: XOR<HabitCompletionUpdateWithoutHabitInput, HabitCompletionUncheckedUpdateWithoutHabitInput>
+  }
+
+  export type HabitCompletionUpdateManyWithWhereWithoutHabitInput = {
+    where: HabitCompletionScalarWhereInput
+    data: XOR<HabitCompletionUpdateManyMutationInput, HabitCompletionUncheckedUpdateManyWithoutHabitInput>
+  }
+
+  export type HabitCompletionScalarWhereInput = {
+    AND?: HabitCompletionScalarWhereInput | HabitCompletionScalarWhereInput[]
+    OR?: HabitCompletionScalarWhereInput[]
+    NOT?: HabitCompletionScalarWhereInput | HabitCompletionScalarWhereInput[]
+    id?: StringFilter<"HabitCompletion"> | string
+    habitId?: StringFilter<"HabitCompletion"> | string
+    completedAt?: DateTimeFilter<"HabitCompletion"> | Date | string
+    date?: StringFilter<"HabitCompletion"> | string
   }
 
   export type UserUpsertWithoutHabitsInput = {
@@ -22769,14 +24130,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -22802,40 +24164,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
-    where: HabitCompletionWhereUniqueInput
-    update: XOR<HabitCompletionUpdateWithoutHabitInput, HabitCompletionUncheckedUpdateWithoutHabitInput>
-    create: XOR<HabitCompletionCreateWithoutHabitInput, HabitCompletionUncheckedCreateWithoutHabitInput>
-  }
-
-  export type HabitCompletionUpdateWithWhereUniqueWithoutHabitInput = {
-    where: HabitCompletionWhereUniqueInput
-    data: XOR<HabitCompletionUpdateWithoutHabitInput, HabitCompletionUncheckedUpdateWithoutHabitInput>
-  }
-
-  export type HabitCompletionUpdateManyWithWhereWithoutHabitInput = {
-    where: HabitCompletionScalarWhereInput
-    data: XOR<HabitCompletionUpdateManyMutationInput, HabitCompletionUncheckedUpdateManyWithoutHabitInput>
-  }
-
-  export type HabitCompletionScalarWhereInput = {
-    AND?: HabitCompletionScalarWhereInput | HabitCompletionScalarWhereInput[]
-    OR?: HabitCompletionScalarWhereInput[]
-    NOT?: HabitCompletionScalarWhereInput | HabitCompletionScalarWhereInput[]
-    id?: StringFilter<"HabitCompletion"> | string
-    habitId?: StringFilter<"HabitCompletion"> | string
-    completedAt?: DateTimeFilter<"HabitCompletion"> | Date | string
-    date?: StringFilter<"HabitCompletion"> | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoutineItemUpsertWithWhereUniqueWithoutHabitInput = {
@@ -22945,6 +24282,30 @@ export namespace Prisma {
     routineItems?: RoutineItemUncheckedUpdateManyWithoutHabitNestedInput
   }
 
+  export type RoutineItemCreateWithoutRoutineInput = {
+    id?: string
+    label: string
+    order?: number
+    habit?: HabitCreateNestedOneWithoutRoutineItemsInput
+  }
+
+  export type RoutineItemUncheckedCreateWithoutRoutineInput = {
+    id?: string
+    habitId?: string | null
+    label: string
+    order?: number
+  }
+
+  export type RoutineItemCreateOrConnectWithoutRoutineInput = {
+    where: RoutineItemWhereUniqueInput
+    create: XOR<RoutineItemCreateWithoutRoutineInput, RoutineItemUncheckedCreateWithoutRoutineInput>
+  }
+
+  export type RoutineItemCreateManyRoutineInputEnvelope = {
+    data: RoutineItemCreateManyRoutineInput | RoutineItemCreateManyRoutineInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserCreateWithoutRoutinesInput = {
     id?: string
     email: string
@@ -22968,14 +24329,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
+    focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
-    focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoutinesInput = {
@@ -23001,14 +24363,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
-    focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoutinesInput = {
@@ -23016,28 +24379,20 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutRoutinesInput, UserUncheckedCreateWithoutRoutinesInput>
   }
 
-  export type RoutineItemCreateWithoutRoutineInput = {
-    id?: string
-    label: string
-    order?: number
-    habit?: HabitCreateNestedOneWithoutRoutineItemsInput
-  }
-
-  export type RoutineItemUncheckedCreateWithoutRoutineInput = {
-    id?: string
-    habitId?: string | null
-    label: string
-    order?: number
-  }
-
-  export type RoutineItemCreateOrConnectWithoutRoutineInput = {
+  export type RoutineItemUpsertWithWhereUniqueWithoutRoutineInput = {
     where: RoutineItemWhereUniqueInput
+    update: XOR<RoutineItemUpdateWithoutRoutineInput, RoutineItemUncheckedUpdateWithoutRoutineInput>
     create: XOR<RoutineItemCreateWithoutRoutineInput, RoutineItemUncheckedCreateWithoutRoutineInput>
   }
 
-  export type RoutineItemCreateManyRoutineInputEnvelope = {
-    data: RoutineItemCreateManyRoutineInput | RoutineItemCreateManyRoutineInput[]
-    skipDuplicates?: boolean
+  export type RoutineItemUpdateWithWhereUniqueWithoutRoutineInput = {
+    where: RoutineItemWhereUniqueInput
+    data: XOR<RoutineItemUpdateWithoutRoutineInput, RoutineItemUncheckedUpdateWithoutRoutineInput>
+  }
+
+  export type RoutineItemUpdateManyWithWhereWithoutRoutineInput = {
+    where: RoutineItemScalarWhereInput
+    data: XOR<RoutineItemUpdateManyMutationInput, RoutineItemUncheckedUpdateManyWithoutRoutineInput>
   }
 
   export type UserUpsertWithoutRoutinesInput = {
@@ -23074,14 +24429,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
+    focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
-    focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoutinesInput = {
@@ -23107,30 +24463,52 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
-    focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type RoutineItemUpsertWithWhereUniqueWithoutRoutineInput = {
-    where: RoutineItemWhereUniqueInput
-    update: XOR<RoutineItemUpdateWithoutRoutineInput, RoutineItemUncheckedUpdateWithoutRoutineInput>
-    create: XOR<RoutineItemCreateWithoutRoutineInput, RoutineItemUncheckedCreateWithoutRoutineInput>
+  export type HabitCreateWithoutRoutineItemsInput = {
+    id?: string
+    name: string
+    emoji?: string
+    type?: $Enums.HabitType
+    frequency?: $Enums.HabitFrequency
+    strength?: $Enums.HabitStrength
+    streak?: number
+    bestStreak?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completions?: HabitCompletionCreateNestedManyWithoutHabitInput
+    user: UserCreateNestedOneWithoutHabitsInput
   }
 
-  export type RoutineItemUpdateWithWhereUniqueWithoutRoutineInput = {
-    where: RoutineItemWhereUniqueInput
-    data: XOR<RoutineItemUpdateWithoutRoutineInput, RoutineItemUncheckedUpdateWithoutRoutineInput>
+  export type HabitUncheckedCreateWithoutRoutineItemsInput = {
+    id?: string
+    userId: string
+    name: string
+    emoji?: string
+    type?: $Enums.HabitType
+    frequency?: $Enums.HabitFrequency
+    strength?: $Enums.HabitStrength
+    streak?: number
+    bestStreak?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
   }
 
-  export type RoutineItemUpdateManyWithWhereWithoutRoutineInput = {
-    where: RoutineItemScalarWhereInput
-    data: XOR<RoutineItemUpdateManyMutationInput, RoutineItemUncheckedUpdateManyWithoutRoutineInput>
+  export type HabitCreateOrConnectWithoutRoutineItemsInput = {
+    where: HabitWhereUniqueInput
+    create: XOR<HabitCreateWithoutRoutineItemsInput, HabitUncheckedCreateWithoutRoutineItemsInput>
   }
 
   export type RoutineCreateWithoutItemsInput = {
@@ -23160,41 +24538,47 @@ export namespace Prisma {
     create: XOR<RoutineCreateWithoutItemsInput, RoutineUncheckedCreateWithoutItemsInput>
   }
 
-  export type HabitCreateWithoutRoutineItemsInput = {
-    id?: string
-    name: string
-    emoji?: string
-    type?: $Enums.HabitType
-    frequency?: $Enums.HabitFrequency
-    strength?: $Enums.HabitStrength
-    streak?: number
-    bestStreak?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutHabitsInput
-    completions?: HabitCompletionCreateNestedManyWithoutHabitInput
-  }
-
-  export type HabitUncheckedCreateWithoutRoutineItemsInput = {
-    id?: string
-    userId: string
-    name: string
-    emoji?: string
-    type?: $Enums.HabitType
-    frequency?: $Enums.HabitFrequency
-    strength?: $Enums.HabitStrength
-    streak?: number
-    bestStreak?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
-  }
-
-  export type HabitCreateOrConnectWithoutRoutineItemsInput = {
-    where: HabitWhereUniqueInput
+  export type HabitUpsertWithoutRoutineItemsInput = {
+    update: XOR<HabitUpdateWithoutRoutineItemsInput, HabitUncheckedUpdateWithoutRoutineItemsInput>
     create: XOR<HabitCreateWithoutRoutineItemsInput, HabitUncheckedCreateWithoutRoutineItemsInput>
+    where?: HabitWhereInput
+  }
+
+  export type HabitUpdateToOneWithWhereWithoutRoutineItemsInput = {
+    where?: HabitWhereInput
+    data: XOR<HabitUpdateWithoutRoutineItemsInput, HabitUncheckedUpdateWithoutRoutineItemsInput>
+  }
+
+  export type HabitUpdateWithoutRoutineItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    type?: EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
+    frequency?: EnumHabitFrequencyFieldUpdateOperationsInput | $Enums.HabitFrequency
+    strength?: EnumHabitStrengthFieldUpdateOperationsInput | $Enums.HabitStrength
+    streak?: IntFieldUpdateOperationsInput | number
+    bestStreak?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
+    user?: UserUpdateOneRequiredWithoutHabitsNestedInput
+  }
+
+  export type HabitUncheckedUpdateWithoutRoutineItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    type?: EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
+    frequency?: EnumHabitFrequencyFieldUpdateOperationsInput | $Enums.HabitFrequency
+    strength?: EnumHabitStrengthFieldUpdateOperationsInput | $Enums.HabitStrength
+    streak?: IntFieldUpdateOperationsInput | number
+    bestStreak?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
   }
 
   export type RoutineUpsertWithoutItemsInput = {
@@ -23230,49 +24614,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type HabitUpsertWithoutRoutineItemsInput = {
-    update: XOR<HabitUpdateWithoutRoutineItemsInput, HabitUncheckedUpdateWithoutRoutineItemsInput>
-    create: XOR<HabitCreateWithoutRoutineItemsInput, HabitUncheckedCreateWithoutRoutineItemsInput>
-    where?: HabitWhereInput
-  }
-
-  export type HabitUpdateToOneWithWhereWithoutRoutineItemsInput = {
-    where?: HabitWhereInput
-    data: XOR<HabitUpdateWithoutRoutineItemsInput, HabitUncheckedUpdateWithoutRoutineItemsInput>
-  }
-
-  export type HabitUpdateWithoutRoutineItemsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    emoji?: StringFieldUpdateOperationsInput | string
-    type?: EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
-    frequency?: EnumHabitFrequencyFieldUpdateOperationsInput | $Enums.HabitFrequency
-    strength?: EnumHabitStrengthFieldUpdateOperationsInput | $Enums.HabitStrength
-    streak?: IntFieldUpdateOperationsInput | number
-    bestStreak?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutHabitsNestedInput
-    completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
-  }
-
-  export type HabitUncheckedUpdateWithoutRoutineItemsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    emoji?: StringFieldUpdateOperationsInput | string
-    type?: EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
-    frequency?: EnumHabitFrequencyFieldUpdateOperationsInput | $Enums.HabitFrequency
-    strength?: EnumHabitStrengthFieldUpdateOperationsInput | $Enums.HabitStrength
-    streak?: IntFieldUpdateOperationsInput | number
-    bestStreak?: IntFieldUpdateOperationsInput | number
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
-  }
-
   export type UserCreateWithoutJournalEntriesInput = {
     id?: string
     email: string
@@ -23296,14 +24637,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutJournalEntriesInput = {
@@ -23329,14 +24671,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutJournalEntriesInput = {
@@ -23378,14 +24721,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutJournalEntriesInput = {
@@ -23411,14 +24755,56 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TaskCreateWithoutFocusSessionsInput = {
+    id?: string
+    title: string
+    naturalInput?: string | null
+    drive?: $Enums.Drive
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    estimatedMinutes?: number | null
+    dueDate?: Date | string | null
+    completedAt?: Date | string | null
+    aiSuggested?: boolean
+    aiNudge?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subtasks?: SubtaskCreateNestedManyWithoutTaskInput
+    user: UserCreateNestedOneWithoutTasksInput
+  }
+
+  export type TaskUncheckedCreateWithoutFocusSessionsInput = {
+    id?: string
+    userId: string
+    title: string
+    naturalInput?: string | null
+    drive?: $Enums.Drive
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    estimatedMinutes?: number | null
+    dueDate?: Date | string | null
+    completedAt?: Date | string | null
+    aiSuggested?: boolean
+    aiNudge?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subtasks?: SubtaskUncheckedCreateNestedManyWithoutTaskInput
+  }
+
+  export type TaskCreateOrConnectWithoutFocusSessionsInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutFocusSessionsInput, TaskUncheckedCreateWithoutFocusSessionsInput>
   }
 
   export type UserCreateWithoutFocusSessionsInput = {
@@ -23444,14 +24830,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFocusSessionsInput = {
@@ -23477,14 +24864,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFocusSessionsInput = {
@@ -23492,45 +24880,51 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutFocusSessionsInput, UserUncheckedCreateWithoutFocusSessionsInput>
   }
 
-  export type TaskCreateWithoutFocusSessionsInput = {
-    id?: string
-    title: string
-    naturalInput?: string | null
-    drive?: $Enums.Drive
-    status?: $Enums.TaskStatus
-    priority?: $Enums.TaskPriority
-    estimatedMinutes?: number | null
-    dueDate?: Date | string | null
-    completedAt?: Date | string | null
-    aiSuggested?: boolean
-    aiNudge?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutTasksInput
-    subtasks?: SubtaskCreateNestedManyWithoutTaskInput
-  }
-
-  export type TaskUncheckedCreateWithoutFocusSessionsInput = {
-    id?: string
-    userId: string
-    title: string
-    naturalInput?: string | null
-    drive?: $Enums.Drive
-    status?: $Enums.TaskStatus
-    priority?: $Enums.TaskPriority
-    estimatedMinutes?: number | null
-    dueDate?: Date | string | null
-    completedAt?: Date | string | null
-    aiSuggested?: boolean
-    aiNudge?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    subtasks?: SubtaskUncheckedCreateNestedManyWithoutTaskInput
-  }
-
-  export type TaskCreateOrConnectWithoutFocusSessionsInput = {
-    where: TaskWhereUniqueInput
+  export type TaskUpsertWithoutFocusSessionsInput = {
+    update: XOR<TaskUpdateWithoutFocusSessionsInput, TaskUncheckedUpdateWithoutFocusSessionsInput>
     create: XOR<TaskCreateWithoutFocusSessionsInput, TaskUncheckedCreateWithoutFocusSessionsInput>
+    where?: TaskWhereInput
+  }
+
+  export type TaskUpdateToOneWithWhereWithoutFocusSessionsInput = {
+    where?: TaskWhereInput
+    data: XOR<TaskUpdateWithoutFocusSessionsInput, TaskUncheckedUpdateWithoutFocusSessionsInput>
+  }
+
+  export type TaskUpdateWithoutFocusSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
+    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
+    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subtasks?: SubtaskUpdateManyWithoutTaskNestedInput
+    user?: UserUpdateOneRequiredWithoutTasksNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutFocusSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
+    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
+    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subtasks?: SubtaskUncheckedUpdateManyWithoutTaskNestedInput
   }
 
   export type UserUpsertWithoutFocusSessionsInput = {
@@ -23567,14 +24961,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFocusSessionsInput = {
@@ -23600,61 +24995,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type TaskUpsertWithoutFocusSessionsInput = {
-    update: XOR<TaskUpdateWithoutFocusSessionsInput, TaskUncheckedUpdateWithoutFocusSessionsInput>
-    create: XOR<TaskCreateWithoutFocusSessionsInput, TaskUncheckedCreateWithoutFocusSessionsInput>
-    where?: TaskWhereInput
-  }
-
-  export type TaskUpdateToOneWithWhereWithoutFocusSessionsInput = {
-    where?: TaskWhereInput
-    data: XOR<TaskUpdateWithoutFocusSessionsInput, TaskUncheckedUpdateWithoutFocusSessionsInput>
-  }
-
-  export type TaskUpdateWithoutFocusSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
-    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
-    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
-    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
-    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTasksNestedInput
-    subtasks?: SubtaskUpdateManyWithoutTaskNestedInput
-  }
-
-  export type TaskUncheckedUpdateWithoutFocusSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
-    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
-    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
-    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
-    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subtasks?: SubtaskUncheckedUpdateManyWithoutTaskNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutMeditationSessionsInput = {
@@ -23680,14 +25029,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMeditationSessionsInput = {
@@ -23713,14 +25063,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMeditationSessionsInput = {
@@ -23762,14 +25113,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMeditationSessionsInput = {
@@ -23795,14 +25147,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWeeklyReportsInput = {
@@ -23828,14 +25181,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    routines?: RoutineCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWeeklyReportsInput = {
@@ -23861,14 +25215,15 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
-    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWeeklyReportsInput = {
@@ -23910,14 +25265,15 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    routines?: RoutineUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWeeklyReportsInput = {
@@ -23943,46 +25299,178 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
-    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type RefreshTokenCreateManyUserInput = {
+  export type UserCreateWithoutChatMessagesInput = {
     id?: string
-    token: string
-    expiresAt: Date | string
-    createdAt?: Date | string
-  }
-
-  export type OtpCodeCreateManyUserInput = {
-    id?: string
-    code: string
-    purpose?: $Enums.OtpPurpose
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type TaskCreateManyUserInput = {
-    id?: string
-    title: string
-    naturalInput?: string | null
-    drive?: $Enums.Drive
-    status?: $Enums.TaskStatus
-    priority?: $Enums.TaskPriority
-    estimatedMinutes?: number | null
-    dueDate?: Date | string | null
-    completedAt?: Date | string | null
-    aiSuggested?: boolean
-    aiNudge?: string | null
+    email: string
+    passwordHash?: string | null
+    displayName: string
+    username?: string | null
+    avatarUrl?: string | null
+    timezone?: string
+    role?: $Enums.UserRole | null
+    isEmailVerified?: boolean
+    isOnboarded?: boolean
+    focusTime?: $Enums.FocusTime | null
+    emotionalState?: $Enums.EmotionalState | null
+    distractions?: UserCreatedistractionsInput | $Enums.Distraction[]
+    mainGoal?: $Enums.MainGoal | null
+    weeklyGoal?: string | null
+    personalityVibe?: $Enums.PersonalityVibe | null
+    temperament?: $Enums.Temperament | null
+    iqScore?: number | null
+    eqScore?: number | null
+    sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
+    meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    routines?: RoutineCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutChatMessagesInput = {
+    id?: string
+    email: string
+    passwordHash?: string | null
+    displayName: string
+    username?: string | null
+    avatarUrl?: string | null
+    timezone?: string
+    role?: $Enums.UserRole | null
+    isEmailVerified?: boolean
+    isOnboarded?: boolean
+    focusTime?: $Enums.FocusTime | null
+    emotionalState?: $Enums.EmotionalState | null
+    distractions?: UserCreatedistractionsInput | $Enums.Distraction[]
+    mainGoal?: $Enums.MainGoal | null
+    weeklyGoal?: string | null
+    personalityVibe?: $Enums.PersonalityVibe | null
+    temperament?: $Enums.Temperament | null
+    iqScore?: number | null
+    eqScore?: number | null
+    sqScore?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
+    meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
+    otpCodes?: OtpCodeUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutChatMessagesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutChatMessagesInput, UserUncheckedCreateWithoutChatMessagesInput>
+  }
+
+  export type UserUpsertWithoutChatMessagesInput = {
+    update: XOR<UserUpdateWithoutChatMessagesInput, UserUncheckedUpdateWithoutChatMessagesInput>
+    create: XOR<UserCreateWithoutChatMessagesInput, UserUncheckedCreateWithoutChatMessagesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutChatMessagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutChatMessagesInput, UserUncheckedUpdateWithoutChatMessagesInput>
+  }
+
+  export type UserUpdateWithoutChatMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: StringFieldUpdateOperationsInput | string
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    focusTime?: NullableEnumFocusTimeFieldUpdateOperationsInput | $Enums.FocusTime | null
+    emotionalState?: NullableEnumEmotionalStateFieldUpdateOperationsInput | $Enums.EmotionalState | null
+    distractions?: UserUpdatedistractionsInput | $Enums.Distraction[]
+    mainGoal?: NullableEnumMainGoalFieldUpdateOperationsInput | $Enums.MainGoal | null
+    weeklyGoal?: NullableStringFieldUpdateOperationsInput | string | null
+    personalityVibe?: NullableEnumPersonalityVibeFieldUpdateOperationsInput | $Enums.PersonalityVibe | null
+    temperament?: NullableEnumTemperamentFieldUpdateOperationsInput | $Enums.Temperament | null
+    iqScore?: NullableIntFieldUpdateOperationsInput | number | null
+    eqScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sqScore?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
+    meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    routines?: RoutineUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutChatMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: StringFieldUpdateOperationsInput | string
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isOnboarded?: BoolFieldUpdateOperationsInput | boolean
+    focusTime?: NullableEnumFocusTimeFieldUpdateOperationsInput | $Enums.FocusTime | null
+    emotionalState?: NullableEnumEmotionalStateFieldUpdateOperationsInput | $Enums.EmotionalState | null
+    distractions?: UserUpdatedistractionsInput | $Enums.Distraction[]
+    mainGoal?: NullableEnumMainGoalFieldUpdateOperationsInput | $Enums.MainGoal | null
+    weeklyGoal?: NullableStringFieldUpdateOperationsInput | string | null
+    personalityVibe?: NullableEnumPersonalityVibeFieldUpdateOperationsInput | $Enums.PersonalityVibe | null
+    temperament?: NullableEnumTemperamentFieldUpdateOperationsInput | $Enums.Temperament | null
+    iqScore?: NullableIntFieldUpdateOperationsInput | number | null
+    eqScore?: NullableIntFieldUpdateOperationsInput | number | null
+    sqScore?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
+    meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
+    otpCodes?: OtpCodeUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type FocusSessionCreateManyUserInput = {
+    id?: string
+    taskId?: string | null
+    durationMinutes: number
+    completed?: boolean
+    interrupted?: boolean
+    startedAt: Date | string
+    completedAt?: Date | string | null
+    createdAt?: Date | string
   }
 
   export type HabitCreateManyUserInput = {
@@ -23994,16 +25482,6 @@ export namespace Prisma {
     strength?: $Enums.HabitStrength
     streak?: number
     bestStreak?: number
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type RoutineCreateManyUserInput = {
-    id?: string
-    name: string
-    time?: string | null
-    type?: string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24022,17 +25500,6 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type FocusSessionCreateManyUserInput = {
-    id?: string
-    taskId?: string | null
-    durationMinutes: number
-    completed?: boolean
-    interrupted?: boolean
-    startedAt: Date | string
-    completedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
   export type MeditationSessionCreateManyUserInput = {
     id?: string
     mode: $Enums.MeditationMode
@@ -24041,6 +25508,48 @@ export namespace Prisma {
     startedAt: Date | string
     completedAt?: Date | string | null
     createdAt?: Date | string
+  }
+
+  export type OtpCodeCreateManyUserInput = {
+    id?: string
+    code: string
+    purpose?: $Enums.OtpPurpose
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type RefreshTokenCreateManyUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type RoutineCreateManyUserInput = {
+    id?: string
+    name: string
+    time?: string | null
+    type?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateManyUserInput = {
+    id?: string
+    title: string
+    naturalInput?: string | null
+    drive?: $Enums.Drive
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    estimatedMinutes?: number | null
+    dueDate?: Date | string | null
+    completedAt?: Date | string | null
+    aiSuggested?: boolean
+    aiNudge?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type WeeklyReportCreateManyUserInput = {
@@ -24059,104 +25568,44 @@ export namespace Prisma {
     generatedAt?: Date | string
   }
 
-  export type RefreshTokenUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type ChatMessageCreateManyUserInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
   }
 
-  export type RefreshTokenUncheckedUpdateWithoutUserInput = {
+  export type FocusSessionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RefreshTokenUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OtpCodeUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    purpose?: EnumOtpPurposeFieldUpdateOperationsInput | $Enums.OtpPurpose
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OtpCodeUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    purpose?: EnumOtpPurposeFieldUpdateOperationsInput | $Enums.OtpPurpose
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OtpCodeUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    purpose?: EnumOtpPurposeFieldUpdateOperationsInput | $Enums.OtpPurpose
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaskUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
-    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
-    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
-    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    durationMinutes?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    interrupted?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
-    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subtasks?: SubtaskUpdateManyWithoutTaskNestedInput
-    focusSessions?: FocusSessionUpdateManyWithoutTaskNestedInput
+    task?: TaskUpdateOneWithoutFocusSessionsNestedInput
   }
 
-  export type TaskUncheckedUpdateWithoutUserInput = {
+  export type FocusSessionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
-    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
-    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
-    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMinutes?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    interrupted?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
-    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subtasks?: SubtaskUncheckedUpdateManyWithoutTaskNestedInput
-    focusSessions?: FocusSessionUncheckedUpdateManyWithoutTaskNestedInput
   }
 
-  export type TaskUncheckedUpdateManyWithoutUserInput = {
+  export type FocusSessionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
-    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
-    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
-    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
-    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
-    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMinutes?: IntFieldUpdateOperationsInput | number
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    interrupted?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
-    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type HabitUpdateWithoutUserInput = {
@@ -24205,38 +25654,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type RoutineUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    time?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    items?: RoutineItemUpdateManyWithoutRoutineNestedInput
-  }
-
-  export type RoutineUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    time?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    items?: RoutineItemUncheckedUpdateManyWithoutRoutineNestedInput
-  }
-
-  export type RoutineUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    time?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type JournalEntryUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     text?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24276,39 +25693,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FocusSessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    durationMinutes?: IntFieldUpdateOperationsInput | number
-    completed?: BoolFieldUpdateOperationsInput | boolean
-    interrupted?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    task?: TaskUpdateOneWithoutFocusSessionsNestedInput
-  }
-
-  export type FocusSessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    taskId?: NullableStringFieldUpdateOperationsInput | string | null
-    durationMinutes?: IntFieldUpdateOperationsInput | number
-    completed?: BoolFieldUpdateOperationsInput | boolean
-    interrupted?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FocusSessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    taskId?: NullableStringFieldUpdateOperationsInput | string | null
-    durationMinutes?: IntFieldUpdateOperationsInput | number
-    completed?: BoolFieldUpdateOperationsInput | boolean
-    interrupted?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type MeditationSessionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     mode?: EnumMeditationModeFieldUpdateOperationsInput | $Enums.MeditationMode
@@ -24337,6 +25721,138 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtpCodeUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    purpose?: EnumOtpPurposeFieldUpdateOperationsInput | $Enums.OtpPurpose
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtpCodeUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    purpose?: EnumOtpPurposeFieldUpdateOperationsInput | $Enums.OtpPurpose
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtpCodeUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    purpose?: EnumOtpPurposeFieldUpdateOperationsInput | $Enums.OtpPurpose
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoutineUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    time?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: RoutineItemUpdateManyWithoutRoutineNestedInput
+  }
+
+  export type RoutineUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    time?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: RoutineItemUncheckedUpdateManyWithoutRoutineNestedInput
+  }
+
+  export type RoutineUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    time?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
+    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
+    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    focusSessions?: FocusSessionUpdateManyWithoutTaskNestedInput
+    subtasks?: SubtaskUpdateManyWithoutTaskNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
+    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
+    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    focusSessions?: FocusSessionUncheckedUpdateManyWithoutTaskNestedInput
+    subtasks?: SubtaskUncheckedUpdateManyWithoutTaskNestedInput
+  }
+
+  export type TaskUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    naturalInput?: NullableStringFieldUpdateOperationsInput | string | null
+    drive?: EnumDriveFieldUpdateOperationsInput | $Enums.Drive
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    aiSuggested?: BoolFieldUpdateOperationsInput | boolean
+    aiNudge?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WeeklyReportUpdateWithoutUserInput = {
@@ -24387,15 +25903,25 @@ export namespace Prisma {
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type SubtaskCreateManyTaskInput = {
-    id?: string
-    title: string
-    estimatedMinutes?: number | null
-    completed?: boolean
-    completedAt?: Date | string | null
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type ChatMessageUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FocusSessionCreateManyTaskInput = {
@@ -24409,37 +25935,15 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type SubtaskUpdateWithoutTaskInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
-    completed?: BoolFieldUpdateOperationsInput | boolean
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SubtaskUncheckedUpdateWithoutTaskInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
-    completed?: BoolFieldUpdateOperationsInput | boolean
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SubtaskUncheckedUpdateManyWithoutTaskInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
-    completed?: BoolFieldUpdateOperationsInput | boolean
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    order?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type SubtaskCreateManyTaskInput = {
+    id?: string
+    title: string
+    estimatedMinutes?: number | null
+    completed?: boolean
+    completedAt?: Date | string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type FocusSessionUpdateWithoutTaskInput = {
@@ -24473,6 +25977,39 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubtaskUpdateWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubtaskUncheckedUpdateWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubtaskUncheckedUpdateManyWithoutTaskInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    estimatedMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type HabitCompletionCreateManyHabitInput = {
@@ -24628,6 +26165,10 @@ export namespace Prisma {
      * @deprecated Use WeeklyReportDefaultArgs instead
      */
     export type WeeklyReportArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WeeklyReportDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ChatMessageDefaultArgs instead
+     */
+    export type ChatMessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ChatMessageDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
