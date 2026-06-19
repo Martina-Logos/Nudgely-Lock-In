@@ -150,22 +150,40 @@ export const userApi = {
 
 export const assistantApi = {
   // Send a message and get a reply
-  chat: (message: string) =>
-    api.post<{ reply: string; messageId: string }>('/assistant/chat', { message }),
+  chat: async (message: string) => {
+    const response = await api.post<{
+      reply: string
+      messageId: string
+    }>('/assistant/chat', { message })
+
+    return response.data
+  },
 
   // Load conversation history
-  getHistory: (limit = 30) =>
-    api.get<{ id: string; role: string; content: string; createdAt: string }[]>(
-      `/assistant/history?limit=${limit}`
-    ).then(r => r.data),
+  getHistory: async (limit = 30) => {
+    const response = await api.get<
+      { id: string; role: string; content: string; createdAt: string }[]
+    >(`/assistant/history?limit=${limit}`)
+
+    return response.data
+  },
 
   // Clear the full conversation
-  clearHistory: () =>
-    api.delete('/assistant/history'),
+  clearHistory: async () => {
+    const response = await api.delete('/assistant/history')
+    return response.data
+  },
 
-  // Get a proactive contextual nudge for a specific screen
-  getNudge: (type: 'dashboard_morning' | 'task_stuck' | 'focus_start' | 'journal_open') =>
-    api.get<{ nudge: string }>(`/assistant/nudge?type=${type}`).then(r => r.data),
+  // Get a proactive contextual nudge
+  getNudge: async (
+    type: 'dashboard_morning' | 'task_stuck' | 'focus_start' | 'journal_open'
+  ) => {
+    const response = await api.get<{ nudge: string }>(
+      `/assistant/nudge?type=${type}`
+    )
+
+    return response.data
+  },
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

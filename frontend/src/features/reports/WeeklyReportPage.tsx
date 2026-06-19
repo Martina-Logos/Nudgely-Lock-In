@@ -194,10 +194,12 @@ export default function WeeklyReportPage() {
   async function loadReport() {
     setLoading(true)
     try {
-      const weekStart = getWeekStart(weekOffset)
-      const { data }  = await reportsApi.getWeekly(weekStart)
-      setReport(data)
-    } catch { /* silent */ }
+      const weekStart    = getWeekStart(weekOffset)
+      const { data }     = await reportsApi.getWeekly(weekStart)
+      // Normalise — backend may return the report directly or nested
+      const report = data?.weekStart ? data : data?.data ?? data
+      setReport(report)
+    } catch { /* show empty state */ }
     finally { setLoading(false) }
   }
 
@@ -351,11 +353,18 @@ export default function WeeklyReportPage() {
                 className="btn-primary"
                 onClick={() => {
                   setApplying(true)
-                  setTimeout(() => { setApplying(false); navigate('/tasks') }, 1500)
+                  // Navigate to tasks — that's where the user acts on suggestions
+                  setTimeout(() => { navigate('/tasks') }, 800)
                 }}
                 disabled={applying}
               >
-                {applying ? 'Applying…' : 'Apply suggestions to next week'}
+                {applying
+                  ? <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 14, height: 14, borderRadius: '50%', border: '2px solid white', borderTopColor: 'transparent', display: 'inline-block', animation: 'report-spin 0.8s linear infinite' }} />
+                      Opening tasks…
+                    </span>
+                  : 'Apply suggestions to next week'
+                }
               </button>
             </>
           ) : (

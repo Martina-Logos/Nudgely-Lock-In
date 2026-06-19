@@ -32,6 +32,7 @@ model User {
   sqScore            Int?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
+  chatMessages       ChatMessage[]
   focusSessions      FocusSession[]
   habits             Habit[]
   journalEntries     JournalEntry[]
@@ -41,7 +42,6 @@ model User {
   routines           Routine[]
   tasks              Task[]
   weeklyReports      WeeklyReport[]
-  chatMessages       ChatMessage[]
 
   @@map("users")
 }
@@ -252,11 +252,10 @@ model WeeklyReport {
 model ChatMessage {
   id        String   @id @default(uuid())
   userId    String
-  role      String // "user" | "assistant"
+  role      String
   content   String
   createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
   @@map("chat_messages")

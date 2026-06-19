@@ -2168,6 +2168,7 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    chatMessages: number
     focusSessions: number
     habits: number
     journalEntries: number
@@ -2177,10 +2178,10 @@ export namespace Prisma {
     routines: number
     tasks: number
     weeklyReports: number
-    chatMessages: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chatMessages?: boolean | UserCountOutputTypeCountChatMessagesArgs
     focusSessions?: boolean | UserCountOutputTypeCountFocusSessionsArgs
     habits?: boolean | UserCountOutputTypeCountHabitsArgs
     journalEntries?: boolean | UserCountOutputTypeCountJournalEntriesArgs
@@ -2190,7 +2191,6 @@ export namespace Prisma {
     routines?: boolean | UserCountOutputTypeCountRoutinesArgs
     tasks?: boolean | UserCountOutputTypeCountTasksArgs
     weeklyReports?: boolean | UserCountOutputTypeCountWeeklyReportsArgs
-    chatMessages?: boolean | UserCountOutputTypeCountChatMessagesArgs
   }
 
   // Custom InputTypes
@@ -2202,6 +2202,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountChatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatMessageWhereInput
   }
 
   /**
@@ -2265,13 +2272,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountWeeklyReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WeeklyReportWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountChatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ChatMessageWhereInput
   }
 
 
@@ -2728,6 +2728,7 @@ export namespace Prisma {
     sqScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
     focusSessions?: boolean | User$focusSessionsArgs<ExtArgs>
     habits?: boolean | User$habitsArgs<ExtArgs>
     journalEntries?: boolean | User$journalEntriesArgs<ExtArgs>
@@ -2737,7 +2738,6 @@ export namespace Prisma {
     routines?: boolean | User$routinesArgs<ExtArgs>
     tasks?: boolean | User$tasksArgs<ExtArgs>
     weeklyReports?: boolean | User$weeklyReportsArgs<ExtArgs>
-    chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2792,6 +2792,7 @@ export namespace Prisma {
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
     focusSessions?: boolean | User$focusSessionsArgs<ExtArgs>
     habits?: boolean | User$habitsArgs<ExtArgs>
     journalEntries?: boolean | User$journalEntriesArgs<ExtArgs>
@@ -2801,7 +2802,6 @@ export namespace Prisma {
     routines?: boolean | User$routinesArgs<ExtArgs>
     tasks?: boolean | User$tasksArgs<ExtArgs>
     weeklyReports?: boolean | User$weeklyReportsArgs<ExtArgs>
-    chatMessages?: boolean | User$chatMessagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2809,6 +2809,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
       focusSessions: Prisma.$FocusSessionPayload<ExtArgs>[]
       habits: Prisma.$HabitPayload<ExtArgs>[]
       journalEntries: Prisma.$JournalEntryPayload<ExtArgs>[]
@@ -2818,7 +2819,6 @@ export namespace Prisma {
       routines: Prisma.$RoutinePayload<ExtArgs>[]
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       weeklyReports: Prisma.$WeeklyReportPayload<ExtArgs>[]
-      chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3207,6 +3207,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    chatMessages<T extends User$chatMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany"> | Null>
     focusSessions<T extends User$focusSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$focusSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FocusSessionPayload<ExtArgs>, T, "findMany"> | Null>
     habits<T extends User$habitsArgs<ExtArgs> = {}>(args?: Subset<T, User$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany"> | Null>
     journalEntries<T extends User$journalEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$journalEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JournalEntryPayload<ExtArgs>, T, "findMany"> | Null>
@@ -3216,7 +3217,6 @@ export namespace Prisma {
     routines<T extends User$routinesArgs<ExtArgs> = {}>(args?: Subset<T, User$routinesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoutinePayload<ExtArgs>, T, "findMany"> | Null>
     tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany"> | Null>
     weeklyReports<T extends User$weeklyReportsArgs<ExtArgs> = {}>(args?: Subset<T, User$weeklyReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeeklyReportPayload<ExtArgs>, T, "findMany"> | Null>
-    chatMessages<T extends User$chatMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3582,6 +3582,26 @@ export namespace Prisma {
   }
 
   /**
+   * User.chatMessages
+   */
+  export type User$chatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatMessage
+     */
+    select?: ChatMessageSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatMessageInclude<ExtArgs> | null
+    where?: ChatMessageWhereInput
+    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
+    cursor?: ChatMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
    * User.focusSessions
    */
   export type User$focusSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3759,26 +3779,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WeeklyReportScalarFieldEnum | WeeklyReportScalarFieldEnum[]
-  }
-
-  /**
-   * User.chatMessages
-   */
-  export type User$chatMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ChatMessage
-     */
-    select?: ChatMessageSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ChatMessageInclude<ExtArgs> | null
-    where?: ChatMessageWhereInput
-    orderBy?: ChatMessageOrderByWithRelationInput | ChatMessageOrderByWithRelationInput[]
-    cursor?: ChatMessageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
   }
 
   /**
@@ -17502,6 +17502,7 @@ export namespace Prisma {
     sqScore?: IntNullableFilter<"User"> | number | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    chatMessages?: ChatMessageListRelationFilter
     focusSessions?: FocusSessionListRelationFilter
     habits?: HabitListRelationFilter
     journalEntries?: JournalEntryListRelationFilter
@@ -17511,7 +17512,6 @@ export namespace Prisma {
     routines?: RoutineListRelationFilter
     tasks?: TaskListRelationFilter
     weeklyReports?: WeeklyReportListRelationFilter
-    chatMessages?: ChatMessageListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -17537,6 +17537,7 @@ export namespace Prisma {
     sqScore?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    chatMessages?: ChatMessageOrderByRelationAggregateInput
     focusSessions?: FocusSessionOrderByRelationAggregateInput
     habits?: HabitOrderByRelationAggregateInput
     journalEntries?: JournalEntryOrderByRelationAggregateInput
@@ -17546,7 +17547,6 @@ export namespace Prisma {
     routines?: RoutineOrderByRelationAggregateInput
     tasks?: TaskOrderByRelationAggregateInput
     weeklyReports?: WeeklyReportOrderByRelationAggregateInput
-    chatMessages?: ChatMessageOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -17575,6 +17575,7 @@ export namespace Prisma {
     sqScore?: IntNullableFilter<"User"> | number | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    chatMessages?: ChatMessageListRelationFilter
     focusSessions?: FocusSessionListRelationFilter
     habits?: HabitListRelationFilter
     journalEntries?: JournalEntryListRelationFilter
@@ -17584,7 +17585,6 @@ export namespace Prisma {
     routines?: RoutineListRelationFilter
     tasks?: TaskListRelationFilter
     weeklyReports?: WeeklyReportListRelationFilter
-    chatMessages?: ChatMessageListRelationFilter
   }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -18653,6 +18653,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
@@ -18662,7 +18663,6 @@ export namespace Prisma {
     routines?: RoutineCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -18688,6 +18688,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
@@ -18697,7 +18698,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -18723,6 +18723,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
@@ -18732,7 +18733,6 @@ export namespace Prisma {
     routines?: RoutineUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -18758,6 +18758,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
@@ -18767,7 +18768,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -20007,6 +20007,12 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type ChatMessageListRelationFilter = {
+    every?: ChatMessageWhereInput
+    some?: ChatMessageWhereInput
+    none?: ChatMessageWhereInput
+  }
+
   export type FocusSessionListRelationFilter = {
     every?: FocusSessionWhereInput
     some?: FocusSessionWhereInput
@@ -20061,15 +20067,13 @@ export namespace Prisma {
     none?: WeeklyReportWhereInput
   }
 
-  export type ChatMessageListRelationFilter = {
-    every?: ChatMessageWhereInput
-    some?: ChatMessageWhereInput
-    none?: ChatMessageWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type ChatMessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type FocusSessionOrderByRelationAggregateInput = {
@@ -20105,10 +20109,6 @@ export namespace Prisma {
   }
 
   export type WeeklyReportOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ChatMessageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21194,6 +21194,13 @@ export namespace Prisma {
     set: $Enums.Distraction[]
   }
 
+  export type ChatMessageCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+  }
+
   export type FocusSessionCreateNestedManyWithoutUserInput = {
     create?: XOR<FocusSessionCreateWithoutUserInput, FocusSessionUncheckedCreateWithoutUserInput> | FocusSessionCreateWithoutUserInput[] | FocusSessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: FocusSessionCreateOrConnectWithoutUserInput | FocusSessionCreateOrConnectWithoutUserInput[]
@@ -21257,7 +21264,7 @@ export namespace Prisma {
     connect?: WeeklyReportWhereUniqueInput | WeeklyReportWhereUniqueInput[]
   }
 
-  export type ChatMessageCreateNestedManyWithoutUserInput = {
+  export type ChatMessageUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
     createMany?: ChatMessageCreateManyUserInputEnvelope
@@ -21327,13 +21334,6 @@ export namespace Prisma {
     connect?: WeeklyReportWhereUniqueInput | WeeklyReportWhereUniqueInput[]
   }
 
-  export type ChatMessageUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
-    createMany?: ChatMessageCreateManyUserInputEnvelope
-    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
-  }
-
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -21385,6 +21385,20 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type ChatMessageUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
+    upsert?: ChatMessageUpsertWithWhereUniqueWithoutUserInput | ChatMessageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatMessageCreateManyUserInputEnvelope
+    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+    update?: ChatMessageUpdateWithWhereUniqueWithoutUserInput | ChatMessageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatMessageUpdateManyWithWhereWithoutUserInput | ChatMessageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
   }
 
   export type FocusSessionUpdateManyWithoutUserNestedInput = {
@@ -21513,7 +21527,7 @@ export namespace Prisma {
     deleteMany?: WeeklyReportScalarWhereInput | WeeklyReportScalarWhereInput[]
   }
 
-  export type ChatMessageUpdateManyWithoutUserNestedInput = {
+  export type ChatMessageUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
     upsert?: ChatMessageUpsertWithWhereUniqueWithoutUserInput | ChatMessageUpsertWithWhereUniqueWithoutUserInput[]
@@ -21651,20 +21665,6 @@ export namespace Prisma {
     update?: WeeklyReportUpdateWithWhereUniqueWithoutUserInput | WeeklyReportUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: WeeklyReportUpdateManyWithWhereWithoutUserInput | WeeklyReportUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: WeeklyReportScalarWhereInput | WeeklyReportScalarWhereInput[]
-  }
-
-  export type ChatMessageUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput> | ChatMessageCreateWithoutUserInput[] | ChatMessageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ChatMessageCreateOrConnectWithoutUserInput | ChatMessageCreateOrConnectWithoutUserInput[]
-    upsert?: ChatMessageUpsertWithWhereUniqueWithoutUserInput | ChatMessageUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ChatMessageCreateManyUserInputEnvelope
-    set?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
-    disconnect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
-    delete?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
-    connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
-    update?: ChatMessageUpdateWithWhereUniqueWithoutUserInput | ChatMessageUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ChatMessageUpdateManyWithWhereWithoutUserInput | ChatMessageUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutRefreshTokensInput = {
@@ -22647,6 +22647,30 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type ChatMessageCreateWithoutUserInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type ChatMessageUncheckedCreateWithoutUserInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type ChatMessageCreateOrConnectWithoutUserInput = {
+    where: ChatMessageWhereUniqueInput
+    create: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput>
+  }
+
+  export type ChatMessageCreateManyUserInputEnvelope = {
+    data: ChatMessageCreateManyUserInput | ChatMessageCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type FocusSessionCreateWithoutUserInput = {
     id?: string
     durationMinutes: number
@@ -22959,28 +22983,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ChatMessageCreateWithoutUserInput = {
-    id?: string
-    role: string
-    content: string
-    createdAt?: Date | string
-  }
-
-  export type ChatMessageUncheckedCreateWithoutUserInput = {
-    id?: string
-    role: string
-    content: string
-    createdAt?: Date | string
-  }
-
-  export type ChatMessageCreateOrConnectWithoutUserInput = {
+  export type ChatMessageUpsertWithWhereUniqueWithoutUserInput = {
     where: ChatMessageWhereUniqueInput
+    update: XOR<ChatMessageUpdateWithoutUserInput, ChatMessageUncheckedUpdateWithoutUserInput>
     create: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput>
   }
 
-  export type ChatMessageCreateManyUserInputEnvelope = {
-    data: ChatMessageCreateManyUserInput | ChatMessageCreateManyUserInput[]
-    skipDuplicates?: boolean
+  export type ChatMessageUpdateWithWhereUniqueWithoutUserInput = {
+    where: ChatMessageWhereUniqueInput
+    data: XOR<ChatMessageUpdateWithoutUserInput, ChatMessageUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ChatMessageUpdateManyWithWhereWithoutUserInput = {
+    where: ChatMessageScalarWhereInput
+    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ChatMessageScalarWhereInput = {
+    AND?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+    OR?: ChatMessageScalarWhereInput[]
+    NOT?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+    id?: StringFilter<"ChatMessage"> | string
+    userId?: StringFilter<"ChatMessage"> | string
+    role?: StringFilter<"ChatMessage"> | string
+    content?: StringFilter<"ChatMessage"> | string
+    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
   }
 
   export type FocusSessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -23269,33 +23296,6 @@ export namespace Prisma {
     generatedAt?: DateTimeFilter<"WeeklyReport"> | Date | string
   }
 
-  export type ChatMessageUpsertWithWhereUniqueWithoutUserInput = {
-    where: ChatMessageWhereUniqueInput
-    update: XOR<ChatMessageUpdateWithoutUserInput, ChatMessageUncheckedUpdateWithoutUserInput>
-    create: XOR<ChatMessageCreateWithoutUserInput, ChatMessageUncheckedCreateWithoutUserInput>
-  }
-
-  export type ChatMessageUpdateWithWhereUniqueWithoutUserInput = {
-    where: ChatMessageWhereUniqueInput
-    data: XOR<ChatMessageUpdateWithoutUserInput, ChatMessageUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ChatMessageUpdateManyWithWhereWithoutUserInput = {
-    where: ChatMessageScalarWhereInput
-    data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ChatMessageScalarWhereInput = {
-    AND?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
-    OR?: ChatMessageScalarWhereInput[]
-    NOT?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
-    id?: StringFilter<"ChatMessage"> | string
-    userId?: StringFilter<"ChatMessage"> | string
-    role?: StringFilter<"ChatMessage"> | string
-    content?: StringFilter<"ChatMessage"> | string
-    createdAt?: DateTimeFilter<"ChatMessage"> | Date | string
-  }
-
   export type UserCreateWithoutRefreshTokensInput = {
     id?: string
     email: string
@@ -23319,6 +23319,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
@@ -23327,7 +23328,6 @@ export namespace Prisma {
     routines?: RoutineCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -23353,6 +23353,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
@@ -23361,7 +23362,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -23403,6 +23403,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
@@ -23411,7 +23412,6 @@ export namespace Prisma {
     routines?: RoutineUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -23437,6 +23437,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
@@ -23445,7 +23446,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutOtpCodesInput = {
@@ -23471,6 +23471,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
@@ -23479,7 +23480,6 @@ export namespace Prisma {
     routines?: RoutineCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOtpCodesInput = {
@@ -23505,6 +23505,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
@@ -23513,7 +23514,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOtpCodesInput = {
@@ -23555,6 +23555,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
@@ -23563,7 +23564,6 @@ export namespace Prisma {
     routines?: RoutineUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOtpCodesInput = {
@@ -23589,6 +23589,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
@@ -23597,7 +23598,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type FocusSessionCreateWithoutTaskInput = {
@@ -23687,6 +23687,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
@@ -23695,7 +23696,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
     routines?: RoutineCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -23721,6 +23721,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
@@ -23729,7 +23730,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -23818,6 +23818,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
@@ -23826,7 +23827,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
     routines?: RoutineUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -23852,6 +23852,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
@@ -23860,7 +23861,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TaskCreateWithoutSubtasksInput = {
@@ -23996,6 +23996,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
@@ -24004,7 +24005,6 @@ export namespace Prisma {
     routines?: RoutineCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitsInput = {
@@ -24030,6 +24030,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
@@ -24038,7 +24039,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitsInput = {
@@ -24130,6 +24130,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
@@ -24138,7 +24139,6 @@ export namespace Prisma {
     routines?: RoutineUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -24164,6 +24164,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
@@ -24172,7 +24173,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoutineItemUpsertWithWhereUniqueWithoutHabitInput = {
@@ -24329,6 +24329,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
@@ -24337,7 +24338,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoutinesInput = {
@@ -24363,6 +24363,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
@@ -24371,7 +24372,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoutinesInput = {
@@ -24429,6 +24429,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
@@ -24437,7 +24438,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoutinesInput = {
@@ -24463,6 +24463,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
@@ -24471,7 +24472,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCreateWithoutRoutineItemsInput = {
@@ -24637,6 +24637,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
@@ -24645,7 +24646,6 @@ export namespace Prisma {
     routines?: RoutineCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutJournalEntriesInput = {
@@ -24671,6 +24671,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
@@ -24679,7 +24680,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutJournalEntriesInput = {
@@ -24721,6 +24721,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
@@ -24729,7 +24730,6 @@ export namespace Prisma {
     routines?: RoutineUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutJournalEntriesInput = {
@@ -24755,6 +24755,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
@@ -24763,7 +24764,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TaskCreateWithoutFocusSessionsInput = {
@@ -24830,6 +24830,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionCreateNestedManyWithoutUserInput
@@ -24838,7 +24839,6 @@ export namespace Prisma {
     routines?: RoutineCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFocusSessionsInput = {
@@ -24864,6 +24864,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
     meditationSessions?: MeditationSessionUncheckedCreateNestedManyWithoutUserInput
@@ -24872,7 +24873,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFocusSessionsInput = {
@@ -24961,6 +24961,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUpdateManyWithoutUserNestedInput
@@ -24969,7 +24970,6 @@ export namespace Prisma {
     routines?: RoutineUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFocusSessionsInput = {
@@ -24995,6 +24995,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
     meditationSessions?: MeditationSessionUncheckedUpdateManyWithoutUserNestedInput
@@ -25003,7 +25004,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutMeditationSessionsInput = {
@@ -25029,6 +25029,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
@@ -25037,7 +25038,6 @@ export namespace Prisma {
     routines?: RoutineCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMeditationSessionsInput = {
@@ -25063,6 +25063,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
@@ -25071,7 +25072,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weeklyReports?: WeeklyReportUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMeditationSessionsInput = {
@@ -25113,6 +25113,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
@@ -25121,7 +25122,6 @@ export namespace Prisma {
     routines?: RoutineUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMeditationSessionsInput = {
@@ -25147,6 +25147,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
@@ -25155,7 +25156,6 @@ export namespace Prisma {
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWeeklyReportsInput = {
@@ -25181,6 +25181,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryCreateNestedManyWithoutUserInput
@@ -25189,7 +25190,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
     routines?: RoutineCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWeeklyReportsInput = {
@@ -25215,6 +25215,7 @@ export namespace Prisma {
     sqScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
     focusSessions?: FocusSessionUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     journalEntries?: JournalEntryUncheckedCreateNestedManyWithoutUserInput
@@ -25223,7 +25224,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
     routines?: RoutineUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    chatMessages?: ChatMessageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWeeklyReportsInput = {
@@ -25265,6 +25265,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUpdateManyWithoutUserNestedInput
@@ -25273,7 +25274,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
     routines?: RoutineUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWeeklyReportsInput = {
@@ -25299,6 +25299,7 @@ export namespace Prisma {
     sqScore?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
     focusSessions?: FocusSessionUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     journalEntries?: JournalEntryUncheckedUpdateManyWithoutUserNestedInput
@@ -25307,7 +25308,6 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
     routines?: RoutineUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    chatMessages?: ChatMessageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutChatMessagesInput = {
@@ -25462,6 +25462,13 @@ export namespace Prisma {
     weeklyReports?: WeeklyReportUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type ChatMessageCreateManyUserInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
   export type FocusSessionCreateManyUserInput = {
     id?: string
     taskId?: string | null
@@ -25568,11 +25575,25 @@ export namespace Prisma {
     generatedAt?: Date | string
   }
 
-  export type ChatMessageCreateManyUserInput = {
-    id?: string
-    role: string
-    content: string
-    createdAt?: Date | string
+  export type ChatMessageUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatMessageUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FocusSessionUpdateWithoutUserInput = {
@@ -25901,27 +25922,6 @@ export namespace Prisma {
     aiSummary?: NullableStringFieldUpdateOperationsInput | string | null
     suggestions?: NullableStringFieldUpdateOperationsInput | string | null
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ChatMessageUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ChatMessageUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ChatMessageUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FocusSessionCreateManyTaskInput = {

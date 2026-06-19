@@ -42,7 +42,6 @@ function FocusSetup({ onStart, theme, isBold }: {
     <div style={{ backgroundColor: theme.bgPrimary, minHeight: '100%', padding: '28px 24px 48px' }}>
       <div style={{ maxWidth: 560, margin: '0 auto' }}>
 
-        {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
           <button
             onClick={() => navigate('/dashboard')}
@@ -57,15 +56,11 @@ function FocusSetup({ onStart, theme, isBold }: {
               <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke={textPrimary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <h1 style={{
-            fontSize: 20, fontWeight: 700, margin: 0,
-            color: textPrimary, fontFamily: '"DM Serif Display", serif',
-          }}>
+          <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0, color: textPrimary, fontFamily: '"DM Serif Display", serif' }}>
             Focus Mode
           </h1>
         </div>
 
-        {/* Task input */}
         <div style={{ marginBottom: 24 }}>
           <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: textSub, marginBottom: 10 }}>
             What are you working on?
@@ -78,7 +73,6 @@ function FocusSetup({ onStart, theme, isBold }: {
           />
         </div>
 
-        {/* Duration picker */}
         <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: textSub, marginBottom: 10 }}>
           Session duration
         </p>
@@ -90,12 +84,10 @@ function FocusSetup({ onStart, theme, isBold }: {
                 key={d.value}
                 onClick={() => setDuration(d.value)}
                 style={{
-                  padding: '16px',
-                  borderRadius: 14,
+                  padding: '16px', borderRadius: 14,
                   border: `1.5px solid ${active ? theme.accent : cardBorder}`,
                   background: active ? `${theme.accent}14` : cardBg,
-                  cursor: 'pointer',
-                  textAlign: 'left',
+                  cursor: 'pointer', textAlign: 'left',
                   transition: 'all 0.18s ease',
                   display: 'flex', flexDirection: 'column', gap: 4,
                   fontFamily: 'inherit',
@@ -111,7 +103,6 @@ function FocusSetup({ onStart, theme, isBold }: {
           })}
         </div>
 
-        {/* Brain Beats note */}
         <div style={{
           borderRadius: 14, padding: '14px 16px', marginBottom: 28,
           background: cardBg, border: `1px solid ${cardBorder}`,
@@ -126,7 +117,6 @@ function FocusSetup({ onStart, theme, isBold }: {
           </div>
         </div>
 
-        {/* CTA */}
         <button
           onClick={() => onStart(duration, taskTitle)}
           style={{
@@ -186,16 +176,13 @@ function FocusSession({ duration, taskTitle, onComplete, onExit }: {
   const offset  = circ - (percent / 100) * circ
 
   return (
-    // Session is fullscreen — intentionally no AppShell
     <div style={{
       position: 'fixed', inset: 0, zIndex: 999,
       background: 'linear-gradient(160deg, #4a2568 0%, #744D83 50%, #23627C 100%)',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'space-between',
-      padding: '28px 24px 40px',
-      fontFamily: 'inherit',
+      padding: '28px 24px 40px', fontFamily: 'inherit',
     }}>
-      {/* Top bar */}
       <div style={{ width: '100%', maxWidth: 480, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button
           onClick={onExit}
@@ -229,7 +216,6 @@ function FocusSession({ duration, taskTitle, onComplete, onExit }: {
         </button>
       </div>
 
-      {/* Timer ring */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
         <div style={{ position: 'relative', width: size, height: size }}>
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
@@ -256,15 +242,11 @@ function FocusSession({ duration, taskTitle, onComplete, onExit }: {
           </div>
         </div>
 
-        <div style={{
-          padding: '5px 14px', borderRadius: 9999,
-          background: 'rgba(255,255,255,0.12)',
-        }}>
+        <div style={{ padding: '5px 14px', borderRadius: 9999, background: 'rgba(255,255,255,0.12)' }}>
           <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12, fontWeight: 600 }}>🔥 On Fire</span>
         </div>
       </div>
 
-      {/* Bottom controls */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, margin: 0 }}>{motivation}</p>
         <button
@@ -290,8 +272,8 @@ function FocusSession({ duration, taskTitle, onComplete, onExit }: {
 }
 
 // ── Complete ───────────────────────────────────────────────────────────────────
-function FocusComplete({ duration, taskTitle, theme, isBold, onAgain }: {
-  duration: number; taskTitle: string; theme: any; isBold: boolean; onAgain: () => void
+function FocusComplete({ duration, taskTitle, theme, isBold }: {
+  duration: number; taskTitle: string; theme: any; isBold: boolean
 }) {
   const navigate    = useNavigate()
   const textPrimary = isBold ? '#FFFFFF' : theme.textPrimary
@@ -323,19 +305,17 @@ function FocusComplete({ duration, taskTitle, theme, isBold, onAgain }: {
           </span>
         )}
 
-        {/* Stats */}
         <div style={{
           borderRadius: 16, padding: '20px', marginBottom: 28,
           background: cardBg, border: `1px solid ${cardBorder}`,
           display: 'flex', justifyContent: 'space-around', alignItems: 'center',
         }}>
           {[
-            { value: duration,  label: 'Minutes',    color: textPrimary },
+            { value: duration,       label: 'Minutes',    color: textPrimary },
             { value: `+${duration}`, label: 'Focus mins', color: theme.accent },
-            { value: '🔥',      label: 'Streak',     color: '#F59E0B' },
+            { value: '🔥',           label: 'Streak',     color: '#F59E0B' },
           ].map((s, i) => (
             <div key={i} style={{ textAlign: 'center', flex: 1 }}>
-              {i > 0 && <div style={{ position: 'absolute' }} />}
               <p style={{ fontSize: 24, fontWeight: 800, color: s.color, margin: 0, fontFamily: '"DM Serif Display", serif' }}>
                 {s.value}
               </p>
@@ -345,16 +325,10 @@ function FocusComplete({ duration, taskTitle, theme, isBold, onAgain }: {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <button
-            onClick={() => navigate('/tasks')}
-            className="btn-primary"
-          >
+          <button onClick={() => navigate('/tasks')} className="btn-primary">
             Go to tasks
           </button>
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="btn-secondary"
-          >
+          <button onClick={() => navigate('/dashboard')} className="btn-secondary">
             Back to Dashboard
           </button>
         </div>
@@ -377,18 +351,40 @@ export default function FocusPage() {
     setScreen('session')
   }
 
+  // ── THIS IS THE CRITICAL FUNCTION ──────────────────────────────────────────
+  // Your sessions.service.ts requires startedAt as a REQUIRED string, not optional.
+  // The payload below matches your exact backend signature.
+  // The alert() is TEMPORARY — it will tell us immediately if this fails,
+  // instead of silently swallowing the error like before.
   const handleComplete = async () => {
+    const payload = {
+      durationMinutes: duration,
+      completed:       true,
+      startedAt:       (startedAt.current || new Date()).toISOString(),
+    }
+
+    console.log('[Focus] Attempting to save session:', payload)
+
     try {
-      await sessionsApi.logFocus({
-        durationMinutes: duration,
-        completed:       true,
-        startedAt:       startedAt.current?.toISOString() || new Date().toISOString(),
-      })
-    } catch { /* silent */ }
+      const res = await sessionsApi.logFocus(payload)
+      console.log('[Focus] ✅ Session saved successfully:', res.data)
+    } catch (err: any) {
+      console.error('[Focus] ❌ FAILED TO SAVE SESSION')
+      console.error('[Focus] Status code:', err.response?.status)
+      console.error('[Focus] Response body:', err.response?.data)
+      console.error('[Focus] Raw error:', err.message)
+
+      // TEMPORARY visible alert — remove once confirmed working
+      alert(
+        `Focus session did NOT save.\n\n` +
+        `Status: ${err.response?.status || 'no response'}\n` +
+        `Message: ${err.response?.data?.message || err.message}`
+      )
+    }
+
     setScreen('complete')
   }
 
-  // Session is intentionally fullscreen — no AppShell
   if (screen === 'session') {
     return (
       <FocusSession
@@ -400,22 +396,11 @@ export default function FocusPage() {
     )
   }
 
-  // Setup and complete live inside AppShell
   return (
     <AppShell>
       {screen === 'complete'
-        ? <FocusComplete
-            duration={duration}
-            taskTitle={taskTitle}
-            theme={theme}
-            isBold={isBold}
-            onAgain={() => setScreen('setup')}
-          />
-        : <FocusSetup
-            onStart={handleStart}
-            theme={theme}
-            isBold={isBold}
-          />
+        ? <FocusComplete duration={duration} taskTitle={taskTitle} theme={theme} isBold={isBold} />
+        : <FocusSetup onStart={handleStart} theme={theme} isBold={isBold} />
       }
     </AppShell>
   )

@@ -21,11 +21,11 @@ const NAV_FOCUS = [
 
 const NAV_INSIGHTS = [
   { path: '/reports/weekly', label: 'Weekly Report', icon: 'ti-chart-bar' },
-  { path: '/about', label: 'About'}
 ]
 
 const NAV_ASSISTANT = [
   { path: 'nudge', label: 'Ask Nudge', icon: 'ti-sparkles' },
+  { path: '/about', label: 'About Nudgely'}
 ]
 
 const ALL_NAV = [...NAV_MAIN, ...NAV_FOCUS, ...NAV_INSIGHTS, ...NAV_ASSISTANT]

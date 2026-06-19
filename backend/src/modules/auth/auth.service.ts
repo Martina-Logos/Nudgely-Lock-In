@@ -144,28 +144,58 @@ export async function login(email: string, password: string) {
 
 export async function refresh(token: string) {
   let payload: { userId: string; tokenId: string }
+
   try {
-    payload = verifyRefreshToken(token) as { userId: string; tokenId: string }
+    payload = verifyRefreshToken(token) as {
+      userId: string
+      tokenId: string
+    }
   } catch {
-    throw new AppError(401, 'Invalid or expired refresh token.', 'INVALID_REFRESH_TOKEN')
+    throw new AppError(
+      401,
+      'Invalid or expired refresh token.',
+      'INVALID_REFRESH_TOKEN'
+    )
   }
 
-  const stored = await prisma.refreshToken.findUnique({ where: { token } })
+  const stored = await prisma.refreshToken.findUnique({
+    where: { token },
+  })
 
   if (!stored || stored.expiresAt < new Date()) {
-    throw new AppError(401, 'Refresh token not found or expired.', 'INVALID_REFRESH_TOKEN')
+    throw new AppError(
+      401,
+      'Refresh token not found or expired.',
+      'INVALID_REFRESH_TOKEN'
+    )
   }
 
-  await prisma.refreshToken.delete({ where: { id: stored.id } })
+  // safer than delete()
+  await prisma.refreshToken.deleteMany({
+    where: { token },
+  })
 
-  const user = await prisma.user.findUnique({ where: { id: payload.userId } })
+  const user = await prisma.user.findUnique({
+    where: { id: payload.userId },
+  })
+
   if (!user) {
-    throw new AppError(401, 'User not found.', 'USER_NOT_FOUND')
+    throw new AppError(
+      401,
+      'User not found.',
+      'USER_NOT_FOUND'
+    )
   }
 
-  const { accessToken, refreshToken: newRefreshToken } = await issueTokens(user.id, user.email)
+  const {
+    accessToken,
+    refreshToken: newRefreshToken,
+  } = await issueTokens(user.id, user.email)
 
-  return { accessToken, refreshToken: newRefreshToken }
+  return {
+    accessToken,
+    refreshToken: newRefreshToken,
+  }
 }
 
 // ─── Logout ───────────────────────────────────────────────────────────────────
