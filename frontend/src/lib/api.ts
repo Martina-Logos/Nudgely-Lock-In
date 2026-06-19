@@ -186,6 +186,15 @@ export const assistantApi = {
   },
 }
 
+// Browser caching on GET requests was causing 304s and stale dashboard data —
+// this forces every GET to be treated as unique.
+  api.interceptors.request.use((config) => {
+    if (config.method === 'get') {
+      config.params = { ...(config.params || {}), _t: Date.now() }
+    }
+    return config
+  })
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ALSO ADD to app.ts (backend) — register the new route:
 //

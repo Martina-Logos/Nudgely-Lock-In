@@ -272,8 +272,8 @@ function FocusSession({ duration, taskTitle, onComplete, onExit }: {
 }
 
 // ── Complete ───────────────────────────────────────────────────────────────────
-function FocusComplete({ duration, taskTitle, theme, isBold }: {
-  duration: number; taskTitle: string; theme: any; isBold: boolean
+function FocusComplete({ duration, taskTitle, todayTotal, theme, isBold }: {
+  duration: number; taskTitle: string; todayTotal: number; theme: any; isBold: boolean
 }) {
   const navigate    = useNavigate()
   const textPrimary = isBold ? '#FFFFFF' : theme.textPrimary
@@ -311,9 +311,9 @@ function FocusComplete({ duration, taskTitle, theme, isBold }: {
           display: 'flex', justifyContent: 'space-around', alignItems: 'center',
         }}>
           {[
-            { value: duration,       label: 'Minutes',    color: textPrimary },
-            { value: `+${duration}`, label: 'Focus mins', color: theme.accent },
-            { value: '🔥',           label: 'Streak',     color: '#F59E0B' },
+            { value: duration,                  label: 'Minutes',       color: textPrimary },
+            { value: todayTotal || duration,     label: "Today's total", color: theme.accent },
+            { value: '🔥',                       label: 'Streak',        color: '#F59E0B' },
           ].map((s, i) => (
             <div key={i} style={{ textAlign: 'center', flex: 1 }}>
               <p style={{ fontSize: 24, fontWeight: 800, color: s.color, margin: 0, fontFamily: '"DM Serif Display", serif' }}>
@@ -343,43 +343,46 @@ export default function FocusPage() {
   const [screen, setScreen]       = useState<FocusScreen>('setup')
   const [duration, setDuration]   = useState(25)
   const [taskTitle, setTaskTitle] = useState('')
-  const startedAt = useRef<Date | null>(null)
+  const [todayTotal, setTodayTotal] = useState(0)
+  const startedAt   = useRef<Date | null>(null)
+  const hasSavedRef = useRef(false) // guards against double-fire (React StrictMode / double effect invocation)
 
   const handleStart = (d: number, title: string) => {
     setDuration(d); setTaskTitle(title)
     startedAt.current = new Date()
+    hasSavedRef.current = false
     setScreen('session')
   }
 
-  // ── THIS IS THE CRITICAL FUNCTION ──────────────────────────────────────────
-  // Your sessions.service.ts requires startedAt as a REQUIRED string, not optional.
-  // The payload below matches your exact backend signature.
-  // The alert() is TEMPORARY — it will tell us immediately if this fails,
-  // instead of silently swallowing the error like before.
   const handleComplete = async () => {
+    // Prevent the session from being logged twice if onComplete fires more than once
+    // (e.g. the timer hitting 0 and a near-simultaneous unmount/effect re-run)
+    if (hasSavedRef.current) {
+      setScreen('complete')
+      return
+    }
+    hasSavedRef.current = true
+
     const payload = {
       durationMinutes: duration,
       completed:       true,
       startedAt:       (startedAt.current || new Date()).toISOString(),
     }
 
-    console.log('[Focus] Attempting to save session:', payload)
-
     try {
-      const res = await sessionsApi.logFocus(payload)
-      console.log('[Focus] ✅ Session saved successfully:', res.data)
-    } catch (err: any) {
-      console.error('[Focus] ❌ FAILED TO SAVE SESSION')
-      console.error('[Focus] Status code:', err.response?.status)
-      console.error('[Focus] Response body:', err.response?.data)
-      console.error('[Focus] Raw error:', err.message)
+      await sessionsApi.logFocus(payload)
 
-      // TEMPORARY visible alert — remove once confirmed working
-      alert(
-        `Focus session did NOT save.\n\n` +
-        `Status: ${err.response?.status || 'no response'}\n` +
-        `Message: ${err.response?.data?.message || err.message}`
-      )
+      // Pull the real cumulative total for today so "Today's total" on the
+      // complete screen reflects the backend, not just this session's duration
+      const { data } = await sessionsApi.getTodayFocus()
+      const total = typeof data === 'number'
+        ? data
+        : data?.minutes ?? data?.totalMinutes ?? data?.total ?? duration
+      setTodayTotal(total)
+    } catch (err: any) {
+      console.error('[Focus] Failed to save session:', err.response?.data || err.message)
+      // Fall back to just showing this session's duration if the total fetch fails
+      setTodayTotal(duration)
     }
 
     setScreen('complete')
@@ -399,7 +402,7 @@ export default function FocusPage() {
   return (
     <AppShell>
       {screen === 'complete'
-        ? <FocusComplete duration={duration} taskTitle={taskTitle} theme={theme} isBold={isBold} />
+        ? <FocusComplete duration={duration} taskTitle={taskTitle} todayTotal={todayTotal} theme={theme} isBold={isBold} />
         : <FocusSetup onStart={handleStart} theme={theme} isBold={isBold} />
       }
     </AppShell>
