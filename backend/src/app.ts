@@ -4,6 +4,8 @@ import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import { env } from './config/env'
 import { errorHandler } from './middleware/errorHandler'
+import passport from 'passport'
+import './modules/auth/google.strategy'
 
 // ─── Route imports (uncomment as each module is built) ────────────────────────
 import authRoutes        from './modules/auth/auth.routes'
@@ -17,7 +19,6 @@ import reportsRoutes     from './modules/reports/reports.routes'
 import assistantRoutes   from './modules/assistant/assistant.routes'
 
 const app = express()
-
 // ─── Security ─────────────────────────────────────────────────────────────────
 app.use(helmet())
 
@@ -33,6 +34,7 @@ app.use(cors({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
+app.use(passport.initialize())
 
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get('/health', (_req, res) => {

@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import * as authService from './auth.service'
+import passport from 'passport'
+import { env } from '../../config/env'
 
 // ─── Register ─────────────────────────────────────────────────────────────────
 
@@ -97,6 +99,33 @@ export async function refresh(req: Request, res: Response, next: NextFunction) {
     })
 
     res.json({ accessToken: result.accessToken })
+  } catch (err) {
+    next(err)
+  }
+}
+
+// ─── Google OAuth Callback ─────────────────────────────────────────────────  
+export async function googleCallback(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const user = req.user as any
+
+    const result = await authService.googleLogin(user)
+
+    res.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    })
+
+    const clientUrl =
+      `${env.CLIENT_URL}/auth/callback?token=${result.accessToken}`
+
+    res.redirect(clientUrl)
   } catch (err) {
     next(err)
   }

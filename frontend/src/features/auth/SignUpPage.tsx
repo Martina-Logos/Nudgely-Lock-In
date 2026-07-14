@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from 'react-router-dom'
 import { authApi } from '../../lib/api'
 import { useOnboardingStore } from '../../stores/onboardingStore'
@@ -21,6 +22,8 @@ export default function SignUpPage() {
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm]   = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm, setShowConfirm]   = useState(false)
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState('')
 
@@ -47,6 +50,7 @@ export default function SignUpPage() {
     }
   }
 
+
   return (
     <div className="page-auth signup-page">
       <div className="signup-card">
@@ -71,14 +75,92 @@ export default function SignUpPage() {
 
           <div>
             <label className="signup-label">Password</label>
-            <input className="input" type="password" placeholder="Min. 8 characters"
-              value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+            <div
+              style={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <input className="input" type={showPassword ? 'text' : 'password'} placeholder="Min. 8 characters"
+                value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password"
+                style={{
+                  paddingRight: "52px",
+                  width: "100%",
+                }} />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                style={{
+                  position: "absolute",
+                  right: "16px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  padding: 0,
+                  width: "24px",
+                  height: "24px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#744D83",
+                }}
+              >
+                {showPassword ? (
+                  <EyeOff size={20} strokeWidth={2} />
+                ) : (
+                  <Eye size={20} strokeWidth={2} />
+                )}
+              </button>
+            </div>
           </div>
 
           <div>
             <label className="signup-label">Confirm password</label>
-            <input className="input" type="password" placeholder="Repeat your password"
-              value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="new-password" />
+            <div
+              style={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <input className="input" type={showConfirm ? 'text' : 'password'} placeholder="Repeat your password"
+                value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="new-password"
+                style={{
+                  paddingRight: "52px",
+                  width: "100%",
+                }} />
+              <button
+                type="button"
+                onClick={() => setShowConfirm((prev) => !prev)}
+                aria-label={showConfirm ? "Hide password" : "Show password"}
+                style={{
+                  position: "absolute",
+                  right: "16px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  padding: 0,
+                  width: "24px",
+                  height: "24px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#744D83",
+                }}
+              >
+                {showConfirm ? (
+                  <EyeOff size={20} strokeWidth={2} />
+                ) : (
+                  <Eye size={20} strokeWidth={2} />
+                )}
+              </button>
+            </div>
             {confirm && password !== confirm && (
               <p className="signup-field-error">Passwords don't match</p>
             )}

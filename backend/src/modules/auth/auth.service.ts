@@ -114,6 +114,18 @@ export async function resendOtp(email: string) {
   return { message: 'If that email exists, a new code has been sent.' }
 }
 
+// ─── Google Login ─────────────────────────────────────────────────────────────
+export async function googleLogin(user: any) {
+  const { accessToken, refreshToken } =
+    await issueTokens(user.id, user.email)
+
+  return {
+    accessToken,
+    refreshToken,
+    user: sanitizeUser(user),
+  }
+}
+
 // ─── Login ────────────────────────────────────────────────────────────────────
 
 export async function login(email: string, password: string) {

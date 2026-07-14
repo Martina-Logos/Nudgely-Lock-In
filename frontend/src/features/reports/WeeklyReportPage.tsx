@@ -155,8 +155,8 @@ function WeekNavigator({ weekStart, weekEnd, onPrev, onNext, theme, isBold }: {
 }
 
 // ── Card wrapper ───────────────────────────────────────────────────────────────
-function Card({ children, theme, isBold, style = {} }: {
-  children: React.ReactNode; theme: any; isBold: boolean; style?: React.CSSProperties
+function Card({ children, isBold, style = {} }: {
+  children: React.ReactNode; isBold: boolean; style?: React.CSSProperties
 }) {
   return (
     <div style={{
@@ -277,20 +277,20 @@ export default function WeeklyReportPage() {
               </div>
 
               {/* Daily focus */}
-              <Card theme={theme} isBold={isBold}>
+              <Card isBold={isBold}>
                 <CardTitle theme={theme}>Daily Focus Time</CardTitle>
                 <FocusBarChart data={report.dailyFocusData as any} theme={theme} />
               </Card>
 
               {/* Mood trend */}
-              <Card theme={theme} isBold={isBold}>
+              <Card isBold={isBold}>
                 <CardTitle theme={theme}>Mood Trend</CardTitle>
                 <MoodLineChart data={report.moodTrendData as any} theme={theme} />
               </Card>
 
               {/* AI Summary */}
               {report.aiSummary && (
-                <Card theme={theme} isBold={isBold}>
+                <Card isBold={isBold}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                     <div style={{
                       width: 34, height: 34, borderRadius: '50%', flexShrink: 0,

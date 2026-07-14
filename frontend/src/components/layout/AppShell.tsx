@@ -28,21 +28,18 @@ const NAV_ASSISTANT = [
   { path: '/about', label: 'About Nudgely'}
 ]
 
-const ALL_NAV = [...NAV_MAIN, ...NAV_FOCUS, ...NAV_INSIGHTS, ...NAV_ASSISTANT]
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 function Sidebar({
   collapsed,
   onToggle,
-  theme,
-  Aurora,
+  isBold,
   onOpenNudge,
   nudgePanelOpen,
 }: {
   collapsed: boolean
   onToggle: () => void
-  theme: any
-  Aurora: boolean
+  isBold: boolean
   onOpenNudge: () => void
   nudgePanelOpen: boolean
 }) {
@@ -55,13 +52,13 @@ function Sidebar({
     (path === '/brain-beats' &&
       ['/brain-beats', '/meditation', '/scramble'].includes(location.pathname))
 
-  const sidebarBg = Aurora ? '#1B4E63' : '#FFFFFF'
-  const borderColor = Aurora ? '#23627C' : '#E3DBE6'
-  const labelColor = Aurora ? '#A7C7D1' : '#9B8EA5'
-  const textColor = Aurora ? '#FFFFFF' : '#6B5878'
-  const activeColor = Aurora ? '#23BBB7' : '#744D83'
-  const activeBg = Aurora ? 'rgba(35,187,183,0.15)' : '#EDE8F5'
-  const hoverBg = Aurora ? 'rgba(255,255,255,0.06)' : '#F5F2F8'
+  const sidebarBg = isBold ? '#1B4E63' : '#FFFFFF'
+  const borderColor = isBold ? '#23627C' : '#E3DBE6'
+  const labelColor = isBold ? '#A7C7D1' : '#9B8EA5'
+  const textColor = isBold ? '#FFFFFF' : '#6B5878'
+  const activeColor = isBold ? '#23BBB7' : '#744D83'
+  const activeBg = isBold ? 'rgba(35,187,183,0.15)' : '#EDE8F5'
+  const hoverBg = isBold ? 'rgba(255,255,255,0.06)' : '#F5F2F8'
 
   function NavItem({ item }: { item: typeof NAV_MAIN[0] }) {
     const active = isActive(item.path)
@@ -388,7 +385,7 @@ function Sidebar({
               width: 32,
               height: 32,
               borderRadius: '50%',
-              backgroundColor: Aurora
+              backgroundColor: isBold
                 ? 'rgba(35,187,183,0.2)'
                 : '#EDE8F5',
               border: `2px solid ${activeColor}`,
@@ -416,7 +413,7 @@ function Sidebar({
                 style={{
                   fontSize: 12,
                   fontWeight: 600,
-                  color: Aurora ? '#FFFFFF' : '#744D83',
+                  color: isBold ? '#FFFFFF' : '#744D83',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -451,7 +448,16 @@ function Sidebar({
 }
 
 // ─── Bottom nav (mobile only) ─────────────────────────────────────────────────
-function BottomNav({ theme }: { theme: any }) {
+type Theme = {
+  navBg: string
+  navBorder: string
+  navActive: string
+  navInactive: string
+  bgPrimary: string
+  accent: string
+}
+
+function BottomNav({ theme }: { theme: Theme }) {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -530,7 +536,7 @@ function BottomNav({ theme }: { theme: any }) {
 }
 
 // ─── Top bar (desktop) ────────────────────────────────────────────────────────
-function TopBar({ theme, Aurora }: { theme: any; Aurora: boolean }) {
+function TopBar({ theme, isBold }: { theme: Theme; isBold: boolean }) {
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
 
@@ -540,10 +546,10 @@ function TopBar({ theme, Aurora }: { theme: any; Aurora: boolean }) {
     day: 'numeric',
   })
 
-  const barBg = Aurora ? '#23627C' : '#FFFFFF'
-  const barBorder = Aurora ? '#1B4E63' : '#E3DBE6'
-  const textPri = Aurora ? '#FFFFFF' : '#2D1F35'
-  const textSec = Aurora ? '#A7C7D1' : '#8E7A99'
+  const barBg = isBold ? '#23627C' : '#FFFFFF'
+  const barBorder = isBold ? '#1B4E63' : '#E3DBE6'
+  const textPri = isBold ? '#FFFFFF' : '#2D1F35'
+  const textSec = isBold ? '#A7C7D1' : '#8E7A99'
 
   return (
     <header
@@ -604,7 +610,7 @@ function TopBar({ theme, Aurora }: { theme: any; Aurora: boolean }) {
             width: 34,
             height: 34,
             borderRadius: '50%',
-            backgroundColor: Aurora
+            backgroundColor: isBold
               ? 'rgba(35,187,183,0.2)'
               : '#EDE8F5',
             border: `2px solid ${theme.accent}`,
@@ -634,7 +640,7 @@ export default function Aurora({
   children,
   hideNav = false,
 }: AuroraProps) {
-  const { theme, Aurora } = useTheme()
+const { theme, isBold } = useTheme()
 
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768)
   const [sidebarCollapsed, setSidebar] = useState(false)
@@ -664,7 +670,7 @@ export default function Aurora({
           overflow: 'hidden',
         }}
       >
-        <TopBar theme={theme} Aurora={Aurora} />
+        <TopBar theme={theme} isBold={isBold} />
 
         <div
           style={{
@@ -677,8 +683,7 @@ export default function Aurora({
             <Sidebar
               collapsed={sidebarCollapsed}
               onToggle={() => setSidebar((c) => !c)}
-              theme={theme}
-              Aurora={Aurora}
+              isBold={isBold}
               onOpenNudge={() => setNudgePanelOpen(true)}
               nudgePanelOpen={nudgePanelOpen}
             />

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { authApi } from '../../lib/api'
 import { useOnboardingStore } from '../../stores/onboardingStore'
 import { useAuthStore } from '../../stores/authStore'
@@ -15,12 +15,40 @@ function StepDots({ active }: { active: number }) {
   )
 }
 
+const EMAIL_BACKUP_KEY = 'nudgely_pending_verify_email'
+
 export default function VerifyCodePage() {
-  const navigate     = useNavigate()
-  const email        = useOnboardingStore((s) => s.email)
-  const setToken     = useAuthStore((s) => s.setToken)
-  const setUser      = useAuthStore((s) => s.setUser)
-  const setOnboarded = useAuthStore((s) => s.setOnboarded)
+  const navigate       = useNavigate()
+  const [searchParams]  = useSearchParams()
+  const storeEmail      = useOnboardingStore((s) => s.email)
+  const setStoreEmail   = useOnboardingStore((s: any) => s.setEmail)
+  const setToken        = useAuthStore((s) => s.setToken)
+  const setUser         = useAuthStore((s) => s.setUser)
+  const setOnboarded    = useAuthStore((s) => s.setOnboarded)
+
+  // ── Resolve email from the most reliable source available ─────────────────
+  // Priority: Zustand store → URL query param → sessionStorage backup
+  // Whichever resolves first, we immediately back it up to sessionStorage so
+  // a page refresh on THIS screen never loses it again.
+  const [email] = useState<string>(() => {
+    if (storeEmail) return storeEmail
+    const fromUrl = searchParams.get('email')
+    if (fromUrl) return fromUrl
+    const fromBackup = sessionStorage.getItem(EMAIL_BACKUP_KEY)
+    if (fromBackup) return fromBackup
+    return ''
+  })
+
+  // Persist whatever we resolved so refreshes on this page don't lose it,
+  // and re-sync it back into the onboarding store if that was the gap.
+  useEffect(() => {
+    if (email) {
+      sessionStorage.setItem(EMAIL_BACKUP_KEY, email)
+      if (!storeEmail && typeof setStoreEmail === 'function') {
+        setStoreEmail(email)
+      }
+    }
+  }, [email]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [digits, setDigits]       = useState(['', '', '', '', '', ''])
   const [loading, setLoading]     = useState(false)
@@ -37,6 +65,29 @@ export default function VerifyCodePage() {
       return () => clearTimeout(t)
     }
   }, [countdown])
+
+  // ── No email at all — this is unrecoverable, send them back to sign up ────
+  if (!email) {
+    return (
+      <div className="page-auth auth-page">
+        <div className="auth-card verify-card">
+          <div className="auth-copy">
+            <h1 className="auth-title" style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>
+              We lost track of your email
+            </h1>
+            <p className="auth-subtitle">
+              This can happen after a page refresh. Please sign up again — it only takes a moment.
+            </p>
+          </div>
+          <div className="auth-actions" style={{ marginTop: 24 }}>
+            <button className="btn-primary auth-primary-button" onClick={() => navigate('/signup')}>
+              Back to sign up
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const handleChange = (index: number, value: string) => {
     const digit = value.replace(/\D/g, '').slice(-1)
@@ -72,6 +123,7 @@ export default function VerifyCodePage() {
       setToken(data.accessToken)
       setUser(data.user)
       setOnboarded(data.user.isOnboarded)
+      sessionStorage.removeItem(EMAIL_BACKUP_KEY) // verified — no longer needed
       navigate(data.user.isOnboarded ? '/dashboard' : '/onboarding/profile')
     } catch (err: any) {
       setError(err.response?.data?.message || 'Invalid or expired code.')
@@ -84,12 +136,14 @@ export default function VerifyCodePage() {
 
   const handleResend = async () => {
     if (countdown > 0) return
+    setError('')
     try {
       await authApi.resendOtp(email)
       setResent(true); setCountdown(60)
       setTimeout(() => setResent(false), 3000)
-    } catch {
-      setError('Failed to resend code.')
+    } catch (err: any) {
+      // Surface the real reason instead of a generic message
+      setError(err.response?.data?.message || 'Failed to resend code.')
     }
   }
 

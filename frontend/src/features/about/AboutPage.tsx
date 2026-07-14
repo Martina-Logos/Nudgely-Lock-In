@@ -1,6 +1,4 @@
-import { useNavigate } from 'react-router-dom'
 import Aurora from '../../components/layout/AppShell'
-import { useTheme } from '../../lib/theme'
 
 // ── Feature data ──────────────────────────────────────────────────────────────
 const PRODUCTIVITY_FEATURES = [
@@ -112,7 +110,7 @@ function FeatureCard({ feature, wide = false }: { feature: typeof PRODUCTIVITY_F
       background: z.bg,
       border: `1px solid ${z.border}`,
       borderRadius: 16,
-      padding: '20px 20px 18px',
+      padding: wide ? '24px 24px 20px' : '20px 20px 18px',
       display: 'flex',
       flexDirection: 'column',
       gap: 10,
@@ -180,11 +178,8 @@ function FeatureCard({ feature, wide = false }: { feature: typeof PRODUCTIVITY_F
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function AboutPage() {
-  const navigate     = useNavigate()
-  const { theme, isBold } = useTheme()
 
   const pageBg    = '#f9f9f7'
-  const headingColor = '#2f2940'
   const subColor     = '#6d6577'
 
   return (

@@ -23,9 +23,12 @@ prisma
 zod
 node-cron
 date-fns
-@anthropic-ai/sdk
+openai
 express-rate-limit
 winston
 @types/node-cron
 react
 react-dom
+lucide-react
+passport-google-oauth20
+@types/passport-google-oauth20

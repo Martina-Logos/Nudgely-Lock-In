@@ -76,12 +76,28 @@ export async function sendOtpEmail(email: string, code: string): Promise<void> {
     <p>This code is single-use. Once verified, you're in.</p>
   `)
 
-  await transporter.sendMail({
-    from:    `"Nudgely" <${env.SMTP_FROM}>`,
-    to:      email,
-    subject: `${code} is your Nudgely verification code`,
-    html,
-  })
+  // ── Explicit logging — this can NEVER fail silently again ──────────────────
+  console.log(`📧 [Mailer] Attempting to send OTP email to: ${email}`)
+  console.log(`📧 [Mailer] From address: ${env.SMTP_FROM}`)
+  console.log(`📧 [Mailer] SMTP host: ${env.SMTP_HOST}:${env.SMTP_PORT}`)
+
+  try {
+    const info = await transporter.sendMail({
+      from:    `"Nudgely" <${env.SMTP_FROM}>`,
+      to:      email,
+      subject: `${code} is your Nudgely verification code`,
+      html,
+    })
+    console.log(`✅ [Mailer] Email accepted by SMTP server. Message ID: ${info.messageId}`)
+    console.log(`✅ [Mailer] Response: ${info.response}`)
+  } catch (err: any) {
+    console.error(`❌ [Mailer] FAILED to send OTP email to ${email}`)
+    console.error(`❌ [Mailer] Error code: ${err.code}`)
+    console.error(`❌ [Mailer] Error message: ${err.message}`)
+    console.error(`❌ [Mailer] Full error:`, err)
+    // Re-throw so the calling code knows it failed — do not swallow this
+    throw err
+  }
 }
 
 // ─── Send password reset OTP ──────────────────────────────────────────────────
@@ -97,10 +113,19 @@ export async function sendPasswordResetEmail(email: string, code: string): Promi
     <p>If you didn't request this, please ignore this email. Your account is safe.</p>
   `)
 
-  await transporter.sendMail({
-    from:    `"Nudgely" <${env.SMTP_FROM}>`,
-    to:      email,
-    subject: 'Reset your Nudgely password',
-    html,
-  })
+  console.log(`📧 [Mailer] Attempting to send password reset email to: ${email}`)
+
+  try {
+    const info = await transporter.sendMail({
+      from:    `"Nudgely" <${env.SMTP_FROM}>`,
+      to:      email,
+      subject: 'Reset your Nudgely password',
+      html,
+    })
+    console.log(`✅ [Mailer] Password reset email sent. Message ID: ${info.messageId}`)
+  } catch (err: any) {
+    console.error(`❌ [Mailer] FAILED to send password reset email to ${email}`)
+    console.error(`❌ [Mailer] Error:`, err)
+    throw err
+  }
 }

@@ -18,7 +18,7 @@ const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
 })
 
-const MODEL = 'gpt-5-mini'
+const MODEL = 'gpt-4o-mini'
 
 // ── Voice guidelines shared by both systems ───────────────────────────────────
 

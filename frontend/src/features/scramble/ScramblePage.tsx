@@ -119,7 +119,7 @@ export default function ScramblePage() {
   const [hintOpen, setHintOpen]     = useState(false)
   const [showHintText, setShowHintText] = useState(false)
 
-  const shakeRef = useRef<ReturnType<typeof setTimeout>>()
+const shakeRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Current word
   const currentWord = round[wordIndex]
@@ -241,7 +241,11 @@ export default function ScramblePage() {
   }
 
   // ── Cleanup on unmount ────────────────────────────────────────────────────
-  useEffect(() => () => clearTimeout(shakeRef.current), [])
+  useEffect(() => () => {
+    if (shakeRef.current) {
+      clearTimeout(shakeRef.current)
+    }
+  }, [])
 
   // ── Render ────────────────────────────────────────────────────────────────
   const catStyle = currentWord ? CATEGORY_STYLES[currentWord.category] : CATEGORY_STYLES.mind

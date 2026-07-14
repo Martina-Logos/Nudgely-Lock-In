@@ -259,15 +259,11 @@ function MeditationSession({
   duration,
   onComplete,
   onEnd,
-  theme,
-  isBold,
 }: {
   mode: MeditationMode
   duration: number
   onComplete: () => void
   onEnd: () => void        // user manually ends — goes back to setup, no logging
-  theme: any
-  isBold: boolean
 }) {
   const modeData     = MODES.find(m => m.value === mode)!
   const config       = BREATHING_CONFIGS[mode]
@@ -485,7 +481,7 @@ function MeditationComplete({ onRedo, theme }: { onRedo: () => void; theme: any 
 
 // ─── Main export ───────────────────────────────────────────────────────────────
 export default function MeditationPage() {
-  const { theme, isBold } = useTheme()
+  const { theme } = useTheme()
   const [screen, setScreen]       = useState<Screen>('setup')
   const [mode, setMode]           = useState<MeditationMode>('Focus')
   const [duration, setDuration]   = useState(5)
@@ -508,7 +504,7 @@ export default function MeditationPage() {
   }
 
   if (screen === 'session') {
-    return <MeditationSession mode={mode} duration={duration} onComplete={handleComplete} onEnd={() => setScreen('setup')} theme={theme} isBold={isBold} />
+    return <MeditationSession mode={mode} duration={duration} onComplete={handleComplete} onEnd={() => setScreen('setup')} />
   }
   if (screen === 'complete') {
     return <MeditationComplete onRedo={() => setScreen('setup')} theme={theme} />

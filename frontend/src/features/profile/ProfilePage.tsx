@@ -611,7 +611,7 @@ export default function ProfilePage() {
                       {t}
                     </p>
                     <p style={{ fontSize: 11.5, color: textSub, margin: 0 }}>
-                      {t === 'Soft' ? 'Calm, warm, low pressure' : 'Bold, focused, high contrast'}
+                      {t === 'Soft' ? 'Calm, Warm, Light tones' : 'Bold, Focused, Dark tones'}
                     </p>
                   </div>
                   {vibe === t && (

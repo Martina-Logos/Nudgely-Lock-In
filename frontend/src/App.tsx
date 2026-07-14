@@ -1,3 +1,4 @@
+import type { JSX, ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './stores/authStore'
 import { ThemeProvider } from './lib/theme'
@@ -7,6 +8,7 @@ import LandingPage       from './features/auth/LandingPage'
 import SignUpPage        from './features/auth/SignUpPage'
 import LoginPage         from './features/auth/LoginPage'
 import VerifyCodePage    from './features/auth/VerifyCodePage'
+import AuthCallbackPage from './features/auth/AuthCallbackPage'
 
 // Onboarding
 import ProfileBasicsPage from './features/onboarding/ProfileBasicsPage'
@@ -30,7 +32,7 @@ import AboutPage         from './features/about/AboutPage'
 import WeeklyReportPage from './features/reports/WeeklyReportPage'
 
 // ─── Guards ──────────────────────────────────────────────────────────────────
-function RequireAuth({ children }: { children: JSX.Element }) {
+function RequireAuth({ children }: { children: ReactNode }) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
   if (!isAuthenticated) return <Navigate to="/login" replace />
   return children
@@ -43,20 +45,6 @@ function AlreadyAuthed({ children }: { children: JSX.Element }) {
   return children
 }
 
-function ComingSoon({ name }: { name: string }) {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ backgroundColor: '#F0EADF' }}>
-      <div className="bg-white rounded-2xl p-8 text-center"
-        style={{ boxShadow: '0 2px 12px rgba(116,77,131,0.08)' }}>
-        <p className="text-4xl mb-4">🚧</p>
-        <h1 className="text-xl font-bold mb-2"
-          style={{ color: '#744D83', fontFamily: '"DM Serif Display", serif' }}>{name}</h1>
-        <p className="text-sm" style={{ color: '#8E7A99' }}>Coming in the next phase</p>
-      </div>
-    </div>
-  )
-}
 
 // ─── App ─────────────────────────────────────────────────────────────────────
 export default function App() {
@@ -69,6 +57,7 @@ export default function App() {
           <Route path="/signup" element={<AlreadyAuthed><SignUpPage /></AlreadyAuthed>} />
           <Route path="/login"  element={<AlreadyAuthed><LoginPage /></AlreadyAuthed>} />
           <Route path="/verify" element={<VerifyCodePage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
           {/* Onboarding */}
           <Route path="/onboarding/profile"     element={<RequireAuth><ProfileBasicsPage /></RequireAuth>} />

@@ -38,4 +38,9 @@ export const env = {
 
   // OpenAI
   OPENAI_API_KEY: optionalEnv('OPENAI_API_KEY', ''),
+
+  // Google OAuth
+  GOOGLE_CLIENT_ID: optionalEnv('GOOGLE_CLIENT_ID', ''),
+  GOOGLE_CLIENT_SECRET: optionalEnv('GOOGLE_CLIENT_SECRET', ''),
+  GOOGLE_CALLBACK_URL: optionalEnv('GOOGLE_CALLBACK_URL', ''),
 }
